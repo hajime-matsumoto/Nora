@@ -42,10 +42,13 @@ $loader = new Nora\Core\LibraryLoader( );
 // ローダーにパスを追加する
 //$loder->addSearchPath([ディレクトリパス],[クラスプレフィックス])
 
-// Zime\\から始まるクラスはルートのライブラリディレクトリを検索する
+// Nora\\から始まるクラスはルートのライブラリディレクトリを検索する
 $loader->addSearchPath( NORA_HOME .'/library', 'Nora\\' );
 
-// ローダーをZimeに登録する
+// ローダーをAutoLoaderとして登録する
+spl_autoload_register( array($loader,'autoLoad') );
+
+// ローダーをNoraに登録する
 $nora->setLibraryLoader( $lader );
 
 
