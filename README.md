@@ -2,6 +2,8 @@
 ========
 Nora PHP Fraework
 
+Naiture ORiented Architecture
+
 純国産PHPフレームワーク
 
 語源は「のら」
