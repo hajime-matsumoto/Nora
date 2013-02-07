@@ -21,3 +21,6 @@ Nature ORiented Architecture
 
 日本のワークフローに適した構成
 ---
+
+Hello world! -> Hello wild!
+---
