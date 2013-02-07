@@ -22,16 +22,16 @@
 
 パッケージはネームスペースを持つ
 
-例
+# 例
 	Nora\Package\Asterisk
 
 パッケージの組み込みをすると
 
-例
-	// 実態
+# 例
+	# 実態
 	Nora::getLibraryLoader( )->addSearchPath( NORA_HOME."/package/ateisk", 'Nora\\Packag\\Asterisk\\' );
-	// ショートハンド
-	Nora::getPackageManager( )->addPackage( NORA_HOME."/package/ateisk", "Nora\\Packae\\Asterisk\\' )
+	# ショートハンド
+	Nora::getPackageManager( )->addPackage( NORA_HOME."/package/ateisk", "Nora\\Packae\\Asterisk\\' );
 
 
 
