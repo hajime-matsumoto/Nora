@@ -2,7 +2,7 @@
 ========
 Nora PHP Fraework
 
-Naiture ORiented Architecture
+Nature ORiented Architecture
 
 純国産PHPフレームワーク
 
