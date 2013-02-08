@@ -39,8 +39,11 @@ require_once 'Nora/Core/LibraryLoader.php';
 $loader = new Nora\Core\LibraryLoader( );
 
 // ローダーにパスを追加する
-$loader->addSearchPath( NORA_HOME .'/library' );
 // $loder->addSearchPath([ディレクトリパス],[クラスプレフィックス])
+
+// ライブラリへのパス
+$loader->addSearchPath( NORA_HOME .'/library' );
+
 
 // ローダーをAutoLoaderとして登録する
 spl_autoload_register( array($loader,'autoLoad') );

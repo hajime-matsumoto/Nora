@@ -1,15 +1,16 @@
 <?php
 /*
- * のらライブラリ
+ * のらリソース
  *---------------------- 
- * ブートスラップリソース用のインターフェイス
+ *
  *---------------------- 
  * @author Hajime MATUMOTO <mail@hazime.org>
  *---------------------- 
  */
-namespace Nora\Bootstrap;
+namespace NoraResource;
+use Nora;
 
-interface ResourceIF
+class Request implements Nora\Bootstrap\ResourceIF
 {
 
 }
