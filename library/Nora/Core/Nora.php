@@ -22,5 +22,9 @@ class Nora
 	{
 		$this->_library_loader = $loader;
 	}
+	public function getLibraryLoader( )
+	{
+		return $this->_library_loader;
+	}
 }
 

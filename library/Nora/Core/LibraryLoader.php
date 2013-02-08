@@ -29,8 +29,8 @@ class LibraryLoader
 		$array_key = $dirname."|".$prefix;
 
 		$this->_search_path[ $array_key ] = array(
-			'dirname'=>$dirname,
-			'prefix'=>$prefix
+			'dirname'=>trim($dirname),
+			'prefix'=>trim($prefix)
 		);
 	}
 	
@@ -39,8 +39,9 @@ class LibraryLoader
 	 * オートロード関数
 	 *
 	 * @param string クラス名
+	 * @param bool デバッグフラグ 初期値は偽
 	 */
-	public function autoLoad( $name )
+	public function autoLoad( $name, $isDebug = false )
 	{
 		// クラスファイルの検索開始
 		foreach( $this->_search_path as $path )
@@ -49,12 +50,25 @@ class LibraryLoader
 			if( $this->_isPossibleSearchPath( $path, $name ) )
 			{
 				// クラス名からパスを推定
-				if( $fil = $this->_guessFilePath( $path, $name ) )
+				if( $found_file = $this->_guessFilePath( $path, $name ) )
 				{
-					require_once $file;
+					// デバッグ中ならば
+					// ファイルをロードしないでファイル名を返却
+					if( $isDebug == false )
+					{
+						require_once $found_file;
+						return true;
+					}
+
+					return $found_file;
 				}
-				// Debug
-				var_Dump($file);
+			}
+
+			// デバッグ中ならば
+			// ファイル名を出力する
+			if( $isDebug == true )
+			{
+				echo $file.PHP_EOL;
 			}
 		}
 	}
@@ -67,28 +81,40 @@ class LibraryLoader
 	 */
 	private function _guessFilePath( $path, $name )
 	{
-		$prefix = $path['prefix'];
-		$dirname = $path['dirname'];
-
-		// プレフィックスを登録されているパスに変換
-
-		// 変換用の正規表現を作成
-		$regex = sprintf('/^%s/',preg_quote( $prefix ) );
-
-		// プレフィックスをディレクトリ名に変更
-		$path = preg_replace( $regex, $dirname, $name);
+		$path = $this->_applyPrefixPath( $path, $name );
 
 		// クラス名からパスを生成
-		$path = str_replace(NAME_SPACE_SEPARATOR,'/',$name);
-		$path = str_replace(CLASS_NAME_SEPARATOR,'/',$name);
+		$path = str_replace(self::NAME_SPACE_SEPARATOR,'/',$path);
+		$path = str_replace(self::CLASS_NAME_SEPARATOR,'/',$path);
 
 		foreach( array('','/class','/trait','/abstract','/interface') as $type )
 		{
-			if( file_exists( $file = sprintf('%s%s/%s.php',$dirname, $type, $basename ) ) )
+			if( file_exists( $file = sprintf('%s%s/%s.php',dirname($path), $type, basename($path) ) ) )
 			{
 				return $file;
 			}
 		}
+	}
+
+	/** 
+	 * プレフィックスを登録されているパスに変換
+	 *
+	 * @param array path['prefix'],['dirname']
+	 * @param string クラス名
+	 */
+	private function _applyPrefixPath( $path, $name )
+	{
+		$prefix = $path['prefix'];
+		$dirname = $path['dirname'];
+
+		if( empty($prefix) )
+		{
+			return sprintf('%s/%s',$dirname,$name);
+		}
+		// 変換用の正規表現を作成
+		$regex = sprintf('/^%s/',preg_quote( $prefix ) );
+		// プレフィックスをディレクトリ名に変更
+		return preg_replace( $regex, $dirname, $name);
 	}
 
 	/**
