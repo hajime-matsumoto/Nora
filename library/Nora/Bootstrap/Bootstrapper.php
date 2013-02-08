@@ -69,7 +69,12 @@ class Bootstrapper
 	 */
 	final private function _bootstrap( $resource_name )
 	{
-		$reflection = new ReflectionClass( $resource_name );
+		if(isset($this->_resource[$resource_name] ) )
+		{
+			$class_name = $this->_resource[$resource_name];
+		}
+
+		$reflection = new ReflectionClass( $class_name );
 		if( !$reflection->implementsInterface('Nora\Bootstrap\ResourceIF') )
 		{
 			throw new Exception( 'Resource Must Implements ResourceIF' );

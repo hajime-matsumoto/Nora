@@ -35,7 +35,6 @@ class BootstrapperTest extends PHPUnit_Framework_TestCase
 		);
 	}
 
-
 	public function testAddResource()
 	{
 		$this->assertTrue( $this->bootstrapper->addResource('NoraResource\Request') );
@@ -48,4 +47,13 @@ class BootstrapperTest extends PHPUnit_Framework_TestCase
 			$this->bootstrapper->bootstrap('NoraResource\Request')
 		);
 	}
+	public function testAddResourceAlias()
+	{
+		$this->assertTrue( $this->bootstrapper->addResource('NoraResource\Request','request') );
+		$this->assertInstanceOf( 
+			'Nora\Bootstrap\ResourceIF',
+			$this->bootstrapper->bootstrap('request')
+		);
+	}
+
 }
