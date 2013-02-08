@@ -10,7 +10,7 @@
 
 namespace Nora\Core;
 
-require_once 'library/core/trait/singleton.php';
+require_once 'Nora/Core/trait/Singleton.php';
 
 class Nora
 {
@@ -18,7 +18,7 @@ class Nora
 
 	private $_library_loader;
 
-	public function setLibraryLoader( $loaer )
+	public function setLibraryLoader( $loader )
 	{
 		$this->_library_loader = $loader;
 	}

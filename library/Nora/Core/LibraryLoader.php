@@ -12,6 +12,9 @@ namespace Nora\Core;
 
 class LibraryLoader
 {
+	const NAME_SPACE_SEPARATOR = '\\';
+	const CLASS_NAME_SEPARATOR = '_';
+
 	private $_search_path = array();
 
 	/**
@@ -20,7 +23,7 @@ class LibraryLoader
 	 * @param string ディレクトリパス
 	 * @param string クラスプレフィックス
 	 */
-	public function addSearchPath( $dirname, $prefix )
+	public function addSearchPath( $dirname, $prefix = null )
 	{
 		// 配列添字キーを生成して、値をユニークにする。
 		$array_key = $dirname."|".$prefix;
@@ -37,7 +40,7 @@ class LibraryLoader
 	 *
 	 * @param string クラス名
 	 */
-	public function audoLoad( $name )
+	public function autoLoad( $name )
 	{
 		// クラスファイルの検索開始
 		foreach( $this->_search_path as $path )
@@ -64,16 +67,20 @@ class LibraryLoader
 	 */
 	private function _guessFilePath( $path, $name )
 	{
+		$prefix = $path['prefix'];
+		$dirname = $path['dirname'];
+
 		// プレフィックスを登録されているパスに変換
-		$path = preg_replace('/^'.preg_quote($path['prefix']).'/',$path['dirname'].'/', $name);
 
-		// クラスの完全修飾名をパスに変換する
-		//  \\ と _ を /に変換
-		$path = str_replace(array('\\','_'), '/', $path);
+		// 変換用の正規表現を作成
+		$regex = sprintf('/^%s/',preg_quote( $prefix ) );
 
-		// 大文字、小文字の調整
-		$dirname = strtolower(dirname($path));
-		$basename = lcfirst(basename($path));
+		// プレフィックスをディレクトリ名に変更
+		$path = preg_replace( $regex, $dirname, $name);
+
+		// クラス名からパスを生成
+		$path = str_replace(NAME_SPACE_SEPARATOR,'/',$name);
+		$path = str_replace(CLASS_NAME_SEPARATOR,'/',$name);
 
 		foreach( array('','/class','/trait','/abstract','/interface') as $type )
 		{
@@ -84,11 +91,22 @@ class LibraryLoader
 		}
 	}
 
-	// クラスが存在する可能性があれば True
+	/**
+	 * 検索パスを絞り込む
+	 *
+	 * クラスが存在する可能性があれば真
+	 * プレフィックスが存在しなければ常に真
+	 *
+	 * @param array path 
+	 * @param string name
+	 */
 	private function _isPossibleSearchPath( $path, $name )
 	{
 		$prefix = $path['prefix'];
-		$dirname = $path['dirname'];
+		if( empty($prefix) )
+		{
+			return true;
+		}
 
 		if( 0 === substr_compare($name,$prefix,0,strlen($prefix)) )
 		{
