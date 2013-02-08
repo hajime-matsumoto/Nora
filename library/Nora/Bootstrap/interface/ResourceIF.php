@@ -9,6 +9,9 @@
  */
 namespace Nora\Bootstrap;
 
+/**
+ * リソース用インターフェイス
+ */
 interface ResourceIF
 {
 

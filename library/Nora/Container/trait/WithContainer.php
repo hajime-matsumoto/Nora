@@ -9,15 +9,21 @@
  */
 namespace Nora\Container;
 
+/**
+ * コンテナ保持パターン用
+ *
+ * コンテナをメンバ変数として保持し、
+ * getContainer( )で外部にも渡せるようにする
+ */
 trait WithContainer
 {
 	private $_my_container;
 
-	public function __construct( )
-	{
-		return $this->_my_container = new Container( );
-	}
-
+	/**
+	 * コンテナ取得
+	 *
+	 * @return Nora\Container
+	 */
 	public function getContainer( )
 	{
 		return $this->_my_container;

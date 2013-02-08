@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * のらライブラリ
  *---------------------- 
  *
@@ -10,10 +10,16 @@
 
 namespace Nora\Core;
 
+/**
+ * ライブラリローダー
+ * 
+ * ライブラリのクラスをオートロードするクラス
+ *
+ */
 class LibraryLoader
 {
-	const NAME_SPACE_SEPARATOR = '\\';
-	const CLASS_NAME_SEPARATOR = '_';
+	const NAME_SPACE_SEPARATOR = '\\'; # ネームスペースの区切り文字
+	const CLASS_NAME_SEPARATOR = '_';  # クラス名の区切り文字
 
 	private $_search_path = array();
 

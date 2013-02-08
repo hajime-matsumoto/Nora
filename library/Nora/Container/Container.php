@@ -9,6 +9,12 @@
  */
 namespace Nora\Container;
 
+/**
+ * コンテナクラス
+ *
+ * キーバリューでアクセス出来るデータコンテナ
+ *
+ */
 class Container
 {
 	private $_my_data = array();

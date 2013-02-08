@@ -12,5 +12,15 @@ use Nora;
 
 class Request implements Nora\Bootstrap\ResourceIF
 {
+	Use Nora\Core\AutoConfig;
 
+	public function configDI( $DI )
+	{
+		$this->_DI = $DI;
+	}
+
+	public function factory( )
+	{
+		return $this;
+	}
 }

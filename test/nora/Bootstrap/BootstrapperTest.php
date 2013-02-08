@@ -24,9 +24,23 @@ class BootstrapperTest extends PHPUnit_Framework_TestCase
 
 	public function testCreateInstance()
 	{
-		$this->assertInstanceOf('Nora\Bootstrap\Bootstrapper', new Nora\Bootstrap\Bootstrapper() );
+		$this->assertInstanceOf('Nora\Bootstrap\Bootstrapper', $this->bootstrapper);
 	}
 
+	public function testDefineResource( )
+	{
+		$this->assertTrue( 
+			$this->bootstrapper->addResourceClass(
+				'NoraResource\Request','request'
+			) 
+		);
+
+		$this->assertInstanceOf(
+			'NoraResource\Request', $this->bootstrapper->bootstrap('request')
+		);
+	}
+
+	/*
 	public function testGetContainer( )
 	{
 		$this->assertInstanceOf(
@@ -55,5 +69,6 @@ class BootstrapperTest extends PHPUnit_Framework_TestCase
 			$this->bootstrapper->bootstrap('request')
 		);
 	}
+	 */
 
 }
