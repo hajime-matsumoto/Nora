@@ -59,17 +59,10 @@ class LibraryLoader
 						require_once $found_file;
 						return true;
 					}
-
 					return $found_file;
 				}
 			}
 
-			// デバッグ中ならば
-			// ファイル名を出力する
-			if( $isDebug == true )
-			{
-				echo $file.PHP_EOL;
-			}
 		}
 	}
 

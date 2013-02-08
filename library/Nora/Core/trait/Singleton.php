@@ -20,6 +20,12 @@ trait Singleton
 		{
 			return self::$_my_instance;
 		}
+
 		return self::$_my_instance = new static();
+	}
+
+	static public function resetInstance( )
+	{
+		self::$_my_instance = false;
 	}
 }
