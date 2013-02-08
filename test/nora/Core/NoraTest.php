@@ -24,6 +24,10 @@ class NoraTest extends PHPUnit_Framework_TestCase
 	{
 		$nora = new Nora\Core\Nora( );
 		$this->assertInstanceOf('Nora\Core\Nora', $nora);
+
+		Nora\Core\Nora::resetInstance();
+		Nora\Core\Nora::getInstance();
+		Nora\Core\Nora::getInstance();
 	}
 
 	/**

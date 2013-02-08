@@ -20,6 +20,22 @@ class LibraryLoaderTest extends PHPUnit_Framework_TestCase
 	public function testLibraryLoaderInstanceExists( )
 	{
 		$this->assertInstanceOf('Nora\Core\LibraryLoader', Nora\Core\Nora::getInstance()->getLibraryLoader());
+		 Nora\Core\Nora::getInstance()->setLibraryLoader(
+			 Nora\Core\Nora::getInstance()->getLibraryLoader()
+		 );
+	}
+
+	public function testAddSearchPath( )
+	{
+		Nora\Core\Nora::getInstance( )
+			->getLibraryLoader( )
+			->addSearchPath( NORA_HOME .'/test/nora/Core', 'Core');
+		$this->assertNull(
+			Nora\Core\Nora::getInstance( )->getLibraryLoader( )->autoLoad( 'Nore_NoraTest', true)
+		);
+		$this->assertFileExists(
+			Nora\Core\Nora::getInstance( )->getLibraryLoader( )->autoLoad( 'Core_NoraTest', true)
+		);
 	}
 
 	/**

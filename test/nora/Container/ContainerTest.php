@@ -55,6 +55,7 @@ class ContainerTest extends PHPUnit_Framework_TestCase
 	{
 		$this->_container->setData( $key, $value );
 		$this->assertEquals( $value, $this->_container->getData($key) );
+		$this->assertEquals( $value, $this->_container->getData($key."false", $value) );
 	}
 
 	/**

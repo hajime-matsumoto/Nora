@@ -43,5 +43,9 @@ class BootstrapperTest extends PHPUnit_Framework_TestCase
 			'Nora\Bootstrap\ResourceIF',
 			$this->bootstrapper->bootstrap('NoraResource\Request')
 		);
+		$this->assertInstanceOf( 
+			'Nora\Bootstrap\ResourceIF',
+			$this->bootstrapper->bootstrap('NoraResource\Request')
+		);
 	}
 }
