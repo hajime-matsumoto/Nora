@@ -16,6 +16,9 @@ label { display:block; }
 <label>つなぎ先</label>
 <input type="text" name="exten" value="201*1">
 
+<label>コンテクスト</label>
+<input type="text" name="context" value="default">
+
 <fieldset>
 <legend>繰り返し設定</legend>
 <pre>
@@ -54,8 +57,6 @@ label { display:block; }
 <td><?=$row['lastapp']?></td>
 <?php //var_dump($row); ?>
 </tr>
-
 <?php endforeach; ?>
-
 </table>
 

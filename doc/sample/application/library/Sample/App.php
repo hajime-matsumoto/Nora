@@ -29,5 +29,4 @@ class App
 	{
 		return $this;
 	}
-
 }
