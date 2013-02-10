@@ -19,43 +19,20 @@ class LibraryLoaderTest extends PHPUnit_Framework_TestCase
 
 	public function testLibraryLoaderInstanceExists( )
 	{
-		$this->assertInstanceOf('Nora\Core\LibraryLoader', Nora\Core\Nora::getInstance()->getLibraryLoader());
-		 Nora\Core\Nora::getInstance()->setLibraryLoader(
-			 Nora\Core\Nora::getInstance()->getLibraryLoader()
-		 );
+		$this->assertInstanceOf('Nora\Core\LibraryLoader', Nora()->getContainer( )->LibraryLoader);
 	}
 
 	public function testAddSearchPath( )
 	{
-		Nora\Core\Nora::getInstance( )
-			->getLibraryLoader( )
-			->addSearchPath( NORA_HOME .'/test/nora/Core', 'Core');
+		Nora()->getContainer( )->LibraryLoader->addSearchPath( NORA_HOME .'/test/nora/Core', 'Core');
+
+		// ファイル取得実験1
 		$this->assertNull(
-			Nora\Core\Nora::getInstance( )->getLibraryLoader( )->autoLoad( 'Nore_NoraTest', true)
+			Nora()->getContainer( )->LibraryLoader->autoload( 'Nore_NoraTest', true)
 		);
+		// ファイル取得実験2
 		$this->assertFileExists(
-			Nora\Core\Nora::getInstance( )->getLibraryLoader( )->autoLoad( 'Core_NoraTest', true)
+			Nora()->getContainer( )->LibraryLoader->autoload( 'Core_NoraTest', true)
 		);
-	}
-
-	/**
-	 * @depends testLibraryLoaderInstanceExists
-	 */
-	public function testAutoloadDebug( )
-	{
-		$nora = Nora\Core\Nora::getInstance();
-		$this->assertInstanceOf('Nora\Core\Nora', $nora);
-
-		// デバッグモードでオートロードを叩く
-		$found_file = $nora->getLibraryLoader( )->autoload('Nora\Bootstrap\Bootstrapper', true);
-		$this->assertFileExists($found_file);
-	}
-
-	/**
-	 * @depends testLibraryLoaderInstanceExists
-	 */
-	public function testAutoloadClass( )
-	{
-		$this->assertInstanceOf('Nora\Bootstrap\Bootstrapper', new Nora\Bootstrap\Bootstrapper());
 	}
 }

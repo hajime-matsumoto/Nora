@@ -42,10 +42,7 @@ class ContainerTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testSetData( $key, $value)
 	{
-		$this->assertInstanceOf(
-			'Nora\Container\Container', 
-			$this->_container->setData( $key, $value )
-		);
+		$this->assertInstanceOf( 'Nora\Container\Container', $this->_container->setData( $key, $value ));
 	}
 
 	/**
@@ -64,12 +61,8 @@ class ContainerTest extends PHPUnit_Framework_TestCase
 	public function testHasData( $key, $value )
 	{
 		$this->_container->setData( $key, $value );
-		$this->assertEquals( 'yes',
-			$this->_container->hasData( $key,'yes','no') 
-		);
-		$this->assertEquals( 'no',
-			$this->_container->hasData( $key.'false','yes','no') 
-		);
+		$this->assertEquals( 'yes', $this->_container->hasData( $key,'yes','no') );
+		$this->assertEquals( 'no', $this->_container->hasData( $key.'false','yes','no') );
 		$this->assertTrue( $this->_container->hasData( $key ) );
 		$this->assertFalse( $this->_container->hasData( $key.'no' ) );
 	}

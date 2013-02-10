@@ -19,6 +19,8 @@ class BootstrapperTest extends PHPUnit_Framework_TestCase
 
 	public function setUp( )
 	{
+		Nora( )->getContainer( )->addService( 'logger', new \Nora\Logger\Logger());
+
 		$this->bootstrapper = new Nora\Bootstrap\Bootstrapper() ;
 	}
 
@@ -27,48 +29,20 @@ class BootstrapperTest extends PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Nora\Bootstrap\Bootstrapper', $this->bootstrapper);
 	}
 
-	public function testDefineResource( )
+	public function testBootstrap()
 	{
-		$this->assertTrue( 
-			$this->bootstrapper->addResourceClass(
-				'NoraResource\Request','request'
-			) 
-		);
-
+		$this->bootstrapper->setResource( 'asterisk', 'NoraResource\Asterisk' );
+		$this->bootstrapper->configResource( 'asterisk', array(
+			'host'=>'phone.hazime.org',
+			'port'=>5038,
+			'username'=>'www',
+			'secret'=>'deganjue'
+		));
 		$this->assertInstanceOf(
-			'NoraResource\Request', $this->bootstrapper->bootstrap('request')
+			'\Nora\Asterisk\Asterisk',
+			$asterisk = $this->bootstrapper->bootstrap( 'asterisk' )
 		);
-	}
 
-	/*
-	public function testGetContainer( )
-	{
-		$this->assertInstanceOf(
-			'Nora\Container\Container',
-			$this->bootstrapper->getContainer( )
-		);
+		$asterisk->command( 'reload' );
 	}
-
-	public function testAddResource()
-	{
-		$this->assertTrue( $this->bootstrapper->addResource('NoraResource\Request') );
-		$this->assertInstanceOf( 
-			'Nora\Bootstrap\ResourceIF',
-			$this->bootstrapper->bootstrap('NoraResource\Request')
-		);
-		$this->assertInstanceOf( 
-			'Nora\Bootstrap\ResourceIF',
-			$this->bootstrapper->bootstrap('NoraResource\Request')
-		);
-	}
-	public function testAddResourceAlias()
-	{
-		$this->assertTrue( $this->bootstrapper->addResource('NoraResource\Request','request') );
-		$this->assertInstanceOf( 
-			'Nora\Bootstrap\ResourceIF',
-			$this->bootstrapper->bootstrap('request')
-		);
-	}
-	 */
-
 }

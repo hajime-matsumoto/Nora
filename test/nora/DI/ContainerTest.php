@@ -11,7 +11,7 @@
 require_once 'PHPUnit/Autoload.php';
 require_once dirname(__FILE__).'/../../../include/header.php';
 
-class ContainerTest extends PHPUnit_Framework_TestCase
+class DIContainerTest extends PHPUnit_Framework_TestCase
 {
 	public function setUp()
 	{
@@ -34,11 +34,18 @@ class ContainerTest extends PHPUnit_Framework_TestCase
 		/* クラスを登録する */
 		$c->addService( 'class', 'NoraResource\Request' );
 
-
 		/* サービスを取得 */
 		$this->assertInstanceOf( 'ArrayObject', $c->service( 'func' ) );
 		$this->assertInstanceOf( 'Nora\DI\Container', $c->service( 'me' ) );
 		$this->assertInstanceOf( 'NoraResource\Request', $c->service( 'class' ) );
 	}
 
+	public function testAddServiceOptions()
+	{
+		$this->container->setServiceOptions( 'me', array( 'test' => 'testvalue') );
+
+		$this->assertEquals( 
+			array( 'test'=>'testvalue'), $this->container->getServiceOptions( 'me' )
+		);
+	}
 }
