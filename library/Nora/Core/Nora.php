@@ -7,16 +7,32 @@
 
 namespace Nora\Core;
 
+// 定数の定義
+//-------------------------------
+if(!defined('NORA_HOME'))
+{
+	// このスクリプトから1階層上のディレクトリを設定
+	define('NORA_HOME', realpath( dirname(__FILE__).'/../../../' ) );
+}
 
+// PHPの設定
+//-------------------------------
+// インクルードパスを追加
+ini_set( 'include_path', ini_get( 'include_path' ) .':'.NORA_HOME.'/library' );
+
+
+// 依存関係にあるクラスを読み込む
+//-------------------------------
+require_once 'Nora/Core/trait/Singleton.php';
+require_once 'Nora/Core/LibraryLoader.php';
+require_once 'Nora/DI/Container.php';
 
 /**
  * のらライブラリのルートクラス
  *
  * 機能
  *
- * - ライブラリローダーの保持
- * - メインブートストラップの保持
- * - コンテナの保持
+ * - DIコンテナの保持
  *
  * @author Hajime MATUMOTO <mail@hazime.org>
  */
@@ -29,26 +45,35 @@ class Nora
 
 	public function __construct()
 	{
-		$this->_container = new \Nora\DI\Container();
+		$this->_di_container = new \Nora\DI\Container();
+		$this->setUp();
 	}
 
-
-	/**
-	 * ライブラリローダーを保持
-	 */
-	public function setLibraryLoader( LibraryLoader $loader )
+	/** セットアップする */
+	public function setUp()
 	{
-		$this->_container->addService("library.loader", $loader);
+		$this->getContainer()->addService('LibraryLoader',new LibraryLoader( ));
+		// ライブラリへのパス
+		$this->getContainer()->LibraryLoader->addSearchPath( NORA_HOME .'/library' );
+		// ローダーを登録する
+		$this->getContainer()->LibraryLoader->register( );
 	}
 
-	/**
-	 * ライブラリローダーを取得
-	 *
-	 * @return LibraryLoader
-	 */
-	public function getLibraryLoader( )
+	/** DIコンテナを取得 */
+	public function getContainer( )
 	{
-		return $this->_container->service("library.loader");
+		return $this->_di_container;
 	}
+
+	public function hasService( $name )
+	{
+		return $this->_di_container->hasService( $name );
+	}
+
+	public function service( $name )
+	{
+		return $this->_di_container->service( $name );
+	}
+
 }
 

@@ -44,10 +44,20 @@ class Container
 		return $this->getService( $name );
 	}
 
+	/** サービスがあるか */
+	public function hasService( $name )
+	{
+		if( isset($this->_registry[$name]) || isset($this->_factories[$name]) )
+		{
+			return true;
+		}
+		return false;
+	}
+
 	/** サービスを取得 */
 	protected function getService( $name )
 	{
-		return $this->_registry[$name] ? $this->_registry[$name]: false;
+		return @$this->_registry[$name] ? @$this->_registry[$name]: false;
 	}
 
 	/** サービスを初期化 */
@@ -56,15 +66,23 @@ class Container
 		$factory = $this->_factories[$name];
 		if( is_object($factory) && $factory instanceof \Closure )
 		{
-			return call_user_func( $factory );
+			return call_user_func( $factory, $this, $name );
 		}
 		elseif( is_string( $factory ) && class_exists($factory)) 
 		{
 			// クラスを生成
+			// このロジックが固定かされるのがいやだなぁ。
 			$service = new $factory( );
 			$service->configure( array('DI'=>$this), $this->getServiceOptions( $name ) );
 			return $service->factory( );
 		}
+		throw new Exception( sprintf('サービス %s が見つかりません', $name ) );
+	}
+	/** サービス初期化オプションを設定 */
+	public function setServiceOptions( $name, $options = array() )
+	{
+		$this->_options[$name] = $options;
+		return $this;
 	}
 
 	/** サービス初期化オプションを取得 */
@@ -72,6 +90,11 @@ class Container
 	{
 		return $this->_options[$name] ? $this->_options[$name]: array();
 	}
-	
+
+	/** $self->サービス名 */
+	public function __get( $name )
+	{
+		return $this->service( $name );
+	}
 }
 

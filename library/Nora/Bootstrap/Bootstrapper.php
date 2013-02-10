@@ -9,66 +9,39 @@
  */
 namespace Nora\Bootstrap;
 
-use Nora\Container\WithContainer; # コンテナ化
-use Nora\DI\DI;                   # DIコンテナ
+use Nora\DI\Container as DI_Container;
 use ReflectionClass;
 
 /**
  * ブートストラッパー
  *
- * リソースクラスを登録し、
- * 設定値で初期化し、
- * インスタンスをシングルトンに保持する
- *
+ * - サービスロケーター
  */
-class Bootstrapper extends DI
+class Bootstrapper
 {
-	use WithContainer;
-
-	private $_resource = array();
 	private $_di_container;
 
-
-	/**
-	 * リソースを追加する
-	 *
-	 * @param クラス名
-	 * @param エイリアス
-	 */
-	public function addResourceClass( $classname, $alias = false)
+	public function __construct( )
 	{
-		if( $alias == false || empty($alias) )
-		{
-			$alias = $classname;
-		}
+		$this->_di_container = new DI_Container( );
+	}
 
-		// リソースとしてセットする。
-		$this->defineResource( $alias, function()use($classname){
-			return $this->initResource( $className );
+	public function setResource( $name, $class )
+	{
+		$this->_di_container->addService( $name, function( $container, $name )use($class){
+			$obj = new $class;
+			$obj->configure($container->getServiceOptions( $name ));
+			return $obj->factory();
 		});
-
-		return true;
 	}
 
-	/**
-	 * リソースを初期化(一度だけ)
-	 * 初期化されたリソースを取得
-	 *
-	 * @param リソース名
-	 */
-	public function bootstrap( $resource_name )
+	public function configResource( $name, $options = array( ) )
 	{
-		return $this->resource( $resource_name );
+		$this->_di_container->setServiceOptions( $name, $options );
 	}
 
-	public function initResource( $classname )
+	public function bootstrap( $name )
 	{
-		$resource = new $classname( );
-		$resource->configure(
-			array(
-				'bootstrapper'=>$this
-			)
-		);
-		return $resource->init( );
+		return $this->_di_container->service( $name );
 	}
 }

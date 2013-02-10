@@ -24,6 +24,14 @@ class LibraryLoader
 	private $_search_path = array();
 
 	/**
+	 * レジスター, SPL関数でAutoloadに設定する
+	 */
+	public function register( )
+	{
+		spl_autoload_register( array($this, 'autoLoad') );
+	}
+
+	/**
 	 * クラスの検索パスを追加する。
 	 *
 	 * @param string ディレクトリパス
