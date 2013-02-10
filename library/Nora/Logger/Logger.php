@@ -1,6 +1,9 @@
 <?php
 namespace Nora\Logger;
 
+/**
+ * ロガー
+ */
 class Logger
 {
 	const DEBUG = 1;

@@ -9,7 +9,7 @@
  */
 namespace Nora\Network;
 
-use Nora\Core\Logging;
+use Nora\Logger\Logging;
 
 
 /**

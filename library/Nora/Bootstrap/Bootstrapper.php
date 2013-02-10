@@ -40,8 +40,25 @@ class Bootstrapper
 		$this->_di_container->setServiceOptions( $name, $options );
 	}
 
+
+	/** 一気にリソースを設定する */
+	public function loadResourceArray( array $array )
+	{
+		foreach( $array as $resource_name => $config  )
+		{
+			$this->setResource( $resource_name, $config['class'] );
+			$this->configResource( $resource_name, isset($config['config']) ? $config['config']: array() );
+		}
+	}
+
+
 	public function bootstrap( $name )
 	{
 		return $this->_di_container->service( $name );
+	}
+
+	public function __get( $name )
+	{
+		return $this->Bootstrap( $name );
 	}
 }

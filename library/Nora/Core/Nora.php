@@ -52,11 +52,16 @@ class Nora
 	/** セットアップする */
 	public function setUp()
 	{
-		$this->getContainer()->addService('LibraryLoader',new LibraryLoader( ));
+		$this->getContainer()->addService('libraryLoader',new LibraryLoader( ));
 		// ライブラリへのパス
-		$this->getContainer()->LibraryLoader->addSearchPath( NORA_HOME .'/library' );
+		$this->getContainer()->libraryLoader->addSearchPath( NORA_HOME .'/library' );
 		// ローダーを登録する
-		$this->getContainer()->LibraryLoader->register( );
+		$this->getContainer()->libraryLoader->register( );
+
+		// ブートローダを設定
+		$this->getContainer( )->addService('bootstrapper', function( ){
+			return new \Nora\Bootstrap\Bootstrapper( );
+		});
 	}
 
 	/** DIコンテナを取得 */
@@ -73,6 +78,11 @@ class Nora
 	public function service( $name )
 	{
 		return $this->_di_container->service( $name );
+	}
+
+	public function __get( $name )
+	{
+		return $this->service($name);
 	}
 
 }
