@@ -19,6 +19,11 @@ function Nora( )
 {
 	return Nora\Core\Nora::getInstance( );
 }
+/** のらブートストラップのショートハンド */
+function NoraBootstrap( $name )
+{
+	return Nora\Core\Nora::getInstance( )->bootstrapper->bootstrap($name);
+}
 
 // インスタンスの初期化
 Nora();
