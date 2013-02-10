@@ -25,12 +25,6 @@ if(!defined('NORA_HOME'))
 // インクルードパスを追加
 ini_set( 'include_path', ini_get( 'include_path' ) .':'.NORA_HOME.'/library' );
 
-// のらインスタンスを作成
-//-------------------------------
-require_once 'Nora/Core/Nora.php';
-$nora = Nora\Core\Nora::getInstance( );
-
-
 // クラスのオートローディングを設定する
 //--------------------------------
 
@@ -48,9 +42,12 @@ $loader->addSearchPath( NORA_HOME .'/library' );
 // ローダーをAutoLoaderとして登録する
 spl_autoload_register( array($loader,'autoLoad') );
 
+// のらインスタンスを作成
+//-------------------------------
+$nora = Nora\Core\Nora::getInstance( );
+
 // ローダーをNoraに登録する
 $nora->setLibraryLoader( $loader );
-
 
 
 

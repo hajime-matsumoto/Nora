@@ -7,7 +7,6 @@
 
 namespace Nora\Core;
 
-require_once 'Nora/Core/trait/Singleton.php';
 
 
 /**
@@ -25,7 +24,13 @@ class Nora
 {
 	use Singleton;
 
-	private $_library_loader;
+	/** DIコンテナ */
+	private $_container;
+
+	public function __construct()
+	{
+		$this->_container = new \Nora\DI\Container();
+	}
 
 
 	/**
@@ -33,7 +38,7 @@ class Nora
 	 */
 	public function setLibraryLoader( LibraryLoader $loader )
 	{
-		$this->_library_loader = $loader;
+		$this->_container->addService("library.loader", $loader);
 	}
 
 	/**
@@ -43,7 +48,7 @@ class Nora
 	 */
 	public function getLibraryLoader( )
 	{
-		return $this->_library_loader;
+		return $this->_container->service("library.loader");
 	}
 }
 

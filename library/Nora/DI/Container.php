@@ -6,13 +6,7 @@ namespace Nora\DI;
 
 use Nora;
 use Exception;
-/**
- * のらライブラリ
- */
-namespace Nora\DI;
 
-use Nora;
-use Exception;
 
 /**
  * DIコンテナ
@@ -80,3 +74,4 @@ class Container
 	}
 	
 }
+
