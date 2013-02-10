@@ -4,10 +4,14 @@ require_once '../header.php';
 // フォームを取得
 $form = NoraBootstrap('login')->makeForm();
 
+// 送信済だったら
+// ログイン認証を行う
+// - userアプリケーションに委譲してもいいのかも
+// - NoraModule('user')->loginForm();
+// - NoraModule('user')->loginAuth();
+// - NoraModule('user')->checkPerm();
 if( NoraBootstrap('request')->isPost() )
 {
-	// 送信済だったら
-	// ログインを試してみる
 	$post_values =  $form->takeValues();
 	if(
 		NoraBootstrap('login')->login( 
