@@ -15,7 +15,7 @@ namespace Nora\Container;
  * キーバリューでアクセス出来るデータコンテナ
  *
  */
-class Container
+class Container implements \IteratorAggregate
 {
 	private $_my_data = array();
 
@@ -67,8 +67,19 @@ class Container
 	 * @param キー
 	 * @param 値
 	 */
-	public function setData( $key, $data )
+	public function setData( $key, $data  = false)
 	{
+		// もしも、引数が配列１個だけだったら
+		// 配列を取り込む
+		if( $data == false && is_array($key) )
+		{
+			foreach( $key as $k=>$v )
+			{
+				$this->setData( $k, $v );
+			}
+			return $this;
+		}
+
 		$this->_my_data[$key] = $data;
 		return $this;
 	}
@@ -83,6 +94,11 @@ class Container
 	public function __get( $key )
 	{
 		return $this->getData( $key, null );
+	}
+
+	public function getIterator( )
+	{
+		return new \ArrayIterator($this->_my_data);
 	}
 }
 

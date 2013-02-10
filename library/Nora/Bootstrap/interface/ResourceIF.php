@@ -14,5 +14,7 @@ namespace Nora\Bootstrap;
  */
 interface ResourceIF
 {
-
+	public function configure( $configs );
+	public function configBootstrapper( $bootstrapper );
+	public function getBootstrapper( );
 }

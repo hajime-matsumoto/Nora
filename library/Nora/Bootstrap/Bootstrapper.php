@@ -26,6 +26,7 @@ class Bootstrapper
 		$this->_di_container = new DI_Container( );
 	}
 
+	/** リソースを設定する */
 	public function setResource( $name, $class )
 	{
 		$bs = $this;
@@ -36,6 +37,7 @@ class Bootstrapper
 		});
 	}
 
+	/** リソース設定する */
 	public function configResource( $name, $options = array( ) )
 	{
 		$this->_di_container->setServiceOptions( $name, $options );
@@ -47,19 +49,32 @@ class Bootstrapper
 	{
 		foreach( $array as $resource_name => $config  )
 		{
+			if(is_object($config))
+			{
+				$this->_di_container->addService($resource_name, $config );
+				continue;
+			}
 			$this->setResource( $resource_name, $config['class'] );
 			$this->configResource( $resource_name, isset($config['config']) ? $config['config']: array() );
 		}
 	}
 
 
+	/** リソースを初期化もしくは取得する */
 	public function bootstrap( $name )
 	{
+		// _initXXXをサービスにする
+		if( !$this->_di_container->hasService($name) && method_exists( $this, $method = '_init'.$name) )
+		{
+			$this->_di_container->addService( $name, call_user_func_array( array( $this, $method ) ) );
+
+		}
 		return $this->_di_container->service( $name );
 	}
 
+	/** bootstrapへのショートハンド */
 	public function __get( $name )
 	{
-		return $this->Bootstrap( $name );
+		return $this->bootstrap( $name );
 	}
 }
