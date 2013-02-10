@@ -5,10 +5,10 @@
 	<meta name="generator" content="ApiGen 2.8.0" />
 	<meta name="robots" content="noindex" />
 
-	<title>File Nora/Core/Nora.php | Nora Project</title>
+	<title>File Nora/Core/Nora.php | Nora Project↲</title>
 
 	<script type="text/javascript" src="resources/combined.js?394153670"></script>
-	<script type="text/javascript" src="elementlist.js?225574924"></script>
+	<script type="text/javascript" src="elementlist.js?1599845403"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -51,6 +51,7 @@
 
 			<h3>Traits</h3>
 			<ul>
+				<li><a href="class-Nora.Core.AutoConfig.html">AutoConfig</a></li>
 				<li><a href="class-Nora.Core.Singleton.html">Singleton</a></li>
 			</ul>
 
@@ -101,50 +102,69 @@
 </span><span id="7" class="l"><a class="l" href="#7"> 7: </a>
 </span><span id="8" class="l"><a class="l" href="#8"> 8: </a><span class="php-keyword1">namespace</span> Nora\Core;
 </span><span id="9" class="l"><a class="l" href="#9"> 9: </a>
-</span><span id="10" class="l"><a class="l" href="#10">10: </a><span class="php-keyword1">require_once</span> <span class="php-quote">'Nora/Core/trait/Singleton.php'</span>;
-</span><span id="11" class="l"><a class="l" href="#11">11: </a>
-</span><span id="12" class="l"><a class="l" href="#12">12: </a>
-</span><span id="13" class="l"><a class="l" href="#13">13: </a><span class="php-comment">/**
-</span></span><span id="14" class="l"><a class="l" href="#14">14: </a><span class="php-comment"> * のらライブラリのルートクラス
-</span></span><span id="15" class="l"><a class="l" href="#15">15: </a><span class="php-comment"> *
-</span></span><span id="16" class="l"><a class="l" href="#16">16: </a><span class="php-comment"> * 機能
-</span></span><span id="17" class="l"><a class="l" href="#17">17: </a><span class="php-comment"> *
-</span></span><span id="18" class="l"><a class="l" href="#18">18: </a><span class="php-comment"> * - ライブラリローダーの保持
-</span></span><span id="19" class="l"><a class="l" href="#19">19: </a><span class="php-comment"> * - メインブートストラップの保持
-</span></span><span id="20" class="l"><a class="l" href="#20">20: </a><span class="php-comment"> * - コンテナの保持
-</span></span><span id="21" class="l"><a class="l" href="#21">21: </a><span class="php-comment"> *
-</span></span><span id="22" class="l"><a class="l" href="#22">22: </a><span class="php-comment"> * @author Hajime MATUMOTO &lt;mail@hazime.org&gt;
-</span></span><span id="23" class="l"><a class="l" href="#23">23: </a><span class="php-comment"> */</span>
-</span><span id="24" class="l"><a class="l" href="#24">24: </a><span class="php-keyword1">class</span> <a id="Nora" href="#Nora">Nora</a>
-</span><span id="25" class="l"><a class="l" href="#25">25: </a>{
-</span><span id="26" class="l"><a class="l" href="#26">26: </a>    <span class="php-keyword1">use</span> Singleton;
-</span><span id="27" class="l"><a class="l" href="#27">27: </a>
-</span><span id="28" class="l"><a class="l" href="#28">28: </a>    <span class="php-keyword1">private</span> <span class="php-var"><a id="$_library_loader" href="#$_library_loader">$_library_loader</a></span>;
+</span><span id="10" class="l"><a class="l" href="#10">10: </a><span class="php-comment">// 定数の定義</span>
+</span><span id="11" class="l"><a class="l" href="#11">11: </a><span class="php-comment">//-------------------------------</span>
+</span><span id="12" class="l"><a class="l" href="#12">12: </a><span class="php-keyword1">if</span>(!<span class="php-keyword2">defined</span>(<span class="php-quote">'NORA_HOME'</span>))
+</span><span id="13" class="l"><a class="l" href="#13">13: </a>{
+</span><span id="14" class="l"><a class="l" href="#14">14: </a>    <span class="php-comment">// このスクリプトから1階層上のディレクトリを設定</span>
+</span><span id="15" class="l"><a class="l" href="#15">15: </a>    <span class="php-keyword2">define</span>(<span class="php-quote">'NORA_HOME'</span>, <span class="php-keyword2">realpath</span>( <span class="php-keyword2">dirname</span>(__FILE__).<span class="php-quote">'/../../../'</span> ) );
+</span><span id="16" class="l"><a class="l" href="#16">16: </a>}
+</span><span id="17" class="l"><a class="l" href="#17">17: </a>
+</span><span id="18" class="l"><a class="l" href="#18">18: </a><span class="php-comment">// PHPの設定</span>
+</span><span id="19" class="l"><a class="l" href="#19">19: </a><span class="php-comment">//-------------------------------</span>
+</span><span id="20" class="l"><a class="l" href="#20">20: </a><span class="php-comment">// インクルードパスを追加</span>
+</span><span id="21" class="l"><a class="l" href="#21">21: </a><span class="php-keyword2">ini_set</span>( <span class="php-quote">'include_path'</span>, <span class="php-keyword2">ini_get</span>( <span class="php-quote">'include_path'</span> ) .<span class="php-quote">':'</span>.NORA_HOME.<span class="php-quote">'/library'</span> );
+</span><span id="22" class="l"><a class="l" href="#22">22: </a>
+</span><span id="23" class="l"><a class="l" href="#23">23: </a>
+</span><span id="24" class="l"><a class="l" href="#24">24: </a><span class="php-comment">// 依存関係にあるクラスを読み込む</span>
+</span><span id="25" class="l"><a class="l" href="#25">25: </a><span class="php-comment">//-------------------------------</span>
+</span><span id="26" class="l"><a class="l" href="#26">26: </a><span class="php-keyword1">require_once</span> <span class="php-quote">'Nora/Core/trait/Singleton.php'</span>;
+</span><span id="27" class="l"><a class="l" href="#27">27: </a><span class="php-keyword1">require_once</span> <span class="php-quote">'Nora/Core/LibraryLoader.php'</span>;
+</span><span id="28" class="l"><a class="l" href="#28">28: </a><span class="php-keyword1">require_once</span> <span class="php-quote">'Nora/DI/Container.php'</span>;
 </span><span id="29" class="l"><a class="l" href="#29">29: </a>
-</span><span id="30" class="l"><a class="l" href="#30">30: </a>
-</span><span id="31" class="l"><a class="l" href="#31">31: </a>    <span class="php-comment">/**
-</span></span><span id="32" class="l"><a class="l" href="#32">32: </a><span class="php-comment">     * ライブラリローダーを保持
-</span></span><span id="33" class="l"><a class="l" href="#33">33: </a><span class="php-comment">     */</span>
-</span><span id="34" class="l"><a class="l" href="#34">34: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_setLibraryLoader" href="#_setLibraryLoader">setLibraryLoader</a>( LibraryLoader <span class="php-var">$loader</span> )
-</span><span id="35" class="l"><a class="l" href="#35">35: </a>    {
-</span><span id="36" class="l"><a class="l" href="#36">36: </a>        <span class="php-var">$this</span>-&gt;_library_loader = <span class="php-var">$loader</span>;
-</span><span id="37" class="l"><a class="l" href="#37">37: </a>    }
-</span><span id="38" class="l"><a class="l" href="#38">38: </a>
-</span><span id="39" class="l"><a class="l" href="#39">39: </a>    <span class="php-comment">/**
-</span></span><span id="40" class="l"><a class="l" href="#40">40: </a><span class="php-comment">     * ライブラリローダーを取得
-</span></span><span id="41" class="l"><a class="l" href="#41">41: </a><span class="php-comment">     *
-</span></span><span id="42" class="l"><a class="l" href="#42">42: </a><span class="php-comment">     * @return LibraryLoader
-</span></span><span id="43" class="l"><a class="l" href="#43">43: </a><span class="php-comment">     */</span>
-</span><span id="44" class="l"><a class="l" href="#44">44: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getLibraryLoader" href="#_getLibraryLoader">getLibraryLoader</a>( )
-</span><span id="45" class="l"><a class="l" href="#45">45: </a>    {
-</span><span id="46" class="l"><a class="l" href="#46">46: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;_library_loader;
-</span><span id="47" class="l"><a class="l" href="#47">47: </a>    }
-</span><span id="48" class="l"><a class="l" href="#48">48: </a>}
-</span><span id="49" class="l"><a class="l" href="#49">49: </a>
-</span><span id="50" class="l"><a class="l" href="#50">50: </a></span></code></pre>
+</span><span id="30" class="l"><a class="l" href="#30">30: </a><span class="php-comment">/**
+</span></span><span id="31" class="l"><a class="l" href="#31">31: </a><span class="php-comment"> * のらライブラリのルートクラス
+</span></span><span id="32" class="l"><a class="l" href="#32">32: </a><span class="php-comment"> *
+</span></span><span id="33" class="l"><a class="l" href="#33">33: </a><span class="php-comment"> * 機能
+</span></span><span id="34" class="l"><a class="l" href="#34">34: </a><span class="php-comment"> *
+</span></span><span id="35" class="l"><a class="l" href="#35">35: </a><span class="php-comment"> * - DIコンテナの保持
+</span></span><span id="36" class="l"><a class="l" href="#36">36: </a><span class="php-comment"> *
+</span></span><span id="37" class="l"><a class="l" href="#37">37: </a><span class="php-comment"> * @author Hajime MATUMOTO &lt;mail@hazime.org&gt;
+</span></span><span id="38" class="l"><a class="l" href="#38">38: </a><span class="php-comment"> */</span>
+</span><span id="39" class="l"><a class="l" href="#39">39: </a><span class="php-keyword1">class</span> <a id="Nora" href="#Nora">Nora</a>
+</span><span id="40" class="l"><a class="l" href="#40">40: </a>{
+</span><span id="41" class="l"><a class="l" href="#41">41: </a>    <span class="php-keyword1">use</span> Singleton;
+</span><span id="42" class="l"><a class="l" href="#42">42: </a>
+</span><span id="43" class="l"><a class="l" href="#43">43: </a>    <span class="php-comment">/** DIコンテナ */</span>
+</span><span id="44" class="l"><a class="l" href="#44">44: </a>    <span class="php-keyword1">private</span> <span class="php-var"><a id="$_container" href="#$_container">$_container</a></span>;
+</span><span id="45" class="l"><a class="l" href="#45">45: </a>
+</span><span id="46" class="l"><a class="l" href="#46">46: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___construct" href="#___construct">__construct</a>()
+</span><span id="47" class="l"><a class="l" href="#47">47: </a>    {
+</span><span id="48" class="l"><a class="l" href="#48">48: </a>        <span class="php-var">$this</span>-&gt;_di_container = <span class="php-keyword1">new</span> \Nora\DI\Container();
+</span><span id="49" class="l"><a class="l" href="#49">49: </a>        <span class="php-var">$this</span>-&gt;setUp();
+</span><span id="50" class="l"><a class="l" href="#50">50: </a>    }
+</span><span id="51" class="l"><a class="l" href="#51">51: </a>
+</span><span id="52" class="l"><a class="l" href="#52">52: </a>    <span class="php-comment">/** セットアップする */</span>
+</span><span id="53" class="l"><a class="l" href="#53">53: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_setUp" href="#_setUp">setUp</a>()
+</span><span id="54" class="l"><a class="l" href="#54">54: </a>    {
+</span><span id="55" class="l"><a class="l" href="#55">55: </a>        <span class="php-var">$this</span>-&gt;getContainer()-&gt;addService(<span class="php-quote">'LibraryLoader'</span>,<span class="php-keyword1">new</span> LibraryLoader( ));
+</span><span id="56" class="l"><a class="l" href="#56">56: </a>        <span class="php-comment">// ライブラリへのパス</span>
+</span><span id="57" class="l"><a class="l" href="#57">57: </a>        <span class="php-var">$this</span>-&gt;getContainer()-&gt;LibraryLoader-&gt;addSearchPath( NORA_HOME .<span class="php-quote">'/library'</span> );
+</span><span id="58" class="l"><a class="l" href="#58">58: </a>        <span class="php-comment">// ローダーを登録する</span>
+</span><span id="59" class="l"><a class="l" href="#59">59: </a>        <span class="php-var">$this</span>-&gt;getContainer()-&gt;LibraryLoader-&gt;register( );
+</span><span id="60" class="l"><a class="l" href="#60">60: </a>    }
+</span><span id="61" class="l"><a class="l" href="#61">61: </a>
+</span><span id="62" class="l"><a class="l" href="#62">62: </a>    <span class="php-comment">/** DIコンテナを取得 */</span>
+</span><span id="63" class="l"><a class="l" href="#63">63: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getContainer" href="#_getContainer">getContainer</a>( )
+</span><span id="64" class="l"><a class="l" href="#64">64: </a>    {
+</span><span id="65" class="l"><a class="l" href="#65">65: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;_di_container;
+</span><span id="66" class="l"><a class="l" href="#66">66: </a>    }
+</span><span id="67" class="l"><a class="l" href="#67">67: </a>}
+</span><span id="68" class="l"><a class="l" href="#68">68: </a>
+</span><span id="69" class="l"><a class="l" href="#69">69: </a></span></code></pre>
 
 	<div id="footer">
-		Nora Project API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+		Nora Project↲ API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
 	</div>
 </div>
 </div>
