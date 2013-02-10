@@ -22,3 +22,6 @@ $jumper = NoraBootstrap('jumper');
 $jumper->addUrl('http://www.google.com');
 $jumper->addUrl('http://www.yahoo.co.jp');
 $jumper->addUrl('http://amazon.co.jp');
+
+// ホープレス用
+$jumper->addUrl('http://www.artnature.co.jp/');

@@ -8,7 +8,7 @@
 	<title>File Nora/Core/Nora.php | Nora Project↲</title>
 
 	<script type="text/javascript" src="resources/combined.js?394153670"></script>
-	<script type="text/javascript" src="elementlist.js?1599845403"></script>
+	<script type="text/javascript" src="elementlist.js?2260510587"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -24,6 +24,8 @@
 			<ul>
 				<li class="active"><a href="namespace-Nora.html">Nora<span></span></a>
 						<ul>
+				<li><a href="namespace-Nora.Asterisk.html">Asterisk</a>
+						</li>
 				<li><a href="namespace-Nora.Bootstrap.html">Bootstrap</a>
 						</li>
 				<li><a href="namespace-Nora.Container.html">Container</a>
@@ -32,8 +34,14 @@
 						</li>
 				<li><a href="namespace-Nora.DI.html">DI</a>
 						</li>
+				<li><a href="namespace-Nora.Logger.html">Logger</a>
+						</li>
+				<li><a href="namespace-Nora.Network.html">Network</a>
+						</li>
 							</ul></li>
 				<li><a href="namespace-NoraResource.html">NoraResource</a>
+						</li>
+				<li><a href="namespace-PHP.html">PHP</a>
 						</li>
 			</ul>
 		</div>
@@ -147,21 +155,42 @@
 </span><span id="52" class="l"><a class="l" href="#52">52: </a>    <span class="php-comment">/** セットアップする */</span>
 </span><span id="53" class="l"><a class="l" href="#53">53: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_setUp" href="#_setUp">setUp</a>()
 </span><span id="54" class="l"><a class="l" href="#54">54: </a>    {
-</span><span id="55" class="l"><a class="l" href="#55">55: </a>        <span class="php-var">$this</span>-&gt;getContainer()-&gt;addService(<span class="php-quote">'LibraryLoader'</span>,<span class="php-keyword1">new</span> LibraryLoader( ));
+</span><span id="55" class="l"><a class="l" href="#55">55: </a>        <span class="php-var">$this</span>-&gt;getContainer()-&gt;addService(<span class="php-quote">'libraryLoader'</span>,<span class="php-keyword1">new</span> LibraryLoader( ));
 </span><span id="56" class="l"><a class="l" href="#56">56: </a>        <span class="php-comment">// ライブラリへのパス</span>
-</span><span id="57" class="l"><a class="l" href="#57">57: </a>        <span class="php-var">$this</span>-&gt;getContainer()-&gt;LibraryLoader-&gt;addSearchPath( NORA_HOME .<span class="php-quote">'/library'</span> );
+</span><span id="57" class="l"><a class="l" href="#57">57: </a>        <span class="php-var">$this</span>-&gt;getContainer()-&gt;libraryLoader-&gt;addSearchPath( NORA_HOME .<span class="php-quote">'/library'</span> );
 </span><span id="58" class="l"><a class="l" href="#58">58: </a>        <span class="php-comment">// ローダーを登録する</span>
-</span><span id="59" class="l"><a class="l" href="#59">59: </a>        <span class="php-var">$this</span>-&gt;getContainer()-&gt;LibraryLoader-&gt;register( );
-</span><span id="60" class="l"><a class="l" href="#60">60: </a>    }
-</span><span id="61" class="l"><a class="l" href="#61">61: </a>
-</span><span id="62" class="l"><a class="l" href="#62">62: </a>    <span class="php-comment">/** DIコンテナを取得 */</span>
-</span><span id="63" class="l"><a class="l" href="#63">63: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getContainer" href="#_getContainer">getContainer</a>( )
-</span><span id="64" class="l"><a class="l" href="#64">64: </a>    {
-</span><span id="65" class="l"><a class="l" href="#65">65: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;_di_container;
-</span><span id="66" class="l"><a class="l" href="#66">66: </a>    }
-</span><span id="67" class="l"><a class="l" href="#67">67: </a>}
-</span><span id="68" class="l"><a class="l" href="#68">68: </a>
-</span><span id="69" class="l"><a class="l" href="#69">69: </a></span></code></pre>
+</span><span id="59" class="l"><a class="l" href="#59">59: </a>        <span class="php-var">$this</span>-&gt;getContainer()-&gt;libraryLoader-&gt;register( );
+</span><span id="60" class="l"><a class="l" href="#60">60: </a>
+</span><span id="61" class="l"><a class="l" href="#61">61: </a>        <span class="php-comment">// ブートローダを設定</span>
+</span><span id="62" class="l"><a class="l" href="#62">62: </a>        <span class="php-var">$this</span>-&gt;getContainer( )-&gt;addService(<span class="php-quote">'bootstrapper'</span>, <span class="php-keyword1">function</span>( ){
+</span><span id="63" class="l"><a class="l" href="#63">63: </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">new</span> \Nora\Bootstrap\Bootstrapper( );
+</span><span id="64" class="l"><a class="l" href="#64">64: </a>        });
+</span><span id="65" class="l"><a class="l" href="#65">65: </a>    }
+</span><span id="66" class="l"><a class="l" href="#66">66: </a>
+</span><span id="67" class="l"><a class="l" href="#67">67: </a>    <span class="php-comment">/** DIコンテナを取得 */</span>
+</span><span id="68" class="l"><a class="l" href="#68">68: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_getContainer" href="#_getContainer">getContainer</a>( )
+</span><span id="69" class="l"><a class="l" href="#69">69: </a>    {
+</span><span id="70" class="l"><a class="l" href="#70">70: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;_di_container;
+</span><span id="71" class="l"><a class="l" href="#71">71: </a>    }
+</span><span id="72" class="l"><a class="l" href="#72">72: </a>
+</span><span id="73" class="l"><a class="l" href="#73">73: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_hasService" href="#_hasService">hasService</a>( <span class="php-var">$name</span> )
+</span><span id="74" class="l"><a class="l" href="#74">74: </a>    {
+</span><span id="75" class="l"><a class="l" href="#75">75: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;_di_container-&gt;hasService( <span class="php-var">$name</span> );
+</span><span id="76" class="l"><a class="l" href="#76">76: </a>    }
+</span><span id="77" class="l"><a class="l" href="#77">77: </a>
+</span><span id="78" class="l"><a class="l" href="#78">78: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_service" href="#_service">service</a>( <span class="php-var">$name</span> )
+</span><span id="79" class="l"><a class="l" href="#79">79: </a>    {
+</span><span id="80" class="l"><a class="l" href="#80">80: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;_di_container-&gt;service( <span class="php-var">$name</span> );
+</span><span id="81" class="l"><a class="l" href="#81">81: </a>    }
+</span><span id="82" class="l"><a class="l" href="#82">82: </a>
+</span><span id="83" class="l"><a class="l" href="#83">83: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___get" href="#___get">__get</a>( <span class="php-var">$name</span> )
+</span><span id="84" class="l"><a class="l" href="#84">84: </a>    {
+</span><span id="85" class="l"><a class="l" href="#85">85: </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;service(<span class="php-var">$name</span>);
+</span><span id="86" class="l"><a class="l" href="#86">86: </a>    }
+</span><span id="87" class="l"><a class="l" href="#87">87: </a>
+</span><span id="88" class="l"><a class="l" href="#88">88: </a>}
+</span><span id="89" class="l"><a class="l" href="#89">89: </a>
+</span><span id="90" class="l"><a class="l" href="#90">90: </a></span></code></pre>
 
 	<div id="footer">
 		Nora Project↲ API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>

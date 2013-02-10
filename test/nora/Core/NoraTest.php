@@ -40,6 +40,6 @@ class NoraTest extends PHPUnit_Framework_TestCase
 	public function testLibraryLoader()
 	{
 		// ライブラリローダを使えるか
-		$this->assertInstanceOf('Nora\Core\LibraryLoader', Nora::getInstance()->getContainer()->LibraryLoader);
+		$this->assertInstanceOf('Nora\Core\LibraryLoader', Nora::getInstance()->getContainer()->libraryLoader);
 	}
 }

@@ -28,9 +28,10 @@ class Bootstrapper
 
 	public function setResource( $name, $class )
 	{
-		$this->_di_container->addService( $name, function( $container, $name )use($class){
+		$bs = $this;
+		$this->_di_container->addService( $name, function( $container, $name )use($class,$bs){
 			$obj = new $class;
-			$obj->configure($container->getServiceOptions( $name ));
+			$obj->configure(array('bootstrapper'=>$bs),$container->getServiceOptions( $name ));
 			return $obj->factory();
 		});
 	}
