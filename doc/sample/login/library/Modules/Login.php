@@ -5,8 +5,11 @@ use Nora\Form\Form;
 
 class Login extends Resource
 {
+	private $_request;
+
 	public function factory( )
 	{
+		$this->_request = $this->bootstrap('request');
 		// 依存関係のチェック
 		return $this;
 	}
@@ -14,7 +17,7 @@ class Login extends Resource
 	public function makeForm( )
 	{
 		$form = new Form( );
-		$form->setRequest( $this->bootstrap('request') );
+		$form->setRequest( $this->_request );
 		$form->addText('email','email');
 		$form->addText('password','password');
 		$form->addCheckbox('remember_me','remember');

@@ -25,10 +25,10 @@ if( NoraBootstrap('request')->isPost() )
 } 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 	<head>
 		<meta charset="utf-8">
-		<title>Sign in &middot; Twitter Bootstrap</title>
+		<title>のらサンプル &middot; のらログイン</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="">
 		<meta name="author" content="">
@@ -88,15 +88,15 @@ if( NoraBootstrap('request')->isPost() )
 		<div class="container">
 
 			<form class="form-signin" method="post">
-				<h2 class="form-signin-heading">Please sign in</h2>
+				<h2 class="form-signin-heading">ログインフォーム</h2>
 				<?=$form->makeErrorMessage('<div class="alert alert-error">%s</div>')?>
 				<?=$form->makeMessage('<div class="alert alert-success">%s</div>')?>
 				<input name="email" type="text" class="input-block-level" placeholder="Email address" value="<?=$form->email->takeValue()?>" >
 				<input name="password" type="password" class="input-block-level" placeholder="Password" value="<?=$form->password->takeValue()?>">
 				<label class="checkbox">
-				<input name="remember_me" type="checkbox" value="remember-me" <?=$form->remember_me->ifValue('remember-me','checked','')?> > Remember me
+				<input name="remember_me" type="checkbox" value="remember-me" <?=$form->remember_me->ifValue('remember-me','checked','')?> > ログイン状態を保持する
 				</label>
-				<button name="submit" class="btn btn-large btn-primary" type="submit">Sign in</button>
+				<button name="submit" class="btn btn-large btn-primary" type="submit">ログイン</button>
 			</form>
 
 		</div> <!-- /container -->
