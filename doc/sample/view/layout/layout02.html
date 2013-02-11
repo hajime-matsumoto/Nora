@@ -1,0 +1,13 @@
+<?php
+echo $view->HeadDoctype('html5');
+echo $view->HeadMeta();
+echo $view->HeadTitle();
+echo $view->HeadLink();
+echo $view->HeadScript();
+?>
+<?=$view->layout()->placeholder('header');?>
+====
+<?=$view->layout()->placeholder('contents');?>
+<?php
+$view->FootScript();
+?>

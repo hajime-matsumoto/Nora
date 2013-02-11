@@ -1,27 +1,25 @@
 <?php
 namespace Sample;
 
-use Nora\Core\AutoConfig;
+use Nora\DI\Component;
+use Nora\DI\Containable;
 
-class App
+class App extends Component
 {
-	use AutoConfig;
+	use Containable;
 
-	private $_urls = array();
-
-	private $_db;
 	private $_bootstrapper;
 
 	public function configBootstrapper( $bs )
 	{
-		$this->_bootstrapper = $bs;
-		$this->_db = $bs->bootstrap('db');
-		$this->_asterisk = $bs->bootstrap('asterisk');
+		$this->addComponent('bootstrap', $bs);
+		$this->addComponent('db', $bs->db);
+		$this->addComponent('asterisk', $bs->asterisk);
 	}
 
 	public function callHistory( )
 	{
-		$result = $this->_db->query('SELECT * FROM cdr ORDER BY calldate DESC LIMIT 10');
+		$result = $this->db->query('SELECT * FROM cdr ORDER BY calldate DESC LIMIT 10');
 		return $result;
 	}
 
