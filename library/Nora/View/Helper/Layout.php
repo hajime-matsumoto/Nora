@@ -29,16 +29,19 @@ class Layout extends View
 	{
 		$this->_layout_name = $name;
 		$this->enable();
+		return $this;
 	}
 
 	public function enable( )
 	{
 		$this->_is_enabled = true;
+		return $this;
 	}
 
 	public function disable( )
 	{
 		$this->_is_enabled = false;
+		return $this;
 	}
 
 	public function isEnable( )
@@ -54,16 +57,19 @@ class Layout extends View
 	public function setView( $view )
 	{
 		$this->view = $view;
+		return $this;
 	}
 
 	public function capStart( )
 	{
 		$this->placeholder($this->_contents_key)->capStart();
+		return $this;
 	}
 
 	public function capEnd( )
 	{
 		$this->placeholder($this->_contents_key)->capEnd();
+		return $this;
 	}
 }
 

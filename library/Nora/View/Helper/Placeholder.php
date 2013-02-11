@@ -13,7 +13,7 @@ class Placeholder extends Container
 	private $_prefix;
 	private $_postfix;
 	private $_indent;
-	private $_separator;
+	protected $_separator;
 	private $_buff_stack = array();
 
 	/** ダイレクトメソッド */

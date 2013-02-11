@@ -179,6 +179,16 @@ EOF;
 			(string) $view->HeadStyle() 
 		);
 	}
+
+	public function testLayout2( )
+	{
+		$view = Nora::getInstance()->bootstrap->view;
+		$view->layout( )->set('layout02.html');
+		$view->assign('title','Hajime <web> & site');
+		$data = $view->fetch('sample03.html');
+		echo $data;
+	}
+
 }
 
 

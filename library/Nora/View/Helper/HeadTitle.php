@@ -7,15 +7,15 @@ namespace Nora\View\Helper;
 class HeadTitle extends Placeholder
 {
 	private $_title_parts = array();
-	private $_separator = ' | ';
+	protected $_separator = ' | ';
 
 	/** ダイレクトメソッド */
-	public function __invoke( $value = false, $placement = 'APPEND')
+	public function __invoke( $value = false, $placement = 'PREPEND')
 	{
 		return $this->HeadTitle( $value, $placement);
 	}
 
-	public function HeadTitle( $value = false, $placement = 'APPEND' )
+	public function HeadTitle( $value = false, $placement = 'PREPEND' )
 	{
 		if( $value !== false )
 		{

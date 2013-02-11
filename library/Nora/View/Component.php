@@ -18,7 +18,6 @@ class Component extends DI\Component
 	{
 		$view = new View();
 		$view->addViewDir( $this->_view_dir );
-
 		return $view;
 	}
 }

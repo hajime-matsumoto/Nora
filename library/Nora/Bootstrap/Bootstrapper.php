@@ -18,7 +18,9 @@ use ReflectionClass,ReflectionMethod;
  */
 class Bootstrapper
 {
-	use \Nora\DI\Containable;
+	use \Nora\DI\Containable {
+		getComponentOptions as private _getComponentOptions;
+	}
 
 	public function __construct( )
 	{
@@ -30,6 +32,27 @@ class Bootstrapper
 				$this->_registerMethodComponent( $method->name );
 			}
 		}
+	}
+
+	public function getComponentOptions( $name )
+	{
+		return array_merge(
+			array(
+				'bootstrapper'=>$this
+			),
+			$this->_getComponentOptions( $name )
+		);
+	}
+
+	public function loadResourceArray( $array )
+	{
+		foreach( $array as $k=>$config )
+		{
+			$this->addComponent( $k, $config['class'], @$config['config'] );
+		}
+
+		return $this;
+
 	}
 
 	/** のらを自分のコンポーネントにする */

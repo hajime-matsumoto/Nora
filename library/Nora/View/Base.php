@@ -39,7 +39,6 @@ class Base
 		$this->_view_params->$key = $value;
 	}
 
-
 	/** ヘルパー取得 */
 	public function helper( $helper_name )
 	{
@@ -73,16 +72,6 @@ class Base
 		return $contents;
 	}
 
-	/** 出力 */
-	public function evaluation( $view_script, $template_params  = array())
-	{
-		foreach( $template_params as $k=>$v )
-		{
-			$$k = $v;
-		}
-		$view = $this;
-		eval('?>'.$view_script);
-	}
 
 	/** ビューディレクトリをセット */
 	public function addViewDir( $view_dir )
@@ -124,6 +113,17 @@ class Base
 	{
 		$file = $this->searchFile( $file, $type);
 		$this->evaluation( file_get_contents( $file ), $this->_view_params );
+	}
+
+	/** 出力 */
+	public function evaluation( $view_script, $template_params  = array())
+	{
+		foreach( $template_params as $k=>$v )
+		{
+			$$k = $v;
+		}
+		$view = $this;
+		eval('?>'.$view_script);
 	}
 }
 
