@@ -52,7 +52,7 @@ class Socket
 			return false;
 		}
 		$line = fgets($this->_socket);
-		$this->debug( 'Res:'.$line );
+		$this->debug( 'Resp:'.$line );
 		return $line;
 	}
 

@@ -10,8 +10,8 @@
 // PHP Unitのオートローダーを有効にする
 require_once 'PHPUnit/Autoload.php';
 
-// のらヘッダーを読み込む
-require_once dirname(__FILE__).'/../../../include/header.php';
+use Nora\Core\Nora;
+
 
 class BootstrapperTest extends PHPUnit_Framework_TestCase
 {
@@ -19,30 +19,46 @@ class BootstrapperTest extends PHPUnit_Framework_TestCase
 
 	public function setUp( )
 	{
-		Nora( )->getContainer( )->addService( 'logger', new \Nora\Logger\Logger());
+		require_once dirname(__FILE__).'/../../../library/Nora/Core/Nora.php';
+		Nora::init();
+		Nora::getInstance()->configComponent('logger',array(
+			'type'=>'file',
+			'config'=>array(
+				'log_file_path'=>'/tmp/nora-log',
+				'log_file_mode'=>'w'
+			)
+		));
 
-		$this->bootstrapper = new Nora\Bootstrap\Bootstrapper() ;
 	}
 
 	public function testCreateInstance()
 	{
-		$this->assertInstanceOf('Nora\Bootstrap\Bootstrapper', $this->bootstrapper);
+		$this->assertInstanceOf('Nora\Bootstrap\Bootstrapper', Nora::getInstance()->component('bootstrap'));
 	}
 
-	public function testBootstrap()
+	public function testMethodComponent( )
 	{
-		$this->bootstrapper->setResource( 'asterisk', 'NoraResource\Asterisk' );
-		$this->bootstrapper->configResource( 'asterisk', array(
-			'host'=>'phone.hazime.org',
-			'port'=>5038,
-			'username'=>'www',
-			'secret'=>'deganjue'
-		));
-		$this->assertInstanceOf(
-			'\Nora\Asterisk\Asterisk',
-			$asterisk = $this->bootstrapper->bootstrap( 'asterisk' )
+		// メソッドコンポーネントのテスト
+		$this->assertInstanceOf('Nora\Core\Nora',
+			Nora::getInstance()->component('bootstrap')->component('nora')
 		);
+	}
 
-		$asterisk->command( 'reload' );
+	public function testAsteriskComponent( )
+	{
+		Nora::getInstance( )->component('bootstrap')
+			->addComponent('asterisk', 'Nora\Asterisk\Component')
+			->configComponent('asterisk', array(
+				'host'=>'phone.hazime.org',
+				'port'=>5038,
+				'username'=>'www',
+				'secret'=>'deganjue'
+			));
+
+		$this->assertInstanceOf(
+			'Nora\Asterisk\Asterisk',
+			Nora::getInstance( )->component('bootstrap')->component('asterisk')
+		);
+		Nora::getInstance( )->component('bootstrap')->component('asterisk')->command('RELOAD');
 	}
 }

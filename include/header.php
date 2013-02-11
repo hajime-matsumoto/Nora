@@ -14,16 +14,3 @@
 // のらコア取得
 require_once dirname(__FILE__).'/../library/Nora/Core/Nora.php';
 
-/** のらインスタンス取得のショートハンド */
-function Nora( )
-{
-	return Nora\Core\Nora::getInstance( );
-}
-/** のらブートストラップのショートハンド */
-function NoraBootstrap( $name )
-{
-	return Nora\Core\Nora::getInstance( )->bootstrapper->bootstrap($name);
-}
-
-// インスタンスの初期化
-Nora();

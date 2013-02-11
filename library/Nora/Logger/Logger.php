@@ -19,12 +19,10 @@ class Logger
 	private $_date_format = 'Y-m-d G:i:s';
 
 	/** ロガーを作成する */
-	static public function factory( $type )
+	static public function factory( $type, $args )
 	{
-		$args = array_slice(func_get_args(),1);
-		$class =  $type;
-		$rc = new \ReflectionClass(__NAMESPACE__.'\\'.$type);
-		return $rc->newInstanceArgs($args);
+		$rc = new \ReflectionClass(__NAMESPACE__.'\\'.ucfirst($type));
+		return $rc->newInstance($args);
 	}
 
 	/** フォーマットを指定する */
@@ -113,6 +111,6 @@ class Logger
 			break;
 		}
 		$str = sprintf('%s %s %s',$errstr, $errfile, $errline);
-		$this->log($no, $str);
+		$this->logging($no, $str);
 	}
 }

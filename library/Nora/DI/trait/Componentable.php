@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * のらライブラリ
  *---------------------- 
  *
@@ -7,35 +7,28 @@
  * @author Hajime MATUMOTO <mail@hazime.org>
  *---------------------- 
  */
-namespace Nora\Core;
+
+namespace Nora\DI;
 
 /**
- * コンフィグ機能
- *
- * - configure( 配列 )
- * - config{Key}(値)
- *
- * @author Hajime MATUMOTO <mail@hazime.org>
+ * コンポーネント
  */
-trait AutoConfig
+trait Componentable
 {
-	private $_config = array();
-
-	/**
-	 * configされた配列を一括で取得　
+	/** 
+	 * 実態を取得する
 	 */
-	public function getConfigs( )
+	public function factory( )
 	{
-		return $this->_config;
+		return $this;
 	}
 
 	/**
-	 * configXXX というメソッドがあればそのメソッドを取得する
+	 * configXXX というメソッドがあれば
+	 * そのメソッドに処理を委譲する
 	 */
 	public function configure( $config )
 	{
-		$this->_config = $config;
-
 		if(func_num_args() > 1 )
 		{
 			$merged_config = array();
@@ -48,9 +41,6 @@ trait AutoConfig
 
 		foreach( $config as $key=>$value )
 		{
-			//
-			// configXXX というメソッドがあればそのメソッドを取得する
-			//
 			if( method_exists( $this, $method = 'config'.ucfirst($key) ) )
 			{
 				call_user_func( array( $this, $method ), $value );

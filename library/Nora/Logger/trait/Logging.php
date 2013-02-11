@@ -42,9 +42,9 @@ trait Logging
 			return $this->_logger;
 		}
 
-		if( \Nora\Core\Nora::getInstance( )->hasService('logger') )
+		if( \Nora\Core\Nora::getInstance( )->hasComponent('logger') )
 		{
-			return \Nora\Core\Nora::getInstance( )->service('logger');
+			return \Nora\Core\Nora::getInstance( )->component('logger');
 		}
 		return false;
 	}

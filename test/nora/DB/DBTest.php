@@ -12,38 +12,34 @@ require_once 'PHPUnit/Autoload.php';
 
 
 require_once dirname(__FILE__).'/../../../include/header.php';
+use Nora\Core\Nora;
 
 class DBTest extends PHPUnit_Framework_TestCase
 {
 	public function setUp()
 	{
-		// このサイト用のブートストラッパを設定
-		Nora()->bootstrapper->loadResourceArray(
-			array(
-				'DB'=>array(
-					'class'=>'NoraResource\DB',
-					'config'=>array(
-						'type'=>'mysql',
-						'dbname'=>'for_test',
-						'dbhost'=>'localhost',
-						'dbport'=>3306,
-						'dbuser'=>'root',
-						'dbpassword'=>'deganjue'
-					)
-				)
-			)
-		);
+		Nora::init();
+
+		$bs = Nora::getInstance()->component('bootstrap');
+		$bs->addComponent( 'DB', 'Nora\DB\Component', array(
+			'type'=>'mysql',
+			'dbname'=>'for_test',
+			'dbhost'=>'localhost',
+			'dbport'=>3306,
+			'dbuser'=>'root',
+			'dbpassword'=>'deganjue'
+		));
 	}
 
 	public function testDBInstance( )
 	{
-		$db = NoraBootstrap('DB');
+		$db = Nora::getInstance()->bootstrap->db;
 		$this->assertInstanceOf( '\Nora\DB\PDO', $db );
 	}
 
 	public function testQuesry( )
 	{
-		$db = NoraBootstrap('DB');
+		$db = Nora::getInstance()->bootstrap->db;
 		$db->query(
 			'DROP TABLE IF EXISTS sample'
 		);

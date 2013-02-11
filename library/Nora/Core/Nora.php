@@ -11,7 +11,6 @@ namespace Nora\Core;
 //-------------------------------
 if(!defined('NORA_HOME'))
 {
-	// このスクリプトから1階層上のディレクトリを設定
 	define('NORA_HOME', realpath( dirname(__FILE__).'/../../../' ) );
 }
 
@@ -24,8 +23,11 @@ ini_set( 'include_path', ini_get( 'include_path' ) .':'.NORA_HOME.'/library' );
 // 依存関係にあるクラスを読み込む
 //-------------------------------
 require_once 'Nora/Core/trait/Singleton.php';
-require_once 'Nora/Core/LibraryLoader.php';
-require_once 'Nora/DI/Container.php';
+require_once 'Nora/Loader/LibraryLoader.php';
+require_once 'Nora/DI/trait/Containable.php';
+
+use Nora\DI\Containable;
+use Nora\Loader\LibraryLoader;
 
 /**
  * のらライブラリのルートクラス
@@ -39,51 +41,27 @@ require_once 'Nora/DI/Container.php';
 class Nora
 {
 	use Singleton;
+	use Containable;
 
-	/** DIコンテナ */
-	private $_container;
-
-	public function __construct()
+	private function __construct()
 	{
-		$this->_di_container = new \Nora\DI\Container();
-		$this->setUp();
 	}
 
-	/** セットアップする */
-	public function setUp()
+	static public function init( )
 	{
-		$this->getContainer()->addService('libraryLoader',new LibraryLoader( ));
-		// ライブラリへのパス
-		$this->getContainer()->libraryLoader->addSearchPath( NORA_HOME .'/library' );
-		// ローダーを登録する
-		$this->getContainer()->libraryLoader->register( );
+		$loader = new LibraryLoader( );
+		$loader->addSearchPath( NORA_HOME.'/library' );
+		$loader->register();
 
-		// ブートローダを設定
-		$this->getContainer( )->addService('bootstrapper', function( ){
-			return new \Nora\Bootstrap\Bootstrapper( );
-		});
+		static::getInstance()->addComponent('libraryLoader', $loader );
+
+		// 初期コンポーネント
+
+		// Bootstrap
+		static::getInstance( )->addComponent('bootstrap', 'Nora\Bootstrap\Component' );
+
+		// ロガー
+		static::getInstance( )->addComponent('logger', 'Nora\Logger\Component' );
 	}
-
-	/** DIコンテナを取得 */
-	public function getContainer( )
-	{
-		return $this->_di_container;
-	}
-
-	public function hasService( $name )
-	{
-		return $this->_di_container->hasService( $name );
-	}
-
-	public function service( $name )
-	{
-		return $this->_di_container->service( $name );
-	}
-
-	public function __get( $name )
-	{
-		return $this->service($name);
-	}
-
 }
 

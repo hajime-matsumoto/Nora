@@ -20,6 +20,7 @@ class ContainerTest extends PHPUnit_Framework_TestCase
 
 	public function  setUp( )
 	{
+		\Nora\Core\Nora::init();
 		$this->_container = new Container( );
 	}
 

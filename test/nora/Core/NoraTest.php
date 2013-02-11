@@ -2,9 +2,6 @@
 /*
  * のらテスト
  *---------------------- 
- * test/nora/bootstrap.php
- *
- * phpunit Bootstrap
  *---------------------- 
  * @author Hajime MATUMOTO <mail@hazime.org>
  *---------------------- 
@@ -19,27 +16,46 @@ class NoraTest extends PHPUnit_Framework_TestCase
 {
 	public function setUp()
 	{
-		if(!defined('NORA_HOME'))
-		{
-			// このスクリプトから1階層上のディレクトリを設定
-			define('NORA_HOME', realpath( dirname(__FILE__).'/../../../' ) );
-		}
-
-		// インクルードパスを追加
-		ini_set( 'include_path', ini_get( 'include_path' ) .':'.NORA_HOME.'/library' );
-
-		require_once 'Nora/Core/Nora.php';
+		require_once dirname(__FILE__).'/../../../library/Nora/Core/Nora.php';
 	}
 
 	public function testCreateNoraInstance()
 	{
-		$this->assertInstanceOf('Nora\Core\Nora', new Nora() );
-		$this->assertInstanceOf('Nora\Core\Nora', Nora::getInstance() );
+		$this->assertInstanceOf('Nora\Core\Nora', Nora::getInstance( ) );
 	}
 
-	public function testLibraryLoader()
+	public function testAddComponent( )
 	{
-		// ライブラリローダを使えるか
-		$this->assertInstanceOf('Nora\Core\LibraryLoader', Nora::getInstance()->getContainer()->libraryLoader);
+		// ライブラリローダーの追加
+		Nora::getInstance( )->addComponent('test', function( $container, $name ){
+			return new \Nora\Loader\LibraryLoader();
+		});
+
+		// ライブラリローダの取得
+		$this->assertInstanceOf('\Nora\Loader\LibraryLoader', Nora::getInstance()->component('test'));
+	}
+
+	public function testInit( )
+	{
+		// Initすればライブラリローダがコンポーネント登録される。
+		Nora::init();
+		$this->assertInstanceOf('\Nora\Loader\LibraryLoader', Nora::getInstance()->component('libraryLoader'));
+	}
+
+	public function testLoggerComponent( )
+	{
+		// DI\ComponentIFを利用したコンポーネントの登録と生成
+		Nora::getInstance( )->addComponent('logger', 'Nora\Logger\Component', array(
+			'type'=>'file',
+			'PHPErrorHandling'=>'on',
+			'config'=>array(
+				'log_file_path' => '/tmp/nora-log',
+				'log_file_mode' => 'w'
+			)
+		));
+		$logger = Nora::getInstance( )->component('logger');
+
+		// わざとPHPエラーを吐く
+		$logger->logging(1,'ログを吐くテスト');
 	}
 }

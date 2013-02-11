@@ -9,72 +9,40 @@
  */
 namespace Nora\Bootstrap;
 
-use Nora\DI\Container as DI_Container;
-use ReflectionClass;
+use ReflectionClass,ReflectionMethod;
 
 /**
  * ブートストラッパー
  *
- * - サービスロケーター
+ * - protected _initから始まるメソッドはコンポーネントファクトリ扱い
  */
 class Bootstrapper
 {
-	private $_di_container;
+	use \Nora\DI\Containable;
 
 	public function __construct( )
 	{
-		$this->_di_container = new DI_Container( );
+		$rc = new ReflectionClass( __CLASS__ );
+		foreach( $rc->getMethods(ReflectionMethod::IS_PROTECTED) as $method)
+		{
+			if( 0 === strncmp($method->name, '_init', 5) )
+			{
+				$this->_registerMethodComponent( $method->name );
+			}
+		}
 	}
 
-	/** リソースを設定する */
-	public function setResource( $name, $class )
+	/** のらを自分のコンポーネントにする */
+	protected function _initNora( )
 	{
-		$bs = $this;
-		$this->_di_container->addService( $name, function( $container, $name )use($class,$bs){
-			$obj = new $class;
-			$obj->configure(array('bootstrapper'=>$bs),$container->getServiceOptions( $name ));
-			return $obj->factory();
+		return \Nora\Core\Nora::getInstance();
+	}
+
+	protected function _registerMethodComponent( $method )
+	{
+		$this->addComponent( substr($method,5), function()use($method){
+			return $this->$method();
 		});
 	}
 
-	/** リソース設定する */
-	public function configResource( $name, $options = array( ) )
-	{
-		$this->_di_container->setServiceOptions( $name, $options );
-	}
-
-
-	/** 一気にリソースを設定する */
-	public function loadResourceArray( array $array )
-	{
-		foreach( $array as $resource_name => $config  )
-		{
-			if(is_object($config))
-			{
-				$this->_di_container->addService($resource_name, $config );
-				continue;
-			}
-			$this->setResource( $resource_name, $config['class'] );
-			$this->configResource( $resource_name, isset($config['config']) ? $config['config']: array() );
-		}
-	}
-
-
-	/** リソースを初期化もしくは取得する */
-	public function bootstrap( $name )
-	{
-		// _initXXXをサービスにする
-		if( !$this->_di_container->hasService($name) && method_exists( $this, $method = '_init'.$name) )
-		{
-			$this->_di_container->addService( $name, call_user_func_array( array( $this, $method ) ) );
-
-		}
-		return $this->_di_container->service( $name );
-	}
-
-	/** bootstrapへのショートハンド */
-	public function __get( $name )
-	{
-		return $this->bootstrap( $name );
-	}
 }

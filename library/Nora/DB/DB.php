@@ -5,6 +5,7 @@
 namespace Nora\DB;
 
 use Nora;
+use Nora\Logger\Logging;
 use Exception;
 
 
@@ -13,6 +14,8 @@ use Exception;
  */
 class DB
 {
+	use Logging;
+
 	// DB::connect( $type, $dsn, $user, $pass )
 	static public function connect( $type )
 	{

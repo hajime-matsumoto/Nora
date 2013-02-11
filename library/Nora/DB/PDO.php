@@ -16,10 +16,12 @@ class PDO extends DB
 	public function __construct( $dsn, $user, $pass )
 	{
 		$this->_PDO = new \PDO( $dsn, $user, $pass );
+		$this->debug('Connected : %s', $dsn);
 	}
 
 	public function sendQuery( $sql )
 	{
+		$this->debug('sendQuery: %s', $sql);
 		$result = $this->_PDO->query( $sql );
 
 		$statement = new Statement( );
