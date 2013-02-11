@@ -78,11 +78,16 @@ class Container implements \IteratorAggregate
 				$this->setData( $k, $v );
 			}
 			return $this;
+		}elseif( $data == false ){ // もし引数１個だけだったら番号の配列にする
+			$data = $key;
+			$this->_my_data[] = $data;
+			return $this;
 		}
 
 		$this->_my_data[$key] = $data;
 		return $this;
 	}
+
 
 	/**
 	 * オーバーロード
@@ -99,6 +104,20 @@ class Container implements \IteratorAggregate
 	public function getIterator( )
 	{
 		return new \ArrayIterator($this->_my_data);
+	}
+
+	public function toArray()
+	{
+		return $this->_my_data;
+	}
+
+	public function append( $value )
+	{
+		array_push( $this->_my_data, $value );
+	}
+	public function prepend( $value )
+	{
+		array_unshift( $this->_my_data, $value );
 	}
 }
 
