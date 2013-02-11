@@ -71,15 +71,16 @@ class ViewTest extends PHPUnit_Framework_TestCase
 	{
 		$view = Nora::getInstance()->bootstrap->view;
 		$view->HeadScript('/assets/js/jQuery.js');
-		$view->HeadScript('window.onload = function(){ alert("hi"); };');
+		$view->HeadScript('window.onload = function(){ alert("hi"); };','code');
+
 		$this->assertEquals(
-			"<script type=\"text/javascript\" charset=\"utf-8\" language=\"javascript\" src=\"/assets/js/jQuery.js\"></script>\n<script type=\"text/javascript\" charset=\"utf-8\" language=\"javascript\" src=\"window.onload = function(){ alert(\"hi\"); };\"></script>\n",
+			"<script type=\"text/javascript\" charset=\"utf-8\" language=\"javascript\" src=\"/assets/js/jQuery.js\"></script>\n<script type=\"text/javascript\" charset=\"utf-8\" language=\"javascript\">\nwindow.onload = function(){ alert(\"hi\"); };\n</script>",
 			(string) $view->HeadScript() 
 		);
 		$view->FootScript('/assets/js/jQuery.js');
-		$view->FootScript('window.onload = function(){ alert("hi"); };');
+		$view->FootScript('window.onload = function(){ alert("hi"); };','code');
 		$this->assertEquals(
-			"<script type=\"text/javascript\" charset=\"utf-8\" language=\"javascript\" src=\"/assets/js/jQuery.js\"></script>\n<script type=\"text/javascript\" charset=\"utf-8\" language=\"javascript\" src=\"window.onload = function(){ alert(\"hi\"); };\"></script>\n",
+			"<script type=\"text/javascript\" charset=\"utf-8\" language=\"javascript\" src=\"/assets/js/jQuery.js\"></script>\n<script type=\"text/javascript\" charset=\"utf-8\" language=\"javascript\">\nwindow.onload = function(){ alert(\"hi\"); };\n</script>",
 			(string) $view->FootScript() 
 		);
 	}
@@ -164,6 +165,19 @@ EOF;
 		$view->layout( )->set('layout.html');
 		$view->assign('title','Hajime <web> & site');
 		$data = $view->fetch('sample02.html');
+		echo $data;
+	}
+
+	public function testHeadStyle( )
+	{
+		$view = Nora::getInstance()->bootstrap->view;
+		$view->HeadStyle->appendFile('/assets/css/default.css');
+		$view->HeadStyle('body { background : red; }');
+
+		$this->assertEquals(
+			"<link rel=\"stylesheet\" media=\"screen\" type=\"text/css\" href=\"/assets/css/default.css\">\n<style>\nbody { background : red; }\n</style>",
+			(string) $view->HeadStyle() 
+		);
 	}
 }
 

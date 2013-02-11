@@ -4,75 +4,38 @@ namespace Nora\View\Helper;
 /**
  * ヘルパー: HeadScript
  */
-class HeadScript
+class HeadScript extends Placeholder
 {
-	use HelperTool;
+	public function getSeparator( )
+	{
+		return PHP_EOL;
+	}
 
-	private $_scripts = array();
+	public function __invoke()
+	{
+		return call_user_func_array( array($this,'HeadScript'), func_get_args());
+	}
 
 	/** ダイレクトメソッド */
-	public function HeadScript( $content = false, $attributes = array(), $type = 'file', $placement = 'APPEND' )
+	public function HeadScript( $content = false, $type = 'file', $attributes=array(), $placement = 'APPEND' )
 	{
-		if( $content == false )
+		if( $content !== false )
 		{
-			return $this;
-		}
-		$default = array('type'=>'text/javascript','charset'=>'utf-8', 'language'=>'javascript');
-		switch( $type )
-		{
-		case 'file':
-			$script = array(
-				'type'       => 'file',
-				'attributes' => array_merge( $default, $attributes,  array('src' => $content ) )
-			);
-			break;
-		case 'code':
-			$script = array(
-				'type'       => 'code',
-				'code'       => $content,
-				'attributes' => array_merge( $default, $attributes )
-			);
-			break;
+			$default = array('type'=>'text/javascript','charset'=>'utf-8', 'language'=>'javascript');
 
-		}
-		if($placement == 'APPEND')
-		{
-			array_push($this->_scripts, $script);
-		}
-		else
-		{
-			array_unshift( $this->_scripts, $script );
+			switch( $type)
+			{
+			case 'file':
+				$attributes = array_merge( $default, $attributes, array('src'=>$content) );
+				$this->set(sprintf('<script%s></script>',$this->buildAttributes( $attributes )));
+				break;
+			case 'code':
+				$attributes = array_merge( $default, $attributes );
+				$this->set(sprintf("<script%s>\n%s\n</script>",$this->buildAttributes( $attributes ), $content));
+				break;
+			}
 		}
 		return $this;
 	}
 
-	public function toString( )
-	{
-		$html = "";
-		foreach( $this->_scripts as $script )
-		{
-			switch( $script['type'] )
-			{
-			case 'file':
-				$html .= '<script';
-				foreach( $script['attributes'] as $k=>$v )
-				{
-					$html.= sprintf(' %s="%s"', $k, $v );
-				}
-				$html.= '></script>'.PHP_EOL;
-				break;
-			case 'code':
-				$html .= '<script';
-				foreach( $script['attributes'] as $k=>$v )
-				{
-					$html.= sprintf(' %s="%s"', $k, $v );
-				}
-				$html.= '>'.PHP_EOL;
-				$html.= $script['code'];
-				$html.= PHP_EOL.'</script>';
-				break;
-			}
-		}
-		return $html;
-	}
 }

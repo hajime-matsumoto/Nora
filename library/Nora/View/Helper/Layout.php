@@ -65,17 +65,6 @@ class Layout extends View
 	{
 		$this->placeholder($this->_contents_key)->capEnd();
 	}
-
-	public function display( $script, $params )
-	{
-		$this->capStart( );
-		$this->view->display( $script, $params );
-		$this->capEnd();
-
-		$this->disable();
-
-//		$this->view->displayScript( $this->_layout_name );
-	}
 }
 
 

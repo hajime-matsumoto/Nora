@@ -101,6 +101,15 @@ class Placeholder extends Container
 		ob_end_clean();
 	}
 
+	public function buildAttributes( $attributes )
+	{
+		$str = "";
+		foreach( $attributes as $k=>$v ) 
+		{
+			$str.= sprintf(' %s="%s"', $k,$v);
+		}
+		return $str;
+	}
 	public function toString( )
 	{
 		$text = "";

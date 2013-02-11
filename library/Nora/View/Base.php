@@ -27,6 +27,7 @@ class Base
 		$this->_helper_broker->addHelper('Placeholder','Nora\View\Helper\Placeholder');
 		$this->_helper_broker->addHelper('HeadLink','Nora\View\Helper\HeadLink');
 		$this->_helper_broker->addHelper('HeadMeta','Nora\View\Helper\HeadMeta');
+		$this->_helper_broker->addHelper('HeadStyle','Nora\View\Helper\HeadStyle');
 		$this->_helper_broker->addHelper('HeadScript','Nora\View\Helper\HeadScript');
 		// HeadScriptをFootScriptとしても使う
 		$this->_helper_broker->addHelper('FootScript','Nora\View\Helper\HeadScript');
