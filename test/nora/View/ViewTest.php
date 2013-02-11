@@ -21,7 +21,9 @@ class ViewTest extends PHPUnit_Framework_TestCase
 		Nora::init();
 		Nora::getInstance()
 			->bootstrap
-			->addComponent('View', 'Nora\View\Component', array());
+			->addComponent('View', 'Nora\View\Component', array(
+				'viewDir' => NORA_HOME.'/doc/sample/view'
+			));
 	}
 
 	public function testViewInstance( )
@@ -93,7 +95,10 @@ class ViewTest extends PHPUnit_Framework_TestCase
 <?=\$view->headDoctype('html5');?>
 <?=\$view->headTitle('トップ');?>
 EOF;
-		$data = $view->fetch( $view_script );
+		ob_start();
+		$view->evaluation( $view_script );
+		$data = ob_get_contents();
+		ob_end_clean();
 		$this->assertEquals("<!DOCTYPE html>\n<title>サイト名&midledot;トップ</title>\n", $data );
 	}
 
@@ -116,7 +121,6 @@ EOF;
 
 	public function testPlaceholderCapture( )
 	{
-		// 良くありそうなパターン
 		$view = Nora::getInstance()->bootstrap->view;
 
 		$view->placeholder( 'footer' )->capStart( );
@@ -137,4 +141,38 @@ EOF;
 			(string) $view->placeholder('footer')->name
 		);
 	}
+
+	public function testSearchViewFile( )
+	{
+		$view = Nora::getInstance()->bootstrap->view;
+		$view->searchFile('index.html','script');
+	}
+
+	public function testOutputViewFile( )
+	{
+		$view = Nora::getInstance()->bootstrap->view;
+		$view->assign('title','Hajime <web> & site');
+		ob_start();
+		$view->display('index.html');
+		$this->assertEquals('<h2>Hajime &lt;web&gt; &amp; site</h2>', trim(ob_get_contents()));
+		ob_end_clean();
+	}
+
+	public function testLayout( )
+	{
+		$view = Nora::getInstance()->bootstrap->view;
+		$view->layout( )->set('layout.html');
+		$view->assign('title','Hajime <web> & site');
+		$data = $view->fetch('sample02.html');
+	}
 }
+
+
+
+
+
+
+
+
+
+

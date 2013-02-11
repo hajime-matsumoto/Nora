@@ -3,11 +3,6 @@ namespace Nora\View\Helper;
 
 trait HelperTool
 {
-	public function __construct( )
-	{
-
-	}
-
 	public function __invoke( )
 	{
 		$array = explode('\\', __CLASS__);
