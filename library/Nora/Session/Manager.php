@@ -4,6 +4,9 @@ use Nora\DI;
 
 /**
  * セッションマネージャー
+ *
+ * セッションキーの保持方法をクッキーにするかゲットにするか悩む
+ *
  */
 class Manager extends \ArrayObject
 {
@@ -58,6 +61,9 @@ class Manager extends \ArrayObject
 		return $this;
 	}
 
+	/**
+	 * セッションがスタートされているか。
+	 */
 	public function isStarted( )
 	{
 		return $this->_is_started;
