@@ -63,5 +63,10 @@ class Nora
 		// ロガー
 		static::getInstance( )->addComponent('logger', 'Nora\Logger\Component' );
 	}
+
+	static public function bootstrap( $name )
+	{
+		return static::getInstance( )->bootstrap->$name;
+	}
 }
 
