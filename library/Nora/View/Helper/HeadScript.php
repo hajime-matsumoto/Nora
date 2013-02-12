@@ -16,8 +16,13 @@ class HeadScript extends Placeholder
 		return call_user_func_array( array($this,'HeadScript'), func_get_args());
 	}
 
+	public function getPostFix( )
+	{
+		return PHP_EOL;
+	}
+
 	/** ダイレクトメソッド */
-	public function HeadScript( $content = false, $type = 'file', $attributes=array(), $placement = 'APPEND' )
+	public function HeadScript( $content = false, $type = 'code', $attributes=array(), $placement = 'APPEND' )
 	{
 		if( $content !== false )
 		{
@@ -36,6 +41,11 @@ class HeadScript extends Placeholder
 			}
 		}
 		return $this;
+	}
+
+	public function appendFile( $file, $attr = array() )
+	{
+		return $this->HeadScript( $file, 'file', $attr, 'APPEND');
 	}
 
 }

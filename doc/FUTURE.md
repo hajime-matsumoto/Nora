@@ -61,3 +61,8 @@ Nora::DI
 Nora::DI グローバルな設定
 Nora::Bootstrapアプリケーション
 Nora::Bootstratp以降に呼び出されるものはbootstrapを内包する
+
+
+平行に使用する
+Web  ------┐
+User ----------- DB

@@ -24,7 +24,7 @@ class Bootstrapper
 
 	public function __construct( )
 	{
-		$rc = new ReflectionClass( __CLASS__ );
+		$rc = new ReflectionClass( get_class($this) );
 		foreach( $rc->getMethods(ReflectionMethod::IS_PROTECTED) as $method)
 		{
 			if( 0 === strncmp($method->name, '_init', 5) )

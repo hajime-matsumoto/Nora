@@ -11,16 +11,19 @@ class HeadDoctype
 	private $_doctype = "";
 
 	/** ダイレクトメソッド */
-	public function HeadDoctype( $value )
+	public function HeadDoctype( $value = null )
 	{
-		switch( strtolower($value) )
+		if( $value !== null  )
 		{
-		case 'html5':
-			$this->_doctype = '<!DOCTYPE html>'.PHP_EOL;
-			break;
-		default:
-			$this->_doctype = $value;
-			break;
+			switch( strtolower($value) )
+			{
+			case 'html5':
+				$this->_doctype = '<!DOCTYPE html>'.PHP_EOL;
+				break;
+			default:
+				$this->_doctype = $value;
+				break;
+			}
 		}
 		return $this;
 	}

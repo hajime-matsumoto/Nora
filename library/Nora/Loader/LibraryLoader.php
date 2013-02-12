@@ -147,4 +147,9 @@ class LibraryLoader
 		}
 		return false;
 	}
+
+	public function getSearchPath( )
+	{
+		return  $this->_search_path;
+	}
 }

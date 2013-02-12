@@ -3,7 +3,7 @@ namespace Nora\Auth;
 use Nora\DI;
 
 /**
- * SESSIONコンポーネント
+ * 認証コンポーネント
  */
 class Component extends DI\Component implements DI\ComponentIF
 {

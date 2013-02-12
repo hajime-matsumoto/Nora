@@ -31,6 +31,7 @@ class GithubForkMe
 	private $_color = 'red'; // or green,darkblue,orange,gray,white
 	private $_alt = 'Fork me on GitHub';
 	private $_path;
+	private $_top = 0;
 
 	private $_email, $_size = 200, $_default = 'mm';
 
@@ -56,16 +57,23 @@ class GithubForkMe
 		return $this;
 	}
 
+	public function setTop( $top )
+	{
+		$this->_top = $top;
+		return $this;
+	}
+
 
 	public function toString( )
 	{
 		return sprintf(
 			'<a href="https://github.com/%s">'.
 			'<img '.
-			'style="position: absolute; top: 0; %s: 0; border: 0;"'.
+			'style="position: absolute; top: %s; %s: 0; border: 0;"'.
 			'src="https://s3.amazonaws.com/github/ribbons/%s" alt="%s"></a>'
 			,
 			$this->_path,
+			$this->_top,
 			$this->_position,
 			$this->_img_table[$this->_position][$this->_color],
 			$this->_alt
