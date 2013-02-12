@@ -22,7 +22,6 @@ class Base
 
 		// ヘルパを登録
 		$this->_helper_broker->addHelper('HeadDoctype','Nora\View\Helper\HeadDoctype');
-		$this->_helper_broker->addHelper('Gravatar','Nora\View\Helper\Gravatar');
 		$this->_helper_broker->addHelper('HeadTitle','Nora\View\Helper\HeadTitle');
 		$this->_helper_broker->addHelper('Placeholder','Nora\View\Helper\Placeholder');
 		$this->_helper_broker->addHelper('HeadLink','Nora\View\Helper\HeadLink');
@@ -32,6 +31,10 @@ class Base
 		// HeadScriptをFootScriptとしても使う
 		$this->_helper_broker->addHelper('FootScript','Nora\View\Helper\HeadScript');
 		$this->_helper_broker->addHelper('Layout','Nora\View\Helper\Layout');
+
+		// 小技
+		$this->_helper_broker->addHelper('Gravatar','Nora\View\Helper\Gravatar');
+		$this->_helper_broker->addHelper('GithubForkMe','Nora\View\Helper\GithubForkMe');
 	}
 
 	public function assign( $key, $value )
