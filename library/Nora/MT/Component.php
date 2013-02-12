@@ -14,11 +14,8 @@ class Component extends DI\Component
 		require_once( $this->_mt_dir.'/php/mt.php' );
 		require_once( $this->_mt_dir.'/php/lib/MTUtil.php' );
 
-		// MTのPHPライブラリインスタンスを取得
-		$mt = MT::get_instance($blog_id, $this->_mt_dir.'/mt/mt-config.cgi');
 
-		$this->mt = $mt;
-
+		$this->mt = \MT::get_instance(null, $this->_mt_dir.'/mt/mt-config.cgi');
 		return $this;
 	}
 
@@ -37,10 +34,17 @@ class Component extends DI\Component
 	 * 'blog_id' => $blog_id,
 	 * 'limit' => 10
 	 * );
+	 * 
+	 * 注意: とれない。
 	 */
 	public function fetchEntries( $args )
 	{
 		// MTクラス
+		$this->mt = \MT::get_instance($args['blog_id'], $this->_mt_dir.'/mt/mt-config.cgi');
 		return $this->mt->db()->fetch_entries( $args );
+	}
+	public function fetchEntry( $id )
+	{
+		return $this->mt->db()->fetch_entry($id);
 	}
 }
