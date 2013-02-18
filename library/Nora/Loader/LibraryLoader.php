@@ -94,7 +94,7 @@ class LibraryLoader
 		$path = str_replace(self::NAME_SPACE_SEPARATOR,'/',$path);
 		$path = str_replace(self::CLASS_NAME_SEPARATOR,'/',$path);
 
-		foreach( array('','/class','/trait','/abstract','/interface') as $type )
+		foreach( array('','/class','/trait','/abstract','/interface','/exception') as $type )
 		{
 			if( file_exists( $file = sprintf('%s%s/%s.php',dirname($path), $type, basename($path) ) ) )
 			{

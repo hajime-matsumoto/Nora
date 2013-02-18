@@ -5,10 +5,17 @@ use Nora\DI;
 /**
  * 認証コンポーネント
  */
-class Component extends DI\Component implements DI\ComponentIF
+class Component implements DI\ComponentObjectIF
 {
+	use DI\ComponentObject;
+
 	private $_type = 'file';
 	private $_method_config = array();
+
+	public function init( )
+	{
+
+	}
 
 	public function factory( )
 	{

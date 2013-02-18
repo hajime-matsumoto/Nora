@@ -76,4 +76,9 @@ class Asterisk
 		$this->_socket->writeLine();
 	}
 
+	public function __invoke( $command, $params = array())
+	{
+		return $this->command( $command, $params );
+	}
+
 }

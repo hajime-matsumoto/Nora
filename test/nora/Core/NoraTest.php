@@ -24,6 +24,7 @@ class NoraTest extends PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Nora\Core\Nora', Nora::getInstance( ) );
 	}
 
+
 	public function testAddComponent( )
 	{
 		// ライブラリローダーの追加
@@ -44,7 +45,7 @@ class NoraTest extends PHPUnit_Framework_TestCase
 
 	public function testLoggerComponent( )
 	{
-		// DI\ComponentIFを利用したコンポーネントの登録と生成
+		// DI\ComponentObjectIFを利用したコンポーネントの登録と生成
 		Nora::getInstance( )->addComponent('logger', 'Nora\Logger\Component', array(
 			'type'=>'file',
 			'PHPErrorHandling'=>'on',
@@ -53,6 +54,9 @@ class NoraTest extends PHPUnit_Framework_TestCase
 				'log_file_mode' => 'w'
 			)
 		));
+
+		Nora::getInstance( )->addComponent('db', function(){ return new ArrayObject(); });
+
 		$logger = Nora::getInstance( )->component('logger');
 
 		// わざとPHPエラーを吐く

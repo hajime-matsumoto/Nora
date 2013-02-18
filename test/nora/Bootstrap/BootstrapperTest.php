@@ -21,14 +21,7 @@ class BootstrapperTest extends PHPUnit_Framework_TestCase
 	{
 		require_once dirname(__FILE__).'/../../../library/Nora/Core/Nora.php';
 		Nora::init();
-		Nora::getInstance()->configComponent('logger',array(
-			'type'=>'file',
-			'config'=>array(
-				'log_file_path'=>'/tmp/nora-log',
-				'log_file_mode'=>'w'
-			)
-		));
-
+		Nora::getInstance()->addComponent('logger','Nora\Logger\Component');
 	}
 
 	public function testCreateInstance()
@@ -46,19 +39,23 @@ class BootstrapperTest extends PHPUnit_Framework_TestCase
 
 	public function testAsteriskComponent( )
 	{
-		Nora::getInstance( )->component('bootstrap')
-			->addComponent('asterisk', 'Nora\Asterisk\Component')
-			->configComponent('asterisk', array(
+		Nora::getInstance( )
+			->component('bootstrap')
+			->addComponent('asterisk', 'Nora\Asterisk\Component', array(
 				'host'=>'phone.hazime.org',
 				'port'=>5038,
 				'username'=>'www',
 				'secret'=>'deganjue'
 			));
 
-		$this->assertInstanceOf(
-			'Nora\Asterisk\Asterisk',
-			Nora::getInstance( )->component('bootstrap')->component('asterisk')
-		);
-		Nora::getInstance( )->component('bootstrap')->component('asterisk')->command('RELOAD');
+		$this->assertInstanceOf( 'Nora\Asterisk\Asterisk', Nora::getInstance( )->component('bootstrap')->component('asterisk'));
+		$asterisk = Nora::getInstance( )->component('bootstrap')->component('asterisk');
+		$asterisk('RELOAD');
+	}
+
+	public function testFindComponent( )
+	{
+		$bs = Nora::getInstance( )->component('bootstrap');
+		$this->assertInstanceOf( 'Nora\Logger\Logger', $bs->findComponent('logger') );
 	}
 }

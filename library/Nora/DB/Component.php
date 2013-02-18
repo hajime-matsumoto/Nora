@@ -13,9 +13,17 @@ use Nora\DI;
 /**
  * データベース接続コンポーネント
  */
-class Component extends DI\Component implements DI\ComponentIF
+class Component implements DI\ComponentObjectIF
 {
+	use DI\ComponentObject;
+
 	private $_dsn;
+	private $_type='mysql',$_dbname,$_dbport,$_dbhost='localhost',$_dbuser,$_dbpassword;
+
+	public function init( )
+	{
+
+	}
 
 	public function factory( )
 	{

@@ -10,10 +10,7 @@
 
 namespace Nora\DI;
 
-/**
- * コンポーネント
- */
-class Component implements ComponentableIF
+abstract class Component implements ComponentObjectIF
 {
-	use Componentable;
+	use ComponentObject;
 }

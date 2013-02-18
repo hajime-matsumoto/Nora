@@ -8,6 +8,7 @@
  *---------------------- 
  */
 namespace Nora\Bootstrap;
+use Nora\DI;
 
 use ReflectionClass,ReflectionMethod;
 
@@ -16,33 +17,32 @@ use ReflectionClass,ReflectionMethod;
  *
  * - protected _initから始まるメソッドはコンポーネントファクトリ扱い
  */
-class Bootstrapper
+class Bootstrapper implements DI\ComponentObjectIF,DI\ContainerObjectIF
 {
-	use \Nora\DI\Containable {
-		getComponentOptions as private _getComponentOptions;
+	use DI\ComponentObject,DI\ContainerObject;
+
+	public function init( )
+	{
+	}
+
+	public function factory( )
+	{
+		return $this;
 	}
 
 	public function __construct( )
 	{
-		$rc = new ReflectionClass( get_class($this) );
-		foreach( $rc->getMethods(ReflectionMethod::IS_PROTECTED) as $method)
+		foreach( get_class_methods( $this ) as $method_name )
 		{
-			if( 0 === strncmp($method->name, '_init', 5) )
+			if( 0 === strncmp($method_name, '_init', 5) )
 			{
-				$this->_registerMethodComponent( $method->name );
+				$this->addComponent( substr($method_name,5), function( $container )use($method_name){
+					return $this->$method_name();
+				});
 			}
 		}
 	}
 
-	public function getComponentOptions( $name )
-	{
-		return array_merge(
-			array(
-				'bootstrapper'=>$this
-			),
-			$this->_getComponentOptions( $name )
-		);
-	}
 
 	public function loadResourceArray( $array )
 	{
@@ -50,9 +50,7 @@ class Bootstrapper
 		{
 			$this->addComponent( $k, $config['class'], @$config['config'] );
 		}
-
 		return $this;
-
 	}
 
 	/** のらを自分のコンポーネントにする */

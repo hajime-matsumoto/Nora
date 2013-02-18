@@ -5,13 +5,20 @@ use Nora\DI;
 /**
  * Viewコンポーネント
  */
-class Component extends DI\Component
+class Component implements DI\ComponentObjectIF
 {
+	use DI\ComponentObject;
+
 	private $_view_dir;
+
 
 	public function configViewDir( $value )
 	{
 		$this->_view_dir = $value;
+	}
+
+	public function init( )
+	{
 	}
 
 	public function factory( )

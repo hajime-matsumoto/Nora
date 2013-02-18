@@ -24,9 +24,10 @@ ini_set( 'include_path', ini_get( 'include_path' ) .':'.NORA_HOME.'/library' );
 //-------------------------------
 require_once 'Nora/Core/trait/Singleton.php';
 require_once 'Nora/Loader/LibraryLoader.php';
-require_once 'Nora/DI/trait/Containable.php';
+require_once 'Nora/DI/interface/ContainerObjectIF.php';
+require_once 'Nora/DI/trait/ContainerObject.php';
 
-use Nora\DI\Containable;
+use Nora\DI;
 use Nora\Loader\LibraryLoader;
 
 /**
@@ -38,13 +39,14 @@ use Nora\Loader\LibraryLoader;
  *
  * @author Hajime MATUMOTO <mail@hazime.org>
  */
-class Nora
+class Nora implements DI\ContainerObjectIF
 {
 	use Singleton;
-	use Containable;
+	use DI\ContainerObject;
 
 	private function __construct()
 	{
+		return false;
 	}
 
 	static public function init( )
@@ -52,21 +54,8 @@ class Nora
 		$loader = new LibraryLoader( );
 		$loader->addSearchPath( NORA_HOME.'/library' );
 		$loader->register();
-
 		static::getInstance()->addComponent('libraryLoader', $loader );
-
-		// 初期コンポーネント
-
-		// Bootstrap
-		static::getInstance( )->addComponent('bootstrap', 'Nora\Bootstrap\Component' );
-
-		// ロガー
-		static::getInstance( )->addComponent('logger', 'Nora\Logger\Component' );
-	}
-
-	static public function bootstrap( $name )
-	{
-		return static::getInstance( )->bootstrap->$name;
+		static::getInstance()->addComponent('bootstrap', 'Nora\Bootstrap\Bootstrapper');
 	}
 }
 

@@ -5,23 +5,23 @@ use Nora\DI;
 /**
  * ロガー
  */
-class Component extends DI\Component implements DI\ComponentIF
+class Component implements DI\ComponentObjectIF
 {
 	private $_type,$_config,$_PHPErrorHandling = 'off';
 
-	public function configType( $type )
+	use DI\ComponentObject;
+
+	public function config($name, $value )
 	{
-		$this->_type = $type;
+		// Private で設定されているものを受け付ける
+		if( in_array( '_'.$name, get_object_vars($this) ) )
+		{
+			$this->{"_".$name} = $value;
+		}
 	}
 
-	public function configConfig( $config )
+	public function init( )
 	{
-		$this->_config = $config;
-	}
-
-	public function configPHPErrorHandling( $value )
-	{
-		$this->_PHPErrorHandling = $value;
 	}
 
 	public function factory( )

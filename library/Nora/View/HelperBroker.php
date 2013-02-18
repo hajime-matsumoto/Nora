@@ -1,14 +1,14 @@
 <?php
 namespace Nora\View;
 
-use Nora\DI\Containable;
+use Nora\DI;
 
 /**
  * ヘルパーブローカー
  */
-class HelperBroker
+class HelperBroker implements DI\ContainerObjectIF
 {
-	use Containable;
+	use DI\ContainerObject;
 
 	private $_view;
 

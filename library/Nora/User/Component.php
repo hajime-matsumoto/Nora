@@ -5,21 +5,30 @@ use Nora\DI;
 /**
  * ユーザーコンポーネント
  */
-class Component extends DI\Component implements DI\ComponentIF
+class Component implements DI\ComponentObjectIF
 {
-	use DI\Containable;
+	use DI\ComponentObject;
+
+	private $_auth, $_session;
+
+	public function init( )
+	{
+		// AuthとSessionを使う
+		if( !$auth = $this->findComponent('auth') )
+		{
+			throw new DI\ComponentNotFound( 'Authコンポーネントが見つかりません' );
+		}
+
+		if( !$session = $this->findComponent('session') )
+		{
+			throw new DI\ComponentNotFound('セッションコンポーネントが見つかりません');
+		}
+		$this->_auth = $auth;
+		$this->_session = $session;
+	}
 
 	public function factory( )
 	{
-		return $this;
-	}
-
-	public function configAuthComponent( $value )
-	{
-		$this->addComponent('auth', $value['class'], $value['config'] );
-	}
-	public function configSessionComponent( $value )
-	{
-		$this->addComponent('session', $value['class'], $value['config'] );
+		return new Manager( $this->_auth, $this->_session );
 	}
 }

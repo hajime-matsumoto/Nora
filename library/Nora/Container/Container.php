@@ -8,6 +8,7 @@
  *---------------------- 
  */
 namespace Nora\Container;
+use ArrayObject;
 
 /**
  * コンテナクラス
@@ -15,9 +16,12 @@ namespace Nora\Container;
  * キーバリューでアクセス出来るデータコンテナ
  *
  */
-class Container implements \IteratorAggregate
+class Container extends ArrayObject
 {
-	private $_my_data = array();
+	public function __construct( $array = array() )
+	{
+		parent::__construct( $array );
+	}
 
 	/**
 	 * データを取得する。
@@ -28,37 +32,13 @@ class Container implements \IteratorAggregate
 	 * @param 初期値
 	 * @return
 	 */
-	public function getData( $key, $default = null )
+	public function offsetGet( $key, $default = null )
 	{
-		if( $this->hasData( $key ) )
+		if( $this->offsetExists( $key ) )
 		{
-			return $this->_getData( $key );
+			return parent::offsetGet( $key );
 		}
 		return $default;
-	}
-
-	/**
-	 * データを取得する実態
-	 *
-	 * @param キー
-	 * @return
-	 */
-	protected function _getData( $key )
-	{
-		return $this->_my_data[$key];
-	}
-
-	/**
-	 * データが存在するか？
-	 *
-	 * @param キー
-	 * @param 存在する場合の戻り値
-	 * @param 存在しない場合の戻り値
-	 * @return
-	 */
-	public function hasData( $key, $yes = true, $no = false )
-	{
-		return isset($this->_my_data[$key]) ? $yes : $no;
 	}
 
 	/**
@@ -67,57 +47,41 @@ class Container implements \IteratorAggregate
 	 * @param キー
 	 * @param 値
 	 */
-	public function setData( $key, $data  = false)
+	public function offsetSet( $key, $data  = false)
 	{
-		// もしも、引数が配列１個だけだったら
-		// 配列を取り込む
-		if( $data == false && is_array($key) )
-		{
-			foreach( $key as $k=>$v )
-			{
-				$this->setData( $k, $v );
-			}
-			return $this;
-		}elseif( $data == false ){ // もし引数１個だけだったら番号の配列にする
-			$data = $key;
-			$this->_my_data[] = $data;
-			return $this;
-		}
-
-		$this->_my_data[$key] = $data;
-		return $this;
+		parent::offsetSet( $key, $data );
 	}
 
 
 	/**
 	 * オーバーロード
 	 */
-	public function __set( $key, $value )
+	public function __get( $name )
 	{
-		return $this->setData( $key, $value );
-	}
-	public function __get( $key )
-	{
-		return $this->getData( $key, null );
+		return $this->offsetGet( $name );
 	}
 
-	public function getIterator( )
+	public function __set( $name, $value )
 	{
-		return new \ArrayIterator($this->_my_data);
+		return $this->offsetSet( $name, $value );
 	}
 
-	public function toArray()
-	{
-		return $this->_my_data;
-	}
-
+	/**
+	 * 特殊操作系
+	 */
 	public function append( $value )
 	{
-		array_push( $this->_my_data, $value );
+		$this->offsetSet( null, $value );
 	}
+
 	public function prepend( $value )
 	{
-		array_unshift( $this->_my_data, $value );
+		array_unshift( $this, $value );
+	}
+
+	public function hasData( $name, $yes = true, $no = false )
+	{
+		return $this->offsetExists($name) ? $yes: $no;
 	}
 }
 

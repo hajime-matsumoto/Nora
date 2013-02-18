@@ -20,31 +20,28 @@ class UserTest extends PHPUnit_Framework_TestCase
 	{
 		require_once dirname(__FILE__).'/../../../library/Nora/Core/Nora.php';
 		Nora::init( );
-		Nora::getInstance()->addComponent('userComponent', 'Nora\User\Component', array(
-			'authComponent'=>array(
-				'class'=>'Nora\Auth\Component',
-				'config'=>array(
-					'type'=>'file',
-					'methodConfig'=>array(
-						'authFile'=> NORA_HOME.'/doc/sample/auth/auth.passwd'
-					)
-				)
-			),
-			'sessionComponent'=>array(
-				'class'=>'Nora\Session\Component',
-				'config'=>array(
-					'type'=>'file'
-				)
+
+		// Authコンポーネント
+		Nora::getInstance()->addComponent('auth', 'Nora\Auth\Component', array(
+			'type'=>'file',
+			'methodConfig'=>array(
+				'authFile'=> NORA_HOME.'/doc/sample/auth/auth.passwd'
 			)
 		));
-		$this->userComponent = Nora::getInstance()->userComponent;
+
+		// セッションコンポーネント
+		Nora::getInstance()->addComponent('session', 'Nora\Session\Component', array(
+			'type'=>'file',
+		));
+
+		Nora::getInstance()->addComponent('user', 'Nora\User\Component');
 	}
 
 	public function testInstance( )
 	{
-		$this->assertInstanceOf( 'Nora\User\Component', $this->userComponent);
-		$this->assertInstanceOf( 'Nora\Auth\Manager', $this->userComponent->auth);
-		$this->assertInstanceOf( 'Nora\Session\Manager', $this->userComponent->session);
+		$this->assertInstanceOf( 'Nora\Auth\Manager', Nora::getInstance()->component('Auth'));
+		$this->assertInstanceOf( 'Nora\Session\Manager', Nora::getInstance()->component('session'));
+		$this->assertInstanceOf( 'Nora\User\Manager', Nora::getInstance( )->component('user'));
 	}
 }
 

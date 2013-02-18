@@ -5,8 +5,14 @@ use Nora\DI;
 /**
  * SESSIONコンポーネント
  */
-class Component extends DI\Component implements DI\ComponentIF
+class Component implements DI\ComponentObjectIF
 {
+	use DI\ComponentObject;
+
+	public function init() 
+	{
+	}
+
 	public function factory( )
 	{
 		// メソッド

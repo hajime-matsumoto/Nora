@@ -5,13 +5,21 @@ use Nora\DI;
 /**
  * Asteriskコンポーネント
  */
-class Component extends DI\Component implements DI\ComponentIF
+class Component implements DI\ComponentObjectIF
 {
-	private $_host,$_port,$_username,$_secret;
+	use DI\ComponentObject;
+
+	protected $_host = 'localhost',$_port='5038',$_username,$_secret;
+
+	public function init( )
+	{
+		// Initialize
+		$this->_asterisk = new \Nora\Asterisk\Asterisk( $this->_host, $this->_port, $this->_username, $this->_secret );
+	}
 
 	public function factory( )
 	{
-		return new \Nora\Asterisk\Asterisk( $this->_host, $this->_port, $this->_username, $this->_secret );
+		return $this->_asterisk;
 	}
 
 	/** 
@@ -19,38 +27,12 @@ class Component extends DI\Component implements DI\ComponentIF
 	 *
 	 * @param string
 	 */
-	public function configHost( $host )
+	public function config( $name, $value )
 	{
-		$this->_host = $host;
+		if( in_array('_'.$name, array_keys(get_object_vars($this))))
+		{
+			$this->{'_'.$name} = $value;
+		}
 	}
 
-	/**
-	 * ポート番号
-	 *  
-	 * @param int
-	 */
-	public function configPort( $port )
-	{
-		$this->_port = $port;
-	}
-
-	/**
-	 * ユーザー名
-	 *
-	 * @param string
-	 */
-	public function configUsername( $username )
-	{
-		$this->_username = $username;
-	}
-
-	/**
-	 * パスワード 
-	 *
-	 * @param string
-	 */
-	public function configSecret( $secret )
-	{
-		$this->_secret = $secret;
-	}
 }
