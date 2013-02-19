@@ -4,52 +4,25 @@ namespace Nora\View\Helper;
 /**
  * ヘルパー: HeadMeta
  */
-class HeadMeta
+class HeadMeta extends Placeholder
 {
-	use HelperTool;
-
 	private $_metas = array();
 
+	public function __construct( )
+	{
+		$this->placeholder('charset')->setFormat('<meta charset="%s">'.PHP_EOL);
+		$this->placeholder('name')->setFormat('<meta name="%s" content="%s">'.PHP_EOL);
+		$this->placeholder('http-equiv')->setFormat('<meta http-equiv="%s" content="%s">'.PHP_EOL);
+		$this->placeholder('property')->setFormat('<meta property="%s" content="%s">'.PHP_EOL);
+	}
+
+			//"<meta name=\"keyword\" content=\"hajime,matsumoto,hp\">\n<meta name=\"description\" content=\"これは、のらホームページです\">\n<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\n<meta charset=\"utf-8\">\n<meta property=\"og:title\" content=\"Facebook用のタイトル\">\n",
 	/** ダイレクトメソッド */
 	public function HeadMeta( $content = false, $value = false, $type = 'name', $attributes = array(), $placement = 'APPEND' )
 	{
-		if( $content !=false && $value != false )
+		if( $content != false )
 		{
-			if( $type == "name" )
-			{
-				$meta = array(
-					'name'=>$content,
-					'content'=>$value
-				);
-			}
-			elseif( $type == "http-equiv" )
-			{
-				$meta = array(
-					'http-equiv'=>$content,
-					'content'=>$value
-				);
-			}
-			elseif( $type == 'property')
-			{
-				$meta = array(
-					'property'=>$content,
-					'content'=>$value
-				);
-
-			}
-			else
-			{
-				$meta = $value;
-			}
-
-			if($placement == 'APPEND')
-			{
-				array_push($this->_metas, $meta);
-			}
-			else
-			{
-				array_unshift( $this->_metas, $meta );
-			}
+			$this->placeholder($type)->add( array( $content, $value ), $placement );
 		}
 		return $this;
 	}
@@ -61,7 +34,7 @@ class HeadMeta
 
 	public function setCharset( $charset )
 	{
-		return $this->HeadMeta( 'charset', array('charset'=>$charset), 'raw' );
+		return $this->HeadMeta( $charset, false, 'charset' );
 	}
 
 	public function appendHttpEquiv( $key, $value, $attributes = array() )
@@ -82,20 +55,5 @@ class HeadMeta
 	public function prependName( $key, $value, $attributes = array() )
 	{
 		return $this->HeadMeta( $key, $value, 'name', $attributes, 'PREPEND' );
-	}
-
-	public function toString( )
-	{
-		$html = "";
-		foreach( $this->_metas as $meta )
-		{
-			$html .= '<meta';
-			foreach( $meta as $k=>$v )
-			{
-				$html.= sprintf(' %s="%s"', $k, $v );
-			}
-			$html.= '>'.PHP_EOL;
-		}
-		return $html;
 	}
 }

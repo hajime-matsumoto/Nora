@@ -2,123 +2,106 @@
 namespace Nora\View\Helper;
 
 use Nora\Container\Container;
+use Nora\Helper;
 
 /**
  * ヘルパー: Placeholder
  */
-class Placeholder extends Container
+class Placeholder extends Container implements Helper\HelperObjectIF
 {
-	use HelperTool;
+	use Helper\HelperObject;
 
-	private $_prefix;
-	private $_postfix;
-	private $_indent;
-	protected $_separator;
-	private $_buff_stack = array();
+	private $_prefix, $_postfix, $_format = "%s", $_separator = "";
 
-	/** ダイレクトメソッド */
-	public function Placeholder( $name )
+	public function __construct( )
 	{
-		if( !$this->hasData( $name ) )
-		{
-			$this->setData( $name, new Placeholder() );
-		}
-		return $this->getData( $name );
 	}
 
-	public function set( $value, $placement = 'APPEND' )
+	public function setSeparator( $sep )
 	{
-		if( $placement == 'APPEND' )
-		{
-			$this->append( $value );
-		}else{
-			$this->prepend( $value );
-		}
+		$this->_separator = $sep;
 		return $this;
 	}
 
-	public function setPrefix( $value )
+
+	public function setPrefix( $prefix )
 	{
-		$this->_prefix = $value;
+		$this->_prefix = $prefix;
 		return $this;
 	}
 
-	public function setPostfix( $value )
+	public function setPostfix( $postfix )
 	{
-		$this->_postfix = $value;
+		$this->_postfix = $postfix;
 		return $this;
 	}
 
-	public function getPrefix( )
+	public function setFormat( $format )
+	{
+		$this->_format = $format;
+		return $this;
+	}
+
+	protected function getPrefix( )
 	{
 		return $this->_prefix;
 	}
 
-	public function getPostfix( )
+	protected function getPostfix( )
 	{
 		return $this->_postfix;
 	}
-
-	public function setIndent( $indent )
-	{
-		$this->_indent = $indent;
-		return $this;
-	}
-
-	public function getIndent( )
-	{
-		return $this->_indent;
-	}
-
-	public function setSeparator( $separator )
-	{
-		$this->_separator = $separator;
-		return $this;
-	}
-
-	public function getSeparator( )
+	protected function getSeparator( )
 	{
 		return $this->_separator;
 	}
 
-	public function capStart( $key = false)
+	protected function format( $value )
 	{
-		$this->_buff_stack[] = $key;
-		ob_start();
-	}
-
-	public function capEnd( )
-	{
-		$key = array_pop($this->_buff_stack);
-		if( $key !== false )
+		if( is_string($value) || $value instanceof Placeholder)
 		{
-			$this->setData( $key, ob_get_contents() );
+			return sprintf( $this->_format, (string) $value );
 		}
 		else
 		{
-			$this->set( ob_get_contents() );
+			return vsprintf( $this->_format, $value );
 		}
-		ob_end_clean();
 	}
 
-	public function buildAttributes( $attributes )
+	public function Placeholder( $name )
 	{
-		$str = "";
-		foreach( $attributes as $k=>$v ) 
+		if( !$this->offsetExists($name))
 		{
-			$str.= sprintf(' %s="%s"', $k,$v);
+			$this[$name] = new Placeholder( );
 		}
-		return $str;
+		return $this[$name];
 	}
-	public function toString( )
+
+	public function __toString( )
 	{
-		$text = "";
-		$text.= $this->getPrefix();
-		$text.= implode( $this->getSeparator(), $this->toArray() );
-		$text.= $this->getPostfix();
-		return $text;
+		$datas = array();
+		$data = '';
+		$data.= $this->getPrefix( );
+		foreach($this as $k=>$v)
+		{
+			$datas[]= $this->format( $v );
+		}
+		$data.= implode($this->getSeparator(), $datas);
+		$data.= $this->getPostfix( );
+		return $data;
+	}
+
+	public function capStart( )
+	{
+		ob_start();
+	}
+	public function capEnd( )
+	{
+		$this->append( ob_get_contents() );
+		ob_end_clean( );
 	}
 }
+
 
 
 

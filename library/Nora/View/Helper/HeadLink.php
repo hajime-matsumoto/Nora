@@ -13,15 +13,20 @@ namespace Nora\View\Helper;
  * true,
  * array('id' => 'my_stylesheet'));
  */
-class HeadLink
+class HeadLink extends Placeholder
 {
-	use HelperTool;
-
-	private $_link = array();
+	public function __construct( )
+	{
+		$this->setFormat('<link rel="%s" href="%s" media="%s" type="%s" />'.PHP_EOL);
+	}
 
 	/** ダイレクトメソッド */
-	public function HeadLink( )
+	public function HeadLink( $rel = null, $href = null, $media = null, $type = null, $mode = 'APPEND' )
 	{
+		if( $rel != null )
+		{
+			$this->add( array($rel,$href,$media,$type), $mode);
+		}
 		return $this;
 	}
 
@@ -36,43 +41,4 @@ class HeadLink
 		$this->addLink( 'StyleSheet',$file, $media, $type, 'PREPEND' );
 		return $this;
 	}
-
-	public function addLink( $rel, $href, $media, $type, $mode = 'APPEND' )
-	{
-		$new_link =  array(
-			'rel'=>$rel,
-			'href'=>$href,
-			'media'=>$media,
-			'type'=>$type
-		);
-		if( $mode == 'APPEND' )
-		{
-			array_push( $this->_link, $new_link );
-		}
-		else
-		{
-			array_unshift( $this->_link, $new_link  );
-		}
-
-		return $this;
-	}
-
-	public function toString( )
-	{
-		$html = "";
-		foreach( $this->_link as $link )
-		{
-			$html.= '<link';
-			foreach( $link as $k=>$v )
-			{
-				if( !empty( $v ) )
-				{
-					$html.= sprintf(' %s="%s"', $k,$v);
-				}
-			}
-			$html.= '>'.PHP_EOL;
-		}
-		return $html;
-	}
-
 }

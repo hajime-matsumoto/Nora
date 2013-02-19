@@ -4,28 +4,35 @@ namespace Nora\View\Helper;
 /**
  * ヘルパー: Doctype
  */
-class Gravatar
+class Gravatar extends Placeholder
 {
-	use HelperTool;
-
-	private $_email, $_size = 200, $_default = 'mm';
-
 	/** ダイレクトメソッド */
-	public function Gravatar( $email )
+	public function Gravatar( $email = null)
 	{
-		$this->setEmeil( $email );
+		if( $email != null )
+		{
+			$this->setEmeil( $email );
+		}
 		return $this;
+	}
+
+	public function __construct( )
+	{
+		$this->setSize('200')->setDefault('mm');
 	}
 
 	public function setEmeil( $email )
 	{
-		$this->_email = $email;
+		$this['email'] = $email;
 		return $this;
 	}
+
 	public function setSize( $size )
 	{
-		$this->_size = $size;
+		$this['size'] = $size;
+		return $this;
 	}
+
 	/*
 	 * デフォルトイメージ
 	 *
@@ -38,15 +45,16 @@ class Gravatar
 	 */
 	public function setDefault( $default )
 	{
-		$this->_default = $default;
+		$this['default'] = $default;
+		return $this;
 	}
 
-	public function toString( )
+	public function __toString( )
 	{
 		return sprintf('http://www.gravatar.com/avatar/%s?s=%s&d=%s',
-			md5(strtolower($this->_email)),
-			$this->_size,
-			$this->_default
+			md5(strtolower($this['email'])),
+			$this['size'],
+			$this['default']
 		);
 	}
 

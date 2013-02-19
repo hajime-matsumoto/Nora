@@ -50,6 +50,7 @@ class Container extends ArrayObject
 	public function offsetSet( $key, $data  = false)
 	{
 		parent::offsetSet( $key, $data );
+		return $this;
 	}
 
 
@@ -72,12 +73,27 @@ class Container extends ArrayObject
 	public function append( $value )
 	{
 		$this->offsetSet( null, $value );
+		return $this;
 	}
 
 	public function prepend( $value )
 	{
-		array_unshift( $this, $value );
+		$array = (array)$this;
+		array_unshift($array, $value);
+		$this->exchangeArray($array);
+		return $this;
 	}
+
+	public function add( $value, $mode = 'APPEND')
+	{
+		if( $mode == 'APPEND')
+		{
+			$this->append( $value );
+		}else{
+			$this->prepend( $value );
+		}
+	}
+
 
 	public function hasData( $name, $yes = true, $no = false )
 	{

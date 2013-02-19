@@ -6,46 +6,31 @@ namespace Nora\View\Helper;
  */
 class HeadScript extends Placeholder
 {
-	public function getSeparator( )
+	public function __construct( )
 	{
-		return PHP_EOL;
-	}
-
-	public function __invoke()
-	{
-		return call_user_func_array( array($this,'HeadScript'), func_get_args());
-	}
-
-	public function getPostFix( )
-	{
-		return PHP_EOL;
+		$this->placeholder('file')->setFormat("<script type=\"%s\" charset=\"%s\" language=\"%s\" src=\"%s\"></script>\n");
+		$this->placeholder('code')->setFormat("<script type=\"%s\" charset=\"%s\" language=\"%s\">\n%s\n</script>");
 	}
 
 	/** ダイレクトメソッド */
-	public function HeadScript( $content = false, $type = 'code', $attributes=array(), $placement = 'APPEND' )
-	{
+	public function HeadScript( 
+		$content      = false,
+		$charset      = 'utf-8',
+		$language     = 'javascript',
+		$type         = 'text/javascript',
+		$content_type = 'code',
+		$mode         = 'APPEND'
+	){
 		if( $content !== false )
 		{
-			$default = array('type'=>'text/javascript','charset'=>'utf-8', 'language'=>'javascript');
-
-			switch( $type)
-			{
-			case 'file':
-				$attributes = array_merge( $default, $attributes, array('src'=>$content) );
-				$this->set(sprintf('<script%s></script>',$this->buildAttributes( $attributes )));
-				break;
-			case 'code':
-				$attributes = array_merge( $default, $attributes );
-				$this->set(sprintf("<script%s>\n%s\n</script>",$this->buildAttributes( $attributes ), $content));
-				break;
-			}
+			$this->placeholder($content_type)->add(array($type,$charset,$language,$content), $mode);
 		}
 		return $this;
 	}
 
-	public function appendFile( $file, $attr = array() )
+	public function appendFile( $src, $charset='utf-8',$language='javascript', $type= 'text/javascript')
 	{
-		return $this->HeadScript( $file, 'file', $attr, 'APPEND');
+		return $this->HeadScript( $src, $charset, $language, $type, 'file', 'APPEND');
 	}
 
 }

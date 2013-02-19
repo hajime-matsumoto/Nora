@@ -6,57 +6,29 @@ namespace Nora\View\Helper;
  */
 class HeadStyle extends Placeholder
 {
-	public function getSeparator( )
+	public function __construct( )
 	{
-		return PHP_EOL;
-	}
-
-	public function __invoke()
-	{
-		return call_user_func_array( array($this,'HeadStyle'), func_get_args());
+		$this->placeholder('file')->setFormat('<link rel="stylesheet" media="%s" type="%s" href="%s">'.PHP_EOL);
+		$this->placeholder('code')->setFormat("<style media=\"%s\" type=\"%s\">\n%s\n</style>");
 	}
 
 	/** ダイレクトメソッド */
-	public function HeadStyle( $content = false, $type = 'code', $attributes=array(), $placement = 'APPEND' )
-	{
+	public function HeadStyle( 
+		$content      = false,
+		$media        = 'screen',
+		$type         = 'text/css',
+		$content_type = 'code',
+		$mode         = 'APPEND'
+	){
 		if( $content !== false )
 		{
-			$default = array(
-				'rel'=>'stylesheet',
-				'media'=>'screen',
-				'type'=>'text/css'
-			);
-
-			switch( $type)
-			{
-			case 'file':
-				$attributes = array_merge( $default, $attributes, array('href'=>$content) );
-				$this->set(sprintf('<link%s>',$this->buildAttributes( $attributes )));
-				break;
-			case 'code':
-				$this->placeholder('code')
-					->setPrefix('<style>'.PHP_EOL)
-					->setPostfix(PHP_EOL.'</style>')
-					->set( $content );
-				break;
-			}
+			$this->placeholder($content_type)->add(array($media,$type,$content), $mode);
 		}
 		return $this;
 	}
 
-	public function appendFile( $file )
+	public function appendFile( $src, $media = 'screen', $type = 'text/css')
 	{
-		return $this->HeadStyle( $file, 'file', array(), 'APPEND');
+		return $this->HeadStyle( $src, $media, $type, 'file', 'APPEND');
 	}
-
-	public function capStart()
-	{
-		$this->placeholder('code')->capStart();
-	}
-	public function capEnd()
-	{
-		$this->placeholder('code')->capEnd();
-	}
-
-
 }

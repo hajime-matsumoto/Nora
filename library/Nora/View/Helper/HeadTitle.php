@@ -6,32 +6,18 @@ namespace Nora\View\Helper;
  */
 class HeadTitle extends Placeholder
 {
-	private $_title_parts = array();
-	protected $_separator = ' | ';
-
-	/** ダイレクトメソッド */
-	public function __invoke( $value = false, $placement = 'PREPEND')
+	public function  __construct( )
 	{
-		return $this->HeadTitle( $value, $placement);
+		$this->setSeparator(' | ')->setPrefix('<title>')->setPostfix('</title>');
 	}
 
+	/** ダイレクトメソッド */
 	public function HeadTitle( $value = false, $placement = 'PREPEND' )
 	{
 		if( $value !== false )
 		{
-			$this->set( $value, $placement );
+			$this->add( $value, $placement );
 		}
 		return $this;
 	}
-
-	public function getPrefix( )
-	{
-		return '<title>';
-	}
-
-	public function getPostfix( )
-	{
-		return '</title>'.PHP_EOL;
-	}
-
 }

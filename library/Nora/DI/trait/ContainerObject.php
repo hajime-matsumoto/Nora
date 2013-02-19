@@ -20,6 +20,14 @@ trait ContainerObject
 	private $_factories = array();
 
 	/**
+	 * インスタンスをリセット
+	 */
+	public function clearInstance( )
+	{
+		$this->_registry = array();
+	}
+
+	/**
 	 * ユーティリティ
 	 * ================================= */
 

@@ -1,6 +1,8 @@
 <?php
 namespace Nora\View;
 
+use Nora\Filer;
+
 
 /**
  * ヘルパー構造を持ったView
@@ -20,21 +22,8 @@ class Base
 		// ヘルパブローカーを取得
 		$this->_helper_broker = new HelperBroker( $this );
 
-		// ヘルパを登録
-		$this->_helper_broker->addHelper('HeadDoctype','Nora\View\Helper\HeadDoctype');
-		$this->_helper_broker->addHelper('HeadTitle','Nora\View\Helper\HeadTitle');
-		$this->_helper_broker->addHelper('Placeholder','Nora\View\Helper\Placeholder');
-		$this->_helper_broker->addHelper('HeadLink','Nora\View\Helper\HeadLink');
-		$this->_helper_broker->addHelper('HeadMeta','Nora\View\Helper\HeadMeta');
-		$this->_helper_broker->addHelper('HeadStyle','Nora\View\Helper\HeadStyle');
-		$this->_helper_broker->addHelper('HeadScript','Nora\View\Helper\HeadScript');
-		// HeadScriptをFootScriptとしても使う
-		$this->_helper_broker->addHelper('FootScript','Nora\View\Helper\HeadScript');
-		$this->_helper_broker->addHelper('Layout','Nora\View\Helper\Layout');
-
-		// 小技
-		$this->_helper_broker->addHelper('Gravatar','Nora\View\Helper\Gravatar');
-		$this->_helper_broker->addHelper('GithubForkMe','Nora\View\Helper\GithubForkMe');
+		// ファイルサーチャー
+		$this->_file_searcher = new Filer\Searcher( );
 	}
 
 	public function assign( $key, $value )
@@ -42,28 +31,21 @@ class Base
 		$this->_view_params->$key = $value;
 	}
 
-	/** ヘルパー取得 */
-	public function helper( $helper_name )
+	public function getHelperBroker( )
 	{
-		return $this->_helper_broker->helper( $helper_name );
-	}
-
-	/** ヘルパーのダイレクトメソッドを呼び出す */
-	public function helperCall( $helper_name, $args )
-	{
-		return $this->_helper_broker->helperCall( $helper_name, $args );
+		return $this->_helper_broker;
 	}
 
 	/** ヘルパーのショートハンド */
 	public function __get($name)
 	{
-		return $this->helper( $helper_name = $name );
+		return $this->getHelperBroker()->helper( $name );
 	}
 
 	/** ヘルパーのショートハンド */
 	public function __call( $name, $args )
 	{
-		return $this->helperCall( $name, $args );
+		return $this->getHelperBroker()->helperCall( $name, $args );
 	}
 
 	public function fetch(  )
@@ -79,21 +61,13 @@ class Base
 	/** ビューディレクトリをセット */
 	public function addViewDir( $view_dir )
 	{
-		$this->_view_dirs[] = $view_dir;
+		$this->_file_searcher->addSearchPath( $view_dir );
 	}
 
 	/** ファイルを検索する */
 	public function searchFile( $file, $type )
 	{
-		foreach( $this->_view_dirs as $dir )
-		{
-			$path = sprintf('%s/%s/%s', $dir, $type, $file);
-			if(file_exists($path))
-			{
-				return $path;
-			}
-		}
-		return false;
+		return $this->_file_searcher->searchFile($type.'/'.$file);
 	}
 
 	public function display( $file, $type = 'script' )

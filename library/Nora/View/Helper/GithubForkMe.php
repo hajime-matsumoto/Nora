@@ -4,10 +4,8 @@ namespace Nora\View\Helper;
 /**
  * ヘルパー: Github Fork Me
  */
-class GithubForkMe
+class GithubForkMe extends Placeholder
 {
-	use HelperTool;
-
 	private $_img_table = array(
 		'right'=>array(
 			'red'=>'forkme_right_red_aa0000.png',
@@ -26,7 +24,6 @@ class GithubForkMe
 			'white'=>'forkme_left_white_ffffff.png'
 		)
 	);
-
 	private $_position = 'left'; // or right
 	private $_color = 'red'; // or green,darkblue,orange,gray,white
 	private $_alt = 'Fork me on GitHub';
@@ -64,7 +61,7 @@ class GithubForkMe
 	}
 
 
-	public function toString( )
+	public function __toString( )
 	{
 		return sprintf(
 			'<a href="https://github.com/%s">'.
