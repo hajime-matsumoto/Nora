@@ -2,19 +2,22 @@
 namespace Nora\MT;
 
 use Nora\DI;
-class Component extends DI\Component
+class Component implements DI\ComponentObjectIF
 {
-	use DI\Componentable;
+	use DI\ComponentObject;
 
 	private $_mt_dir = '/usr/src/MT-5.2.3/';
+
+
+	public function init( )
+	{
+	}
 
 	public function factory( )
 	{
 		// MTのPHPライブラリを読み込み
 		require_once( $this->_mt_dir.'/php/mt.php' );
 		require_once( $this->_mt_dir.'/php/lib/MTUtil.php' );
-
-
 		$this->mt = \MT::get_instance(null, $this->_mt_dir.'/mt/mt-config.cgi');
 		return $this;
 	}

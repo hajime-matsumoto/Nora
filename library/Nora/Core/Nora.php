@@ -58,5 +58,9 @@ class Nora implements DI\ContainerObjectIF
 		static::getInstance()->addComponent('bootstrap', 'Nora\Bootstrap\Bootstrapper');
 		static::getInstance()->addComponent('logger', 'Nora\Logger\Component');
 	}
+	static public function bootstrap( $name )
+	{
+		return static::getInstance( )->bootstrap->component($name);
+	}
 }
 

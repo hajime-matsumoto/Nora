@@ -52,6 +52,13 @@ class Container extends ArrayObject
 		parent::offsetSet( $key, $data );
 		return $this;
 	}
+	/**
+	 * OffsetSetのフロント
+	 */
+	public function set( $key, $data)
+	{
+		$this->offsetSet( $key, $data );
+	}
 
 
 	/**
