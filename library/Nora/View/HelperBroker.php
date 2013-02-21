@@ -28,6 +28,7 @@ class HelperBroker implements DI\ContainerObjectIF,Helper\HelperBrokerObjectIF
 
 		// 小技
 		$this->addHelper('Gravatar','Nora\View\Helper\Gravatar');
+		$this->addHelper('Google','Nora\View\Helper\Google');
 		$this->addHelper('GithubForkMe','Nora\View\Helper\GithubForkMe');
 	}
 }

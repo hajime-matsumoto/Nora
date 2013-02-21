@@ -2,6 +2,8 @@
 namespace Nora\View;
 
 use Nora\Filer;
+use Nora\Helper;
+use Nora\Container\Container;
 
 
 /**
@@ -9,65 +11,93 @@ use Nora\Filer;
  */
 class Base
 {
-	private $_helper_broker;
-	private $_script_dir;
-	private $_view_dirs = array();
-	private $_view_params;
+	use Filer\Tools {
+		addSearchPath as AddViewDir;
+	}
+	use Helper\HelperBrokerHolder;
+
+	private $_container;
 
 	public function __construct( )
 	{
-		// View Paramを初期化
-		$this->_view_params = new ParamContainer;
+		// View変数用のコンテナを作成
+		$this->setViewContainer( new Container( ) );
 
-		// ヘルパブローカーを取得
-		$this->_helper_broker = new HelperBroker( $this );
-
-		// ファイルサーチャー
-		$this->_file_searcher = new Filer\Searcher( );
-	}
-
-	public function assign( $key, $value )
-	{
-		$this->_view_params->$key = $value;
-	}
-
-	public function getHelperBroker( )
-	{
-		return $this->_helper_broker;
-	}
-
-	/** ヘルパーのショートハンド */
-	public function __get($name)
-	{
-		return $this->getHelperBroker()->helper( $name );
-	}
-
-	/** ヘルパーのショートハンド */
-	public function __call( $name, $args )
-	{
-		return $this->getHelperBroker()->helperCall( $name, $args );
-	}
-
-	public function fetch(  )
-	{
-		ob_start();
-		call_user_func_array( array($this,'display'), func_get_args());
-		$contents = ob_get_contents();
-		ob_end_clean();
-		return $contents;
-	}
-
-
-	/** ビューディレクトリをセット */
-	public function addViewDir( $view_dir )
-	{
-		$this->_file_searcher->addSearchPath( $view_dir );
+		// ヘルパブローカーを設定
+		$this->setHelperBroker( new HelperBroker( $this ) );
 	}
 
 	/** ファイルを検索する */
-	public function searchFile( $file, $type )
+	public function searchViewFile( $file, $type )
 	{
-		return $this->_file_searcher->searchFile($type.'/'.$file);
+		return $this->searchFile($type.'/'.$file);
+	}
+
+
+	// View変数の処理用メソッド
+	//===========================
+
+	/**
+	 * Viewコンテナをセットする
+	 */
+	public function setViewContainer( $container )
+	{
+		$this->_container = $container;
+	}
+
+	/**
+	 * Viewコンテナを取得する
+	 */
+	protected function getViewContainer(  )
+	{
+		return $this->_container;
+	}
+
+	/**
+	 * Viewコンテナに値を格納する
+	 */
+	public function assign( $key, $value )
+	{
+		$this->getViewContainer( )->set( $key, $value);
+	}
+
+
+	/**
+	 * エスケープを有効にして全てのViewContainerの値を取り出す
+	 * 
+	 * 引数を指定した場合は加算される。
+	 */
+	public function getViewParams( )
+	{
+		// 作業用配列
+		$array = $this->getViewContainer( )->getArrayCopy();
+		if(func_num_args() > 0)
+		{
+			foreach( func_get_args() as $arg )
+			{
+				$array = array_merge( $array, $arg );
+			}
+		}
+		return EscapeWrapper::escape( $array );
+	}
+
+
+	/**
+	 * Viewファイルを実行する
+	 */
+	public function render( $file, $type='script', $datas = array() )
+	{
+		// 現在のスコープにデータを展開
+		foreach( $this->getViewParams( $datas ) as $k=>$v )
+		{
+			$$k = $v;
+		}
+		// Viewオブジェクトを格納
+		$view = $this;
+
+		ob_start();
+		include $this->searchViewFile( $file, $type);
+		return ob_get_clean();
 	}
 
 	public function display( $file, $type = 'script' )
@@ -75,32 +105,11 @@ class Base
 		if( $this->layout()->isEnable() )
 		{
 			$this->layout()->capStart( );
-			$this->_display( $file, $type );
+			echo $this->render( $file, $type );
 			$this->layout()->capEnd();
-			$this->_display( 
-				$this->layout()->getLayoutName(),
-				'layout'
-			);
-			return true;
+			return $this->render( $this->layout()->getLayoutName(), 'layout');
 		}
-		$this->_display( $file, $type );
-	}
-
-	public function _display( $file, $type )
-	{
-		$file = $this->searchFile( $file, $type);
-		$this->evaluation( file_get_contents( $file ), $this->_view_params );
-	}
-
-	/** 出力 */
-	public function evaluation( $view_script, $template_params  = array())
-	{
-		foreach( $template_params as $k=>$v )
-		{
-			$$k = $v;
-		}
-		$view = $this;
-		eval('?>'.$view_script);
+		return $this->render( $file, $type );
 	}
 }
 

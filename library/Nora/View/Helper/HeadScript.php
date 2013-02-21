@@ -33,4 +33,9 @@ class HeadScript extends Placeholder
 		return $this->HeadScript( $src, $charset, $language, $type, 'file', 'APPEND');
 	}
 
+	public function capEnd( )
+	{
+		$this->HeadScript(ob_get_clean());
+	}
+
 }
