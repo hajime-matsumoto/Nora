@@ -41,4 +41,9 @@ class PDO extends DB
 		return $result->fetch( \PDO::FETCH_ASSOC );
 	}
 
+	public function prepare( $sql )
+	{
+		return $this->_PDO->prepare( $sql );
+	}
+
 }
