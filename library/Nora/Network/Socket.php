@@ -77,6 +77,24 @@ class Socket
 		}
 		return $resp;
 	}
+
+	/** レスポンスを読み出す */
+	public function parseResponse( $expect )
+	{
+		$response="";
+		while(substr($response,3,1) != " "){
+			if( !$response = $this->readLine( ) )
+			{
+				$this->error("サーバーからのレスポンスコードを取得出来ませんでした。");
+			}
+		}
+		if(!(substr($response,0,3) == $expect)){
+			$this->error("送信出来ませんでした。SMTPサーバーから次のエラーコードが報告されています。".$response);
+		}
+		return $response;
+	}
+
+
 }
 
 class SocketException extends \Exception { }
