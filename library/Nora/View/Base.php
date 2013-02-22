@@ -56,8 +56,12 @@ class Base
 	/**
 	 * Viewコンテナに値を格納する
 	 */
-	public function assign( $key, $value )
+	public function assign( $key, $value, $mode = null )
 	{
+		if( $mode == 'RAW' )
+		{
+			$value = EscapeWrapper::noescape($value);
+		}
 		$this->getViewContainer( )->set( $key, $value);
 	}
 

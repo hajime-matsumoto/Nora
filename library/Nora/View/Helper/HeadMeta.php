@@ -31,6 +31,14 @@ class HeadMeta extends Placeholder
 	{
 		return $this->HeadMeta( $key, $value, 'property', 'APPEND');
 	}
+	public function appendProperty( $key, $value )
+	{
+		return $this->HeadMeta( $key, $value, 'property', 'APPEND');
+	}
+	public function prependProperty( $key, $value )
+	{
+		return $this->HeadMeta( $key, $value, 'property', 'PREPEND');
+	}
 
 	public function setCharset( $charset )
 	{

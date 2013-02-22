@@ -19,7 +19,11 @@ trait EscapeWrapperTool
 
 	public function __call( $name, $args )
 	{
-		return EscapeWrapper::escape( call_user_func_array( array($this,$name), $args ) );
+		if( method_exists( $this->_data, $name ))
+		{
+			return EscapeWrapper::escape( call_user_func_array( array($this->_data,$name), $args ) );
+		}
+		return EscapeWrapper::escape( call_user_func( array($this->_data,'__call'), $name, $args ) );
 	}
 }
 
@@ -60,6 +64,11 @@ class EscapeWrapper
 			return new EscapeWrapperObject( $data );
 		}
 	}
+
+	static public function noescape( $data )
+	{
+		return new EscapeWrapperNone( $data );
+	}
 }
 
 class EscapeWrapperArray extends ArrayObject
@@ -68,6 +77,7 @@ class EscapeWrapperArray extends ArrayObject
 
 	public function __construct( $data )
 	{
+		$this->_data = $data;
 		parent::__construct( $data, 0, 'Nora\View\EscapeWrapperIterator' );
 	}
 
