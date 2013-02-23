@@ -30,5 +30,14 @@ class HelperBroker implements DI\ContainerObjectIF,Helper\HelperBrokerObjectIF
 		$this->addHelper('Gravatar','Nora\View\Helper\Gravatar');
 		$this->addHelper('Google','Nora\View\Helper\Google');
 		$this->addHelper('GithubForkMe','Nora\View\Helper\GithubForkMe');
+		$this->addHelper('SocialButton','Nora\View\Helper\SocialButton');
+
+		// SocialButtonシリーズ
+		$this->addHelper('TwitterFollowMe','Nora\View\Helper\Social\Twitter\FollowMe');
+		$this->addHelper('TwitterTweet','Nora\View\Helper\Social\Twitter\Tweet');
+		$this->addHelper('MixiLike','Nora\View\Helper\Social\Mixi\Like');
+		$this->addHelper('GoogleLike','Nora\View\Helper\Social\Google\Like');
+		$this->addHelper('HatenaBookmark','Nora\View\Helper\Social\Hatena\Bookmark');
+		$this->addHelper('FacebookLike','Nora\View\Helper\Social\Facebook\Like');
 	}
 }
