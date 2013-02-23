@@ -14,7 +14,8 @@ class Component implements DI\ComponentObjectIF
 	public function config($name, $value )
 	{
 		// Private で設定されているものを受け付ける
-		if( in_array( '_'.$name, get_object_vars($this) ) )
+		//if( in_array( '_'.$name, get_object_vars($this) ) )
+		if( property_exists( $this, '_'.$name ) )
 		{
 			$this->{"_".$name} = $value;
 		}

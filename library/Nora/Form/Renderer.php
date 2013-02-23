@@ -26,6 +26,10 @@ class Renderer
 		$class = get_class($this->_element);
 		$method = 'render'.substr($class, strrpos($class,'\\')+1);
 
+		if( $this->_element instanceof Form )
+		{
+			return $this->renderForm( );
+		}
 
 		if( method_exists($this,$method) )
 		{
