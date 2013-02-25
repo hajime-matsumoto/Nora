@@ -68,6 +68,20 @@ class Group extends ArrayObject implements ElementObjectIF
 	}
 
 	/**
+	 * チェックボックスを作成する
+	 */
+	public function addCheckbox( $name, $label = null, $attributes = array() )
+	{
+		return $this->addElement( 'Checkbox', $name, $label, $attributes);
+	}
+
+	public function addTextarea( $name, $label = null, $attributes = array() )
+	{
+		return $this->addElement( 'Textarea', $name, $label, $attributes);
+	}
+
+
+	/**
 	 * ボタンを作成する
 	 */
 	public function addButton( $name, $label = null, $attributes = array() )
