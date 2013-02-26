@@ -11,8 +11,10 @@ abstract class Element
 {
 	use Collection\AutoPropSet;
 	use Renderable;
+	use Validatable;
 
 	protected $_id;
+	protected $_value;
 	protected $_renderer = 'Nora\Html\Form\Renderer\Element';
 
 	// 要素が持つコンテクスト
@@ -31,9 +33,9 @@ abstract class Element
 	}
 
 	// 各要素へのアクセッサー
-	public function setLabel( $label )
+	public function setLabel( $label, $attrs = array(), $props = array() )
 	{
-		$this->label( $label );
+		$this->label( $label, $attrs, $props);
 		return $this;
 	}
 
@@ -46,12 +48,12 @@ abstract class Element
 	/**
 	 * ラベル
 	 */
-	public function label( $label = null)
+	public function label( $label = null, $attrs = array(), $props = array())
 	{
 		if( is_string($this->_label) )
 		{
 			$rc = new ReflectionClass($this->_label);
-			$this->_label = $rc->newInstance();
+			$this->_label = $rc->newInstance( $attrs, $props );
 		}
 		if( $label != null)
 		{
@@ -63,12 +65,12 @@ abstract class Element
 	/**
 	 * ヘルプ
 	 */
-	public function help( $help = null)
+	public function help( $help = null, $attrs = array(), $props = array())
 	{
 		if( is_string($this->_help) )
 		{
 			$rc = new ReflectionClass($this->_help);
-			$this->_help = $rc->newInstance();
+			$this->_help = $rc->newInstance( $attrs, $props );
 		}
 		if( $help != null)
 		{
@@ -77,6 +79,29 @@ abstract class Element
 		return $this->_help;
 	}
 
+	/**
+	 * バリューを設定する
+	 */
+	public function inputValues( $values = array( ) )
+	{
+		$name = $this->getName();
+		if(isset($values[$name]))
+		{
+			$this->inputValue($values[$name]);
+		}
+	}
+
+	/**
+	 * バリューを設定する
+	 */
+	public function inputValue( $value = null )
+	{
+		if( $value != null )
+		{
+			$this->setValue( $value );
+		}
+		return $this->getValue();
+	}
 
 }
 

@@ -9,10 +9,21 @@ class Form extends Renderer
 	{
 		$text = '';
 		$text.= $this->renderFormat( $this->getFormat() ).PHP_EOL;
+		$text.= $this->renderHiddens();
 		$text.= $this->renderChildren().PHP_EOL;
 		$text.= $this->actions()->render();
 		$text.= '</form>';
 		return $text;
+	}
+
+	public function renderHiddens( )
+	{
+		$parts = array();
+		foreach($this->getHiddenDatas( ) as $k=>$v)
+		{
+			$parts[] = sprintf('<input type="hidden" name="%s" value="%s">', $k, htmlspecialchars($v));
+		}
+		return implode("\n", $parts);
 	}
 
 	public function renderChildren( )

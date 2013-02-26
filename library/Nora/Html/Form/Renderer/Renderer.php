@@ -95,10 +95,15 @@ class Renderer
 
 	public function addClass( $name )
 	{
-		$classList = explode(' ', $this->_attributes['class']);
-		$classList[] = $name;
-		$classList = array_unique($classList);
-		$this->_attributes['class'] = implode(' ', $classList);
+		if(!isset($this->_attributes['class']))
+		{
+			$this->_attributes['class'] = $name;
+		}else{
+			$classList = explode(' ', $this->_attributes['class']);
+			$classList[] = $name;
+			$classList = array_unique($classList);
+			$this->_attributes['class'] = implode(' ', $classList);
+		}
 		return $this;
 	}
 	public function renderChildren( )

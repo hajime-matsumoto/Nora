@@ -18,6 +18,11 @@ class Label
 
 	private $_renderer = 'Nora\Html\Form\Renderer\Label';
 
+	public function __construct( $attrs = array(), $props = array() )
+	{
+		$this->setAttr( $attrs );
+		$this->autoPropSetArray($props);
+	}
 
 	public function isEnabled( )
 	{

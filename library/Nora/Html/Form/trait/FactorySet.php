@@ -83,6 +83,16 @@ trait FactorySet
 		return $this;
 	}
 
+	/**
+	 * テキストエリアを追加
+	 */
+	public function addTextarea( $name )
+	{
+		$elem = $this->createElementArray( 'Textarea', func_get_args() );
+		$this->addElement( $elem );
+		return $this;
+	}
+
 		
 		
 

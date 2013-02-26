@@ -4,19 +4,19 @@ namespace Nora\Html\Form\Element;
 /**
  * テキストフィールド
  */
-class Text extends Element
+class Textarea extends Element
 {
 
 	protected $_id;
 	protected $_name;
 	protected $_value;
-	protected $_format = '<input type="text" id=":id" name=":name" value=":value" :attributes>';
+	protected $_format = '<textarea type="text" id=":id" name=":name" :attributes>:value</textarea>';
 
 	public function __construct( $id, $attrs = array(), $props = array() )
 	{
 		parent::__construct( $id );
 		$this->setAttr( $attrs );
-		$this->autoPropSetArray($props);
+		$this->autoPropSetArray( $props );
 	}
 
 }

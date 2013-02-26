@@ -17,9 +17,28 @@ class Form  extends Element\Group
 	protected	$_method;
 
 	private $_actions = 'Nora\Html\Form\Element\Actions';
+	private $_hidden_datas = array();
 
-	public function __construct( )
+	public function __construct( $id )
 	{
+		$this->setId($id);
+		$this->addHidden('__signe', $this->signe());
+	}
+
+	public function signe( )
+	{
+		return md5($this->getId());
+	}
+
+	public function addHidden( $key, $value )
+	{
+		$this->_hidden_datas[$key] = $value;
+		return $this;
+	}
+
+	public function getHiddenDatas( )
+	{
+		return $this->_hidden_datas;
 	}
 
 	public function getFormat( )
