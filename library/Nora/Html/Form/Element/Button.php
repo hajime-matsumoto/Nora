@@ -1,31 +1,23 @@
 <?php
 namespace Nora\Html\Form\Element;
 
+/**
+ * ボタン
+ */
 class Button extends Element
 {
-	protected 
-		$_type = 'button',
-		$_name = '',
-		$_id = '',
-		$_value = '';
 
-	private $_format = '<button type=":type" name=":name" id=":id" :builtAttrs>:value</button>';
+	protected $_id;
+	protected $_name;
+	protected $_value;
+	protected $_format = '<button type=":type" id=":id" name=":name" :attributes>:value</button>';
 
-
-	public function getId( )
+	public function __construct( $id,  $attrs = array(), $props = array() )
 	{
-		if( '' == trim($this->_id) )
-		{
-			return $this->getName();
-		}
-		return $this->_id;
-	}
-
-
-	public function build( )
-	{
-		$return_text = $this->autoPropFormat( $this->_format );
-		return $return_text;
+		parent::__construct( $id );
+		$this->setAttr( $attrs );
+		$this->autoPropSetArray( $props );
 	}
 
 }
+

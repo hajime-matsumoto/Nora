@@ -1,32 +1,21 @@
 <?php
 namespace Nora\Html\Form\Element;
 
+/**
+ * テキストフィールド
+ */
 class Text extends Element
 {
-	protected 
-		$_type = 'text',
-		$_placeholder ='',
-		$_name = '',
-		$_id = '',
-		$_value = '';
 
-	private $_format = '<input id=":id" name=":name" type=":type" value=":value" :builtAttrs>';
+	protected $_id;
+	protected $_name;
+	protected $_value;
+	protected $_format = '<input type="text" id=":id" name=":name" value=":value" :attributes>';
 
-
-	public function getId( )
+	public function __construct( $id, $attrs = array() )
 	{
-		if( '' == trim($this->_id) )
-		{
-			return $this->getName();
-		}
-		return $this->_id;
-	}
-
-
-	public function build( )
-	{
-		$return_text = $this->autoPropFormat( $this->_format );
-		return $return_text;
+		parent::__construct( $id );
+		$this->setAttr( $attrs );
 	}
 
 }

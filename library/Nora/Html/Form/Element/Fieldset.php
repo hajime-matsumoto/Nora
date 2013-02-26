@@ -1,27 +1,23 @@
 <?php
-/*
- * のらライブラリ
- *---------------------- 
- * 
- *---------------------- 
- * @author Hajime MATUMOTO <mail@hazime.org>
- *---------------------- 
- */
 namespace Nora\Html\Form\Element;
 
-use Nora\Html;
-use ReflectionClass;
-
+use Nora\Html\Form;
 
 /**
- * フォーム
+ * フィールドセット
  */
 class Fieldset extends Group
 {
-	protected $legend;
+	protected $_renderer = 'Nora\Html\Form\Renderer\Fieldset';
 
-	public function __construct( $name, $legend )
+	protected $_id;
+	protected $_legend;
+
+	public function __construct( $id, $legend )
 	{
+		$this->_id = $id;
 		$this->_legend = $legend;
 	}
 }
+
+

@@ -16,16 +16,17 @@ trait AutoPropSet
 			return $this->autoPropGet( substr($name,3) );
 		}
 
-		if( 0 === strpos($name, 'has', 0) && $this->autoPropRealName( substr($name,3) ) )
+		if( 0 === strpos($name, 'has', 0) )
 		{
 			return $this->autoPropGet( substr($name,3) ) ? true: false;
 		}
+
 		throw new Exception('Cant Call Method '.$name.' ');
 	}
 
 	public function autoPropFormat( $format )
 	{
-		return preg_replace('/:([a-zA-Z0-9]+)/e','$this->autoPropGet("\1")', $format);
+		return preg_replace('/:([a-zA-Z0-9]+)/e','$this->autoPropGet("\1",":\1")', $format);
 	}
 
 	public function autoPropRealName( $name )
@@ -64,7 +65,7 @@ trait AutoPropSet
 		return false;
 	}
 
-	public function autoPropGet( $name )
+	public function autoPropGet( $name, $default = false )
 	{
 		if( method_exists( $this, $method = 'get'.$name ) )
 		{
@@ -75,6 +76,6 @@ trait AutoPropSet
 		{
 			return $this->$real_name;
 		}
-		return $name;
+		return $default;
 	}
 }

@@ -9,6 +9,7 @@ use ArrayObject;
 class Component extends ArrayObject implements DI\ComponentObjectIF
 {
 	use DI\ComponentObject;
+	private $_my_forms = array();
 
 	public function init( )
 	{
@@ -23,7 +24,7 @@ class Component extends ArrayObject implements DI\ComponentObjectIF
 	{
 		if(!isset($this[$name]))
 		{
-			$this[$name] = new Form(  );
+			$this[$name] = new Form( $name);
 		}
 		return $this[$name];
 	}

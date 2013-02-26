@@ -1,34 +1,27 @@
 <?php
-/*
- * のらライブラリ
- *---------------------- 
- * 
- *---------------------- 
- * @author Hajime MATUMOTO <mail@hazime.org>
- *---------------------- 
- */
 namespace Nora\Html\Form\Element;
 
-use Nora\Html;
-use ReflectionClass;
-
+use Nora\Collection;
 
 /**
- * フォーム
+ * ラベル
  */
-class Label extends Element
+class Label
 {
-	protected $_name,  $_tagName = 'label', $_label, $_postfix="</:tagname>\n";
+	use Collection\AutoPropSet;
+	use Renderable;
 
-	public function __construct( $label, $attributes = array(), $props = array() )
-	{
-		$this->_label = $label;
-		$this->autoPropSetArray($props);
-		$this->setAttrs($attributes);
-	}
+	protected $_label;
+	protected $_for = '';
+	protected $_renderType = 'label';
+	protected $_format = '<label for=":for" :attributes>:label</label>';
 
-	public function __toString( )
+	private $_renderer = 'Nora\Html\Form\Renderer\Label';
+
+
+	public function isEnabled( )
 	{
-		return $this->autoPropFormat('<label:builtAttrs>:label</label>');
+		return $this->_label ? true: false;
 	}
 }
+

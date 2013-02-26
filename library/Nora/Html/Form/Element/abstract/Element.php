@@ -1,91 +1,82 @@
 <?php
-/*
- * のらライブラリ
- *---------------------- 
- * 
- *---------------------- 
- * @author Hajime MATUMOTO <mail@hazime.org>
- *---------------------- 
- */
 namespace Nora\Html\Form\Element;
 
-use Nora\Html;
 use Nora\Collection;
-use Nora\Html\Form\Render;
+use ReflectionClass;
 
-class Element
+/**
+ * テキストフィールド
+ */
+abstract class Element
 {
 	use Collection\AutoPropSet;
+	use Renderable;
 
-	protected $_label, $_name, $_help;
-	private $_attrs = array();
-	protected $_renderer = 'Nora\Html\Form\Renderer\Renderer';
+	protected $_id;
+	protected $_renderer = 'Nora\Html\Form\Renderer\Element';
 
-	public function __construct( $name = null, $attrs = array(), $props = array())
+	// 要素が持つコンテクスト
+	private $_label      = 'Nora\Html\Form\Element\Label';
+	private $_help       = 'Nora\Html\Form\Element\Help';
+	private $_validator;
+
+	public function __construct( $id )
 	{
-		if( $name != null )
-		{
-			$this->setName($name);
-		}
-		$this->autoPropSetArray( $props );
-		$this->setAttrs( $attrs );
+		$this->setId( $id );
 	}
 
-	public function setHelp( $help, $props =array(), $attrs=array() )
+	public function getName( )
 	{
-		$this->_help = new Help( $help, $props, $attrs );
-		return $this;
-	}
-	public function setLabel( $label, $props =array(), $attrs=array() )
-	{
-		$this->_label = new Label( $label, $props, $attrs );
-		return $this;
+		return $this->_name ? $this->_name: $this->getId();
 	}
 
-	public function getRenderer( )
+	// 各要素へのアクセッサー
+	public function setLabel( $label )
 	{
-		if(is_string($this->_renderer))
-		{
-			$rc = new \ReflectionClass($this->_renderer);
-			$this->_renderer = $rc->newInstance($this);
-		}
-		return $this->_renderer;
-	}
-
-	public function render( )
-	{
-		$renderer = $this->getRenderer();
-		return $renderer->render( );
-	}
-
-	public function getBuiltAttrs()
-	{
-		return $this->buildAttrs();
-	}
-
-	public function setAttr( $name, $value )
-	{
-		$this->_attrs[$name] = $value;
+		$this->label( $label );
 		return $this;
 	}
 
-	public function buildAttrs( )
+	public function setHelp( $help )
 	{
-		$parts = array();
-		if(is_array($this->_attrs) )
-		{
-			foreach( $this->_attrs as $k=>$v )
-			{
-				if(is_int($k))
-				{
-					$parts[] =$v;
-				}
-				else
-				{
-					$parts[] = sprintf('%s="%s"',$k,$v);
-				}
-			}
-		}
-		return empty($parts) ? '': ' '.implode(' ', $parts );
+		$this->help($help);
+		return $this;
 	}
+
+	/**
+	 * ラベル
+	 */
+	public function label( $label = null)
+	{
+		if( is_string($this->_label) )
+		{
+			$rc = new ReflectionClass($this->_label);
+			$this->_label = $rc->newInstance();
+		}
+		if( $label != null)
+		{
+			$this->_label->setLabel( $label );
+		}
+		return $this->_label;
+	}
+
+	/**
+	 * ヘルプ
+	 */
+	public function help( $help = null)
+	{
+		if( is_string($this->_help) )
+		{
+			$rc = new ReflectionClass($this->_help);
+			$this->_help = $rc->newInstance();
+		}
+		if( $help != null)
+		{
+			$this->_help->sethelp( $help );
+		}
+		return $this->_help;
+	}
+
+
 }
+

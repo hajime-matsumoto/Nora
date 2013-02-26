@@ -1,28 +1,31 @@
 <?php
-/*
- * のらライブラリ
- *---------------------- 
- * 
- *---------------------- 
- * @author Hajime MATUMOTO <mail@hazime.org>
- *---------------------- 
- */
 namespace Nora\Html\Form\Element;
 
-use Nora\Html;
-use ReflectionClass;
-
+use Nora\Collection;
 
 /**
- * フォーム
+ * ヘルプライン
  */
-class Help extends Element
+class Help
 {
-	protected $_help;
+	use Collection\AutoPropSet;
+	use Renderable;
 
-	public function __construct( $help, $props = array(), $attributes = array() )
+	protected $_help;
+	protected $_renderType = 'help';
+
+	private $_renderer = 'Nora\Html\Form\Renderer\Help';
+
+	public function __construct( $help = null)
 	{
-		$this->_help = $help;
-		parent::__construct( 'help', $props, $attributes );
+		if( $help != null )
+		{
+			$this->setHelp($help);
+		}
+	}
+
+	public function isEnabled( )
+	{
+		return $this->_help ? true: false;
 	}
 }
