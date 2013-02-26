@@ -21,7 +21,7 @@ trait AutoPropSet
 			return $this->autoPropGet( substr($name,3) ) ? true: false;
 		}
 
-		throw new Exception('Cant Call Method '.$name.' ');
+		throw new Exception('Cant Call Method '.$name.' : '.get_class($this));
 	}
 
 	public function autoPropFormat( $format )

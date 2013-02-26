@@ -1,7 +1,7 @@
 <?php
 namespace Nora\Form\Element;
 
-use Nora\Container\Container;
+use Nora\Validator\Validator;
 
 class Element
 {
