@@ -16,6 +16,9 @@ class Form  extends Element\Group
 	protected $_action;
 	protected	$_method;
 
+	protected $_messageType = '';
+	protected $_message = '';
+
 	private $_actions = 'Nora\Html\Form\Element\Actions';
 	private $_hidden_datas = array();
 
@@ -61,5 +64,18 @@ class Form  extends Element\Group
 			$this->_actions->addButton('submit', $act_name);
 		}
 		return $this->_actions;
+	}
+
+	public function success( $message )
+	{
+		$this->message('success', $message );
+		return $this;
+	}
+
+	public function message( $type, $message )
+	{
+		$this->_messageType = $type;
+		$this->_message = $message;
+		return $this;
 	}
 }
