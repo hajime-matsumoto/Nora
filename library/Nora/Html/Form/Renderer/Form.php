@@ -9,11 +9,20 @@ class Form extends Renderer
 	{
 		$text = '';
 		$text.= $this->renderFormat( $this->getFormat() ).PHP_EOL;
+		$text.= $this->renderMessage( ).PHP_EOL;
 		$text.= $this->renderHiddens();
 		$text.= $this->renderChildren().PHP_EOL;
 		$text.= $this->actions()->render();
 		$text.= '</form>';
 		return $text;
+	}
+
+	public function renderMessage( )
+	{
+		if( $this->getMessage() )
+		{
+			return '<div class="alert alert-'.$this->getMessageType().'">'.$this->getMessage().'</div>';
+		}
 	}
 
 	public function renderHiddens( )
