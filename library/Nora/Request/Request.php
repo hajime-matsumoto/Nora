@@ -14,6 +14,11 @@ use Nora\Container\Container;
 /**
  * リクエスト
  */
-class Request extends Container
+class Request
 {
+	static public function factory( $type )
+	{
+		$rc = new \ReflectionClass(__NAMESPACE__.'\\'.ucfirst($type));
+		return $rc->newInstance();
+	}
 }
