@@ -21,7 +21,7 @@ class Bookmark implements Helper\HelperObjectIF
 	protected $_dataAnnotation='bubble';
 	private $_format = 
 		'<a id="hb_like" href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout=":dataHatenaBookmarkLayout" title=":title"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>';
-	private $_js_format = 'document.getElementById("hb_like").href="http://b.hatena.ne.jp/entry/"+location.href';
+	private $_js_format = 'document.getElementById("hb_like").href="http://b.hatena.ne.jp/entry/"+location.href;';
 
 	public function __construct( $view )
 	{
