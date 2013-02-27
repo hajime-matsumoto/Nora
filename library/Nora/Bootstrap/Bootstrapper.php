@@ -59,11 +59,4 @@ class Bootstrapper implements DI\ComponentObjectIF,DI\ContainerObjectIF
 		return \Nora\Core\Nora::getInstance();
 	}
 
-	protected function _registerMethodComponent( $method )
-	{
-		$this->addComponent( substr($method,5), function()use($method){
-			return $this->$method();
-		});
-	}
-
 }

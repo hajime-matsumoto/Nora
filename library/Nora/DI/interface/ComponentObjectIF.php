@@ -23,5 +23,6 @@ interface ComponentObjectIF
 	public function setContainer( $container );
 	public function getContainer(  );
 	public function hasContainer( );
-	public function findComponent( $name );
+	public function findComponent( $name, $doCreate = true);
+	public function requireComponent( $name );
 }
