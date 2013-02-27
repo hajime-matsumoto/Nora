@@ -11,6 +11,7 @@ class Radio extends Element
 	protected $_name;
 	protected $_value;
 	protected $_dispLabel;
+	protected $_checked;
 	protected $_renderer = 'Nora\Html\Form\Renderer\Radio';
 	protected $_format = '<label class="radio"><input type="radio" id=":id" name=":name" value=":value" :attributes>:dispLabel</label>';
 
@@ -19,6 +20,18 @@ class Radio extends Element
 		parent::__construct($id);
 		$this->setAttr( $attrs );
 		$this->autoPropSetArray($params);
+	}
+
+	/**
+	 * バリューを設定する
+	 */
+	public function inputValue( $value = null )
+	{
+		if( $value == $this->_value )
+		{
+			$this->_checked = true;
+			$this->setAttr('checked');
+		}
 	}
 }
 

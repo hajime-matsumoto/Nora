@@ -20,6 +20,7 @@ class Form  extends Element\Group
 	protected $_message = '';
 
 	private $_actions = 'Nora\Html\Form\Element\Actions';
+	private $_frozen_actions = 'Nora\Html\Form\Element\Actions';
 	private $_hidden_datas = array();
 
 	public function __construct( $id )
@@ -33,8 +34,16 @@ class Form  extends Element\Group
 		return md5($this->getId());
 	}
 
-	public function addHidden( $key, $value )
+	public function addHidden( $key, $value = false )
 	{
+		if( is_array($key) )
+		{
+			foreach( $key as $k=>$v )
+			{
+				$this->addHidden( $k, $v );
+			}
+			return $this;
+		}
 		$this->_hidden_datas[$key] = $value;
 		return $this;
 	}
@@ -48,6 +57,7 @@ class Form  extends Element\Group
 	{
 		return '<form method=":method" action=":action" :attributes>';
 	}
+
 
 	/**
 	 * アクション
@@ -65,10 +75,32 @@ class Form  extends Element\Group
 		}
 		return $this->_actions;
 	}
+	/**
+	 * アクション
+	 */
+	public function frozenActions( $act_name = null)
+	{
+		if( is_string($this->_frozen_actions) )
+		{
+			$rc = new ReflectionClass($this->_frozen_actions);
+			$this->_frozen_actions = $rc->newInstance();
+		}
+		if( $act_name != null)
+		{
+			$this->_frozen_actions->addButton('submit', $act_name);
+		}
+		return $this->_frozen_actions;
+	}
 
 	public function success( $message )
 	{
 		$this->message('success', $message );
+		return $this;
+	}
+
+	public function error( $message )
+	{
+		$this->message('error', $message );
 		return $this;
 	}
 

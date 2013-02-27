@@ -21,6 +21,7 @@ abstract class Element
 	private $_label      = 'Nora\Html\Form\Element\Label';
 	private $_help       = 'Nora\Html\Form\Element\Help';
 	private $_validator;
+	private $_is_frozen = false;
 
 	public function __construct( $id )
 	{
@@ -101,6 +102,20 @@ abstract class Element
 			$this->setValue( $value );
 		}
 		return $this->getValue();
+	}
+
+	/**
+	 * フリーズする
+	 */
+	public function freeze( )
+	{
+		$this->_is_frozen = true;
+		return $this;
+	}
+
+	public function isFrozen( )
+	{
+		return $this->_is_frozen;
 	}
 
 }

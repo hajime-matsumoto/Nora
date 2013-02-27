@@ -17,13 +17,25 @@ class Group extends Renderer
 		return $this->_buildAttributes( $this->_controls_attrs );
 	}
 
-	public function render( )
+	public function renderNormal( )
 	{
 		$text = $this->renderFormat('<div :attributes>'.PHP_EOL);
 		$text.= $this->label()->render().PHP_EOL;
 		$text.= $this->renderFormat('<div :controlsAttributes>'.PHP_EOL);
 		$text.= $this->renderChildren().PHP_EOL;
 		$text.= $this->help()->render().PHP_EOL;
+		$text.= '</div>'.PHP_EOL;
+		$text.= '</div>';
+		return $text;
+	}
+
+	public function renderFrozen( )
+	{
+		$text = $this->renderFormat('<div :attributes>'.PHP_EOL);
+		$text.= $this->label()->render().PHP_EOL;
+		$text.= $this->renderFormat('<div :controlsAttributes>'.PHP_EOL);
+		$text.= $this->renderChildren().PHP_EOL;
+		/* $text.= $this->help()->render().PHP_EOL; */
 		$text.= '</div>'.PHP_EOL;
 		$text.= '</div>';
 		return $text;

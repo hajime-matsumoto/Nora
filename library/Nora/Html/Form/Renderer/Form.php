@@ -5,7 +5,7 @@ class Form extends Renderer
 {
 	protected $_attributes = array('class'=>'form-horizontal');
 
-	public function render( )
+	public function renderNormal( )
 	{
 		$text = '';
 		$text.= $this->renderFormat( $this->getFormat() ).PHP_EOL;
@@ -17,11 +17,25 @@ class Form extends Renderer
 		return $text;
 	}
 
+	public function renderFrozen( )
+	{
+		$text = '';
+		$text.= $this->renderFormat( $this->getFormat() ).PHP_EOL;
+		$text.= $this->renderMessage( ).PHP_EOL;
+		$text.= $this->renderHiddens();
+		$text.= $this->renderChildren().PHP_EOL;
+		$text.= $this->frozenActions()->render();
+		$text.= '</form>';
+		return $text;
+	}
+
 	public function renderMessage( )
 	{
 		if( $this->getMessage() )
 		{
-			return '<div class="alert alert-'.$this->getMessageType().'">'.$this->getMessage().'</div>';
+			return '<div class="alert alert-'.$this->getMessageType().'">'
+				.'<a class="close" data-dismiss="alert">&times;</a>'
+				.$this->getMessage().'</div>';
 		}
 	}
 

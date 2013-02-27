@@ -12,6 +12,7 @@ class Button extends Element
 	protected $_value;
 	protected $_type = 'button';
 	protected $_format = '<button type=":type" id=":id" name=":name" :attributes>:value</button>';
+	protected $_renderer = 'Nora\Html\Form\Renderer\Button';
 
 	public function __construct( $id,  $attrs = array(), $props = array() )
 	{

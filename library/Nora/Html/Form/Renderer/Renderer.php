@@ -116,4 +116,13 @@ class Renderer
 		return implode(PHP_EOL,$parts);
 	}
 
+	public function render( )
+	{
+		if( $this->isFrozen( ) )
+		{
+			return $this->renderFrozen();
+		}
+		return $this->renderNormal( );
+	}
+
 }

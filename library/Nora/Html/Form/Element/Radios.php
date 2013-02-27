@@ -27,4 +27,13 @@ class Radios extends Group
 			}
 		}
 	}
+
+	/**
+	 * バリューを設定する
+	 */
+	public function inputValue( $value = null )
+	{
+		$this->each(function($e)use($value){ $e->inputValue($value); });
+		return $this;
+	}
 }

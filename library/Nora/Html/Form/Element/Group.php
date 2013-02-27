@@ -61,6 +61,9 @@ class Group extends Element
 		{
 			return $this->search( func_get_args() );
 		}
+
+		// 全エレメントを取得する
+		return $this->search(function($e){ return $e; });
 	}
 
 	public function each( $cb )
@@ -68,6 +71,10 @@ class Group extends Element
 		foreach( $this->_elements as $k=>$v )
 		{
 			call_user_func($cb, $v);
+			if( $v instanceof Group )
+			{
+				$v->each($cb);
+			}
 		}
 		return $this;
 	}
@@ -114,6 +121,21 @@ class Group extends Element
 		}
 		return $values;
 	}
+
+	public function freeze( )
+	{
+		parent::freeze();
+		$this->each(function($e){ $e->freeze(); });
+		return $this;
+	}
+
+	public function getKeys( )
+	{
+		$keys = array();
+		$this->each(function($e)use(&$keys){ $keys[$e->getName()] = $e->getName(); });
+		return $keys;
+	}
+
 }
 
 class SearchResult extends \ArrayObject
