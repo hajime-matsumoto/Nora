@@ -10,6 +10,7 @@
 
 namespace Nora\Loader;
 
+
 /**
  * ライブラリローダー
  * 
@@ -22,6 +23,7 @@ class LibraryLoader
 	const CLASS_NAME_SEPARATOR = '_';  # クラス名の区切り文字
 
 	private $_search_path = array();
+	private $_logs;
 
 	/**
 	 * レジスター, SPL関数でAutoloadに設定する
@@ -78,6 +80,7 @@ class LibraryLoader
 			}
 
 		}
+		var_dump($this->_logs);
 	}
 
 	/**
@@ -100,6 +103,8 @@ class LibraryLoader
 			{
 				return $file;
 			}
+
+			$this->_logs[] = sprintf('Finding %s in %s', $name, $file);
 		}
 	}
 

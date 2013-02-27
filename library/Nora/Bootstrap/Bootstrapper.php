@@ -32,6 +32,9 @@ class Bootstrapper implements DI\ComponentObjectIF,DI\ContainerObjectIF
 
 	public function __construct( )
 	{
+		// モジュールホルダー
+		$this->addComponent( 'modules', 'Nora\Bootstrap\ModulesHolder' );
+
 		foreach( get_class_methods( $this ) as $method_name )
 		{
 			if( 0 === strncmp($method_name, '_init', 5) )

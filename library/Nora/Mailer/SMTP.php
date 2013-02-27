@@ -13,6 +13,7 @@ class SMTP implements DI\ComponentObjectIF
 	private $_use_tls = false;
 	private $_auth_user, $_auth_passwd;
 	private $_default_header, $_default_footer;
+	private $_mails = array();
 
 	public function init( )
 	{
@@ -61,6 +62,26 @@ class SMTP implements DI\ComponentObjectIF
 	}
 
 	public function send( $mail )
+	{
+		$data = base64_encode(serialize( array(
+			'host'=>$this->_host,
+			'port'=>$this->_port,
+			'user'=>$this->_auth_user,
+			'passwd'=>$this->_auth_passwd,
+			'header'=>$this->_default_header,
+			'footer'=>$this->_default_footer,
+			'mails'=>array($mail)
+		)));
+		exec( 'php -f '.dirname(__FILE__).'/command/send.php '.$data.'  > /dev/null & ');
+	}
+
+	public function sendSync( $mail )
+	{
+		$this->_send( $mail );
+	}
+
+
+	public function _send( $mail )
 	{
 		$socket = new Network\Socket( $this->_host, $this->_port );
 		$socket->connect();

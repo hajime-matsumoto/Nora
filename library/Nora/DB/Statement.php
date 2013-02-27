@@ -4,71 +4,66 @@
  */
 namespace Nora\DB;
 
-use Nora;
+use Nora\Logger;
 
 
 /**
  * クエリステートメント
  */
-class Statement implements \Iterator
+class Statement
 {
-	private $_result;
-	private $_handler;
-	private $_iterator_current = false;
-	private $_index;
+	use Logger\Logging;
 
-	public function setResult( $result )
+	private $_sql_format;
+	private $_db;
+	private $_bind_params = array();
+	private $_bind_param_types = array();
+
+	public function __construct( $sql,  $db )
 	{
-		$this->_result = $result;
+		$this->_sql_format = $sql;
+		$this->_db = $db;
 	}
 
-	public function setHandler( $handler )
+	public function bindString( $name, $param )
 	{
-		$this->_handler = $handler;
+		$this->bind( $name, $param, 'string');
+	}
+	public function bindInt( $name, $param )
+	{
+		$this->bind( $name, $param, 'int');
 	}
 
-	public function fetch( )
+	public function bind( $name, $param, $type = 'string')
 	{
-		return $this->_handler->fetch( $this->_result );
+		$this->_bind_params[$name] = $param;
+		$this->_bind_param_types[$name] = $type;
 	}
 
-	public function fetchColumn( )
+	public function execute( )
 	{
-		return $this->_handler->fetchColumn( $this->_result );
+		$sql = preg_replace('/:([a-zA-Z0-9_]+)/e', '$this->param("\1")', $this->_sql_format);
+		$this->_db->query( $sql );
 	}
 
-
-	/** Iterator::rewind */
-	public function rewind( )
+	public function param( $name )
 	{
-		$this->_index = 0;
-		return $this->_iterator_current = $this->fetch();
+		if(!isset($this->_bind_params[$name]))
+		{
+			$this->error("Statement Placeholder Error %s", $name );
+		}
+		$value = $this->_bind_params[$name];
+		$type  = $this->_bind_param_types[$name];
+		return call_user_func( array($this,'quote'.ucfirst($type)), $value);
 	}
 
-	/** Iterator::key */
-	public function key()
+	public function quoteString( $value )
 	{
-		return $this->_index++;
+		return sprintf('"%s"',$this->_db->escape($value));
 	}
 
-	/** Iterator::current */
-	public function current()
+	public function quoteInt( $value )
 	{
-		return $this->_iterator_current;
+		return intval($value);
 	}
-
-	/** Iterator::next */
-	public function next()
-	{
-		$this->_index++;
-		return $this->_iterator_current = $this->fetch();
-	}
-
-	/** Iterator:valid */
-	public function valid( )
-	{
-		return $this->_iterator_current ? true: false;
-	}
-
-
 }

@@ -20,18 +20,6 @@ class Component implements DI\ComponentObjectIF
 	private $_dsn;
 	private $_type='mysql',$_dbname,$_dbport,$_dbhost='localhost',$_dbuser,$_dbpassword;
 
-	public function init( )
-	{
-
-	}
-
-	public function factory( )
-	{
-		$dsn = sprintf('%s:dbname=%s;host=%s;port=%s', $this->_type, $this->_dbname, $this->_dbhost, $this->_dbport);
-		return DB::connect( 'PDO', $dsn, $this->_dbuser, $this->_dbpassword );
-	}
-
-
 	public function configType( $value )
 	{
 		$this->_type = $value;
@@ -61,4 +49,16 @@ class Component implements DI\ComponentObjectIF
 	{
 		$this->_dbpassword = $value;
 	}
+
+	public function init( )
+	{
+
+	}
+
+	public function factory( )
+	{
+		$dsn = sprintf('%s:dbname=%s;host=%s;port=%s', $this->_type, $this->_dbname, $this->_dbhost, $this->_dbport);
+		return DB::connect( $dsn, $this->_dbuser, $this->_dbpassword );
+	}
+
 }

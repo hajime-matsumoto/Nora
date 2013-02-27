@@ -17,10 +17,11 @@ class DB
 	use Logging;
 
 	// DB::connect( $type, $dsn, $user, $pass )
-	static public function connect( $type )
+	static public function connect( $dsn, $user, $pass )
 	{
-		$rc = new \ReflectionClass( __NAMESPACE__.'\\'.$type );
-		return $rc->newInstanceArgs( array_slice(func_get_args(),1) );
+		$type = strtok($dsn,':');
+		$rc = new \ReflectionClass( __NAMESPACE__.'\\'.ucfirst($type) );
+		return $rc->newInstanceArgs( func_get_args() );
 	}
 
 	public function query( $sql )

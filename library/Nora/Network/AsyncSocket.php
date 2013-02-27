@@ -11,38 +11,27 @@ namespace Nora\Network;
 
 use Nora\Logger\Logging;
 
-
 /**
- * ソケット
+ * 非同期ソケット
  */
-class Socket
+class AsyncSocket extends Socket
 {
-	private $_host,$_port;
-	private $_socket;
-	private $_async = false;
-
-	use Logging;
-
-	public function __construct( $host, $port )
-	{
-		$this->_host = $host;
-		$this->_port = $port;
-	}
+	private $stack;
 
 	/** コネクションを接続 */
 	public function connect( )
 	{
-		$this->_socket = fsockopen($this->_host,$this->_port,$this->_errno, $this->_errstr, 1);
-		if(!$this->_socket){
-			throw new SocketException( 'Cant Connect' );
-		}
-		$this->debug( 'Connected: %s:%s', $this->_host, $this->_port );
+		$this->stack('connect', '%s:%s', $this->_host, $this->_port);
 		return true;
 	}
 
-	public function async( )
+	public function stack( $type, $data )
 	{
-		$this->_async = true;
+		if(func_num_args() > 2 )
+		{
+			$data = vsprintf( $data, array_slice( func_get_args(), 2 ) );
+		}
+		$this->stack .= $type.':'.$data;
 	}
 
 	/** コネクションを切断 */
@@ -99,8 +88,4 @@ class Socket
 		}
 		return $response;
 	}
-
-
 }
-
-class SocketException extends \Exception { }

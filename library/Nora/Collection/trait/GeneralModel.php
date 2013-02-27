@@ -17,6 +17,11 @@ trait GeneralModel
 		$this->setParam($name, $value);
 	}
 
+	public function __get( $name )
+	{
+		return $this->getParam( $name );
+	}
+
 	public function setParam( $name, $value = false )
 	{
 		if( is_array($name) )
