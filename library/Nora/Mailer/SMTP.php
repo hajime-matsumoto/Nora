@@ -5,6 +5,101 @@ use ArrayObject;
 use Nora\DI;
 use Nora\Network;
 
+class SMTP 
+{
+	private $_ques;
+
+	private $_host,$_port,$_user,$_passwd;
+
+	public function __construct( )
+	{
+	}
+
+	public function setup( $host, $port, $user, $passwd )
+	{
+		$this->_host = $host;
+		$this->_port = $port;
+		$this->_user = $user;
+		$this->_passwd = $passwd;
+	}
+
+	public function sendQue( $mail )
+	{
+		$this->_ques[] = $mail->toQue();
+	}
+
+	public function runQue( )
+	{
+		$command = sprintf('php -f %s/command/send.php', dirname(__FILE__));
+		foreach( $this->_ques as $que )
+		{
+			$recipients = implode(',',$que['recipients']);
+			$from = $que['from'];
+			$mail = escapeshellarg($que['mail']);
+
+			$query = escapeshellarg(sprintf(
+				'host=%s;port=%s;user=%s;passwd=%s;recipient=%s;from=%s;',
+				$this->_host,
+				$this->_port,
+				$this->_user,
+				$this->_passwd,
+				$recipients,
+				$from
+			));
+
+			exec(
+				sprintf(
+					'%s %s %s > /dev/null &',
+					$command,
+					$query,
+					$mail
+				)
+			);
+		}
+	}
+
+
+	public function executeSendQue( )
+	{
+		foreach( $this->_ques as $que )
+		{
+			$this->sendMail( $que['recipients'],$que['from'],$que['mail'] );
+		}
+	}
+
+	public function sendMail( $recipients, $from, $mail )
+	{
+		$socket = new Network\Socket( $this->_host, $this->_port );
+		$socket->connect();
+		$socket->parseResponse('220');
+		$socket->writeLine('EHLO '.$this->_host);
+		$socket->parseResponse('250');
+		$socket->writeLine('AUTH LOGIN');
+		$socket->parseResponse('334');
+		$socket->writeLine(base64_encode($this->_user));
+		$socket->parseResponse('334');
+		$socket->writeLine(base64_encode($this->_passwd));
+		$socket->parseResponse('235');
+		$socket->writeLine('MAIL FROM: <%s>', $from);
+		$socket->parseResponse('250');
+		foreach( $recipients as $recipient )
+		{
+			$socket->writeLine('RCPT TO: <%s>', $recipient);
+			$socket->parseResponse('250');
+		}
+		$socket->writeLine('DATA');
+		$socket->parseResponse('354');
+		$socket->writeLine($mail);
+		$socket->writeLine('.');
+		$socket->parseResponse('250');
+	}
+
+	public function __destruct( )
+	{
+		$this->runQue();
+	}
+}
+/*
 class SMTP implements DI\ComponentObjectIF
 {
 	use DI\ComponentObject;
@@ -33,12 +128,6 @@ class SMTP implements DI\ComponentObjectIF
 	public function setPort( $port )
 	{
 		$this->_port = $port;
-		return $this;
-	}
-
-	public function useTLS( $bool )
-	{
-		$this->_use_tls = $bool ? true: false;
 		return $this;
 	}
 
@@ -81,6 +170,7 @@ class SMTP implements DI\ComponentObjectIF
 	}
 
 
+
 	public function _send( $mail )
 	{
 		$socket = new Network\Socket( $this->_host, $this->_port );
@@ -118,3 +208,4 @@ class SMTP implements DI\ComponentObjectIF
 		$socket->parseResponse('250');
 	}
 }
+ */

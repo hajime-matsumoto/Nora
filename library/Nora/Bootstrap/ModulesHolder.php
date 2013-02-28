@@ -49,7 +49,7 @@ class ModulesHolder implements DI\ComponentObjectIF,DI\ContainerObjectIF
 
 		// ブートストラップの設定
 		// =====================================
-		$this->addComponent( $name, $prefix.'Bootstrap' );
+		$this->addComponent( $name, $prefix.'Bootstrap',array('moduleDirname'=>$dir) );
 	}
 
 	public function init( )

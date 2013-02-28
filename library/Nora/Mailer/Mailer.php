@@ -3,20 +3,13 @@ namespace Nora\Mailer;
 
 class Mailer
 {
-	public $smtp;
-
-	public function setSMTP( SMTP $smtp )
+	public function smtp( $host, $port, $user, $passwd )
 	{
-		$this->smtp = $smtp;
+		$this->getSmtp()->setUp($host,$port,$user,$passwd);
 	}
 
-	public function send( $mail )
+	public function sendQue( $mail )
 	{
-		$this->smtp->send( $mail );
-	}
-
-	public function newMail( )
-	{
-		return new Mail( );
+		$this->getSmtp()->sendQue( $mail );
 	}
 }

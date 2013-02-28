@@ -21,13 +21,23 @@ class Component extends Mailer implements DI\ComponentObjectIF,DI\ContainerObjec
 	public function init( )
 	{
 		$this->addComponent('smtp','Nora\Mailer\SMTP');
+		$this->addComponent('parser','Nora\Mailer\MailParser');
+	}
+
+	public function getSmtp( )
+	{
+		return $this->component('smtp');
+	}
+
+	public function newMail( $file )
+	{
+		$mail =  MailParser::parseFile( $file );
+		$mail->setMailer( $this );
+		return $mail;
 	}
 
 	public function factory( )
 	{
-		$mailer = new Mailer( );
-		$mailer->setSMTP( $this->component('smtp') );
-		return $mailer;
+		return $this;
 	}
-
 }

@@ -4,106 +4,244 @@ use ArrayObject;
 
 class Mail extends ArrayObject
 {
-	private $_encode = 'JIS';
 
-	public function __construct( )
+	// メールヘッダーの初期値を定義
+	private $_headers = array(
+		'MIME-Version'=>array('value'=>'1.0'),
+		'Content-Type'=>array('value'=>'text/plain','options'=>array('charset'=>'utf8')),
+		'Content-Transfer-Encoding'=>array('value'=>'base64'),
+		'Content-Disposition'=>array('value'=>'inline')
+	);
+
+	// メール本文を格納
+	private $_body = '';
+
+	// メール送信先リスト
+	private $_recipients = array();
+
+	// 送信者アドレス
+	private $_from_address = '';
+
+	// メイラー
+	private $_mailer;
+
+	/**
+	 * メイラーをセットする
+	 */
+	public function setMailer( $mailer )
 	{
-		$this['charset'] = 'iso-2022-jp';
+		$this->_mailer = $mailer;
+		return $this;
 	}
 
-	public function __call( $name, $args)
+	/**
+	 * ファイルを解析してメールオブジェクトを作成
+	 */
+	static public function loadFile( $file )
 	{
-		if(strpos( $name, 'set', 0) === 0 )
+		return MailParser::file( $file );
+	}
+
+	/**
+	 * ヘッダーを追加する
+	 * 追加時に必要な処理を加える
+	 */
+	public function addHeader( $key, $value, $options = null )
+	{
+		$key = ucfirst($key);
+		// アドレスに関連するヘッダーの処理
+		if( in_array( $key, array('From','To','Cc','Bcc') ) )
 		{
-			$this->_set(substr($name,3), $args[0]);
-			return $this;
+			if(preg_match('/<([^>]+)>/',$value,$m))
+			{
+				$address = $m[1];
+			}else{
+				$address = $value;
+			}
+			$address = trim(trim($address),'"');
+
+			// From以外は全て宛先アドレスとして登録
+			if( $key != 'From' )
+			{
+				$this->addRecipient( $address );
+			}else{
+				// Fromは送信アドレスとして登録
+				$this->setFromAddress( $address );
+			}
+		}
+
+		// Bccはヘッダーに記録しない
+		if( $key == 'Bcc')
+		{
+			return false;
+		}
+
+		// 複数宣言可能なもの
+		if( in_array( $key, array('To','Cc') ) )
+		{
+			$this->_headers[$key][] = array('value'=>$value,'options'=>$options);
+		}else{
+			// 複数宣言出来ないものは上書き
+			$this->_headers[$key] = array('value'=>$value,'options'=>$options);
 		}
 	}
 
-	public function setLanguage( $language )
+	/**
+	 * 本文を追加する
+	 */
+	public function addBody(  $value, $postfix = "\n" )
 	{
-		mb_language($language);
-		mb_internal_encoding("UTF-8");
-		return $this;
+		$this->_body .= $value.$postfix;
 	}
 
-	public function setEncode( $code )
+	/**
+	 * ヘッダーをテキスト化
+	 */
+	public function headerToString( )
 	{
-		$this->_encode = $code;
-	}
-
-	private function _set( $name, $value )
-	{
-		$this[strtolower($name)] = $value;
-	}
-
-	public function setTo( $address, $name = null)
-	{
-		$this['to'][$address] = array($address,$name ? $name: $address);
-		$this->addRecipient( $address, $name );
-		return $this;
-	}
-
-	public function setFrom( $address, $name = null )
-	{
-		$this['from'] = array($address,$name ? $name: $address);
-		return $this;
-	}
-
-	public function encodedTo( )
-	{
-		$list = array();
-		foreach( $this['to'] as $to )
+		$parts = array();
+		foreach( $this->_headers as $k=>$v )
 		{
-			$list[] = sprintf( '%s <%s>', $this->mimeEncode($to[1]),$to[0] );
+			if( is_string($v) )
+			{
+				$parts[] = sprintf('%s: %s', $k, $v);
+			}elseif( !isset($v['value']) ){
+				foreach( $this->_headers[$k] as $kk=>$vv )
+				{
+					$parts[] = $this->_buildHeader( $k, $vv );
+				}
+			}else{
+				$parts[] = $this->_buildHeader( $k, $v );
+			}
 		}
-		return implode(',',$list);
+		return implode(PHP_EOL,$parts);
 	}
 
-	public function getContentType()
+	/**
+	 * ヘッダーをテキスト化(単体)
+	 */
+	public function _buildHeader( $type, $parts )
 	{
-		return 'text/plain; charset='.$this['charset'];
+		// プレースホルダーを解決する
+		$parts['value'] = $this->_parsePlaceholders( $parts['value'] );
+
+		// 特定のヘッダーはISO-2022-JPする
+		if( in_array($type,array('From','To','Cc') ) )
+		{
+			if( preg_match('/["]{0,1}([^"\\\]+)["]{0,1}\s*<([^>]+)>/', $parts['value'], $m) )
+			{
+				$parts['value'] = sprintf('%s <%s>', mb_encode_mimeheader($m[1]), $m[2]);
+			}
+		}elseif( $type == 'Subject' ){
+			$parts['value'] = mb_encode_mimeheader($parts['value']);
+		}
+
+		$text = sprintf('%s: %s', $type, $parts['value'] );
+		if( isset( $parts['options'] ) && is_array($parts['options']) )
+		{
+			foreach($parts['options'] as $k=>$v)
+			{
+				$text.= sprintf('; %s="%s"', $k,$v);
+			}
+		}
+		return $text;
 	}
 
-	public function encodedFrom( )
+	/**
+	 * 本文をテキスト化(単体)
+	 * エンコード
+	 */
+	public function bodyToString( )
+	{ 
+		$text = $this->_body;
+		$text = $this->_parsePlaceholders( $text );
+		switch( trim($this->_headers['Content-Transfer-Encoding']['value']) )
+		{
+		case 'base64':
+			$text = base64_encode($text);
+			break;
+		}
+		// プレースホルダーを解決する
+		return $text;
+	}
+
+	/**
+	 * プレースホルダーを展開する
+	 */
+	protected function _parsePlaceholders( $text )
 	{
-		return sprintf( '%s <%s>', $this->mimeEncode($this['from'][1]),$this['from'][0]);
+		return $text = preg_replace('/:([a-zA-Z0-9_]+)/e', '$this->_placeholder("\1")', $text );
 	}
 
-	public function mimeEncode( $data )
+	/**
+	 * プレースホルダー変数を展開する
+	 */
+	protected function _placeholder( $name )
 	{
-		return  mb_encode_mimeheader( $this->encode($data) );
+		if(isset($this[$name]))
+		{
+			return $this[$name];
+		}
+		return $name;
 	}
 
-	public function encode( $data )
+	/**
+	 * 宛先を追加
+	 */
+	public function addRecipient( $address )
 	{
-		return mb_convert_encoding( $data, $this->_encode);
+		$this->_recipients[$address] = $address;
 	}
 
-
-	public function encodedSubject( )
-	{
-		return $this->mimeEncode( $this['subject'] );
-	}
-	public function encodedBody( )
-	{
-		return $this->encode( $this['body'] );
-	}
-
-
-	public function addRecipient( $address, $name )
-	{
-		$this['recipients'][$address] = array($address,$name);
-		return $this;
-	}
-
+	/**
+	 * 宛先を取得(複数)
+	 */
 	public function getRecipients( )
 	{
-		$list = array();
-		foreach( $this['recipients'] as $recipient )
-		{
-			$list[] = $recipient[0];
-		}
-		return $list;
+		return $this->_recipients;
+	}
+
+	/**
+	 * 送信者アドレスを設定
+	 */
+	public function setFromAddress( $address )
+	{
+		$this->_from_address = $address;
+	}
+
+	/**
+	 * 送信者アドレスを取得
+	 */
+	public function getFromAddress( )
+	{
+		return $this->_from_address;
+	}
+
+	/**
+	 * メールを作成する
+	 */
+	public function toString( )
+	{
+		$text = $this->headerToString( );
+		$text.= PHP_EOL.PHP_EOL;
+		$text.= $this->bodyToString();
+		$text.= PHP_EOL;
+		return $text;
+	}
+
+	/**
+	 * メールをキューにする
+	 */
+	public function toQue( )
+	{
+		return array('recipients'=>$this->getRecipients(),'from'=>$this->getFromAddress(),'mail'=>$this->toString());
+	}
+
+	/**
+	 * メールをキューにする
+	 */
+	public function que( )
+	{
+		$this->_mailer->sendQue( $this );
 	}
 }

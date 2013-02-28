@@ -1,35 +1,42 @@
 <?php
-$dir = dirname($argv[0]);
+$dir   = dirname($argv[0]);
+$query = $argv[1];
+$mail  = $argv[2];
+
 require_once realpath($dir.'/../../Core/Nora.php');
 
 mb_language("japanese");
 mb_internal_encoding("UTF8");
 
 Nora\Core\Nora::init();
+//Nora\Core\Nora::getInstance()->addComponent('logger','Nora\Logger\Component');
 
-$datas = unserialize(base64_decode($argv[1]));
+// ロガーの設定
+Nora\Core\Nora::getInstance()->addComponent(
+	'logger',
+	'Nora\Logger\Component',
+	array(
+		'type'=>'file',
+		'config'=>array(
+			'log_file_path'=> '/tmp/nora-mail.log',
+			'log_file_mode'=>'a'
+		)
+	)
+);
 
-$host = $datas['host'];
-$port = $datas['port'];
-$user = $datas['user'];
-$passwd = $datas['passwd'];
-$header = $datas['header'];
-$footer = $datas['footer'];
-$mails = $datas['mails'];
-$data = $argv[1];
 
-$mailer = new Nora\Mailer\Mailer;
-$mailer->setSMTP(new Nora\Mailer\SMTP());
-$mailer->smtp
-	->setHost($host)
-	->setPort($port)
-	->setAuth($user,$passwd)
-	->setHeader($header)
-	->setFooter($footer);
+$smtp = new Nora\Mailer\SMTP( );
 
-foreach( $mails as $mail )
+$data = strtok($query,';');
+$params = array();
+while( $data )
 {
-	$mail->language('japanese');
-	$mailer->smtp->sendSync( $mail );
+	list($k,$v) = explode('=', $data, 2);
+	$params[$k] = $v;
+	$data = strtok(';');
 }
+
+$smtp->setUp( $params['host'], $params['port'], $params['user'], $params['passwd'] );
+
+$smtp->sendMail( explode(',',$params['recipient']), $params['from'], $mail);
 ?>
