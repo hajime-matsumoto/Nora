@@ -1,26 +1,38 @@
- README 
-========
-Nora PHP Fraework
+のらプロジェクト
+===
 
-Nature ORiented Architecture
 
-純国産PHPフレームワーク
+テスト
+--
+	phpunit --bootstrap src/bootstrap.php tests/
 
-語源は「のら」
 
-    野良（のら）とは、野や野原のこと。または、「のら」とひらがな表記した時は、放蕩のこと
-
- テーマ
-========
-
-粗結合なライブラリ群
+事前準備
 ---
+# PHP UNITのインストール
+	pear channel-discover pear.phpunit.de
+	pear install pear.phpunit.de/PHPUnit
 
-日本語のコメント
----
+# Xdebug
 
-日本のワークフローに適した構成
----
+	pecl install xdebug
+	vi /etc/php5/mods-available/xdebug.ini
 
-Hello world! -> Hello wild!
----
+	zend_extension="/usr/lib/php5/20100525/xdebug.so"
+
+	sudo ln -s  /etc/php5/mods-available/xdebug.ini  /etc/php5/conf.d/20-xdebug.ini
+
+# ガバレッジレポート
+	phpunit --coverage-html ./report nora
+
+ドキュメントツールの使用法方
+===
+
+	pear install --alldeps phpdocumentor
+
+	phpdoc -d nora/ -t ドキュメント
+
+	pear config-set auto_discover 1
+	pear install pear.apigen.org/apigen
+
+	apigen --source library --exclude "*Zend*" --destination doc/apigen --title "Nora Project"

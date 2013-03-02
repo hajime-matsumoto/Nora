@@ -1,7 +1,0 @@
-======
-
-
-データベース
-
-NoraResource/ Asterisk, DB
-
