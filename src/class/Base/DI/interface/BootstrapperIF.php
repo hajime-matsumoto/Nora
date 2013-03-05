@@ -18,4 +18,18 @@ namespace Nora\Base\DI;
  */
 interface BootstrapperIF extends ContainerIF
 {
+    /**
+     * _initメソッドをコンポーネントとして登録する
+     */
+    public function bootstrapperInitialize();
+
+    /**
+     * コンポーネントの設定値を変えてファクトリを登録し直す
+     */
+    public function resourceInitialize( $resources_setting );
+
+    /**
+     * ブートストラップを拡張したクラス用の初期化メソッド
+     */
+    public function initialize( );
 }

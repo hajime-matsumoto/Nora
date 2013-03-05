@@ -34,9 +34,19 @@ interface ContainerIF extends ContainerOwnerIF
     public function pullComponent( $name );
 
     /**
+     * コンポーネントファクトリを取得する
+     */
+    public function pullFactory( $name );
+
+    /**
      * コンポーネントの設定値を取得する
      */
     public function getComponentSetting( $name );
+
+    /**
+     * コンポーネントを設定する
+     */
+    public function setComponentSetting( $name, $setting );
 
     /**
      * コンポーネントが存在するか

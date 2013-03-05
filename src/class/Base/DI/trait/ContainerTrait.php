@@ -50,14 +50,12 @@ trait ContainerTrait
      */
     public function addComponent( $name, $factory, $setting = array() )
     {
-        if( isset($this->_container_registry[$name]) ) return;
-        if( isset($this->_container_factory[$name]) ) return;
-        if( isset($this->_container_setting[$name]) ) return;
-
-        //if( is_object($factory) ) return $this->_container_registry[$name] = $factory;
-
         $this->_container_factory[$name] = $factory;
-        $this->_container_setting[$name] = $setting;
+
+        if(!empty($setting))
+        {
+            $this->_container_setting[$name] = $setting;
+        }
     }
 
     /**
@@ -65,9 +63,26 @@ trait ContainerTrait
      */
     public function pullComponent( $name )
     {
-        if( !$this->hasComponent($name) ) return $this->getContainer()->pullComponent($name);
+        if( !$this->hasComponent($name) ){
+            if( !$this->getContainer( ) ) return false;
+            return $this->getContainer()->pullComponent($name);
+        }
+
         if( !$this->_isRegistered( $name ) ) return $this->_initComponent($name);
         return $this->_container_registry[$name];
+    }
+
+    /**
+     * コンポーネントファクトリを取得する
+     */
+    public function pullFactory( $name )
+    {
+        if( !$this->hasComponent($name) ){
+            if( !$this->getContainer( ) ) return false;
+            return $this->getContainer()->pullFactory($name);
+        }
+
+        return $this->_container_factory[$name];
     }
 
     /**
@@ -90,6 +105,21 @@ trait ContainerTrait
     }
 
     /**
+     * コンポーネントを設定する
+     */
+    public function setComponentSetting( $name, $setting )
+    {
+        // 生成済だったら
+        if( $this->_isRegistered( $name ) )
+        {
+            $this->pullComponent($name)->setup($setting);
+            return;
+        }
+
+        $this->_container_setting[$name] = $setting;
+    }
+
+    /**
      * コンポーネントの登録状況を調べる
      */
     private function _isRegistered( $name )
@@ -100,28 +130,39 @@ trait ContainerTrait
     /**
      * コンポーネントを初期化する
      */
-    private function _initComponent( $name )
+    private function _initComponent( $name, $factory = false )
     {
-        if( !isset($this->_container_factory[$name]) ) return;
+        //if( !isset($this->_container_factory[$name]) ) return;
         //if( !is_string($this->_container_factory[$name]) ) return;
         //if( !class_exists($this->_container_factory[$name]) ) return;
 
-        $factory = $this->_container_factory[$name];
-
-        if( is_string($factory) )
+        if( $factory === false )
         {
-            nora_load_util('class');
-            $component = nora_class_new_instance( $factory );
-        }elseif( $factory instanceof \Closure ){
-            $component = $factory();
-        }else{
-            $component = $factory;
+            $factory = $this->_container_factory[$name];
+
+            if( is_string($factory) )
+            {
+                nora_load_util('class');
+                return $this->_initComponent( $name, nora_class_new_instance( $factory ) );
+            }
+
+            if( $factory instanceof \Closure ){
+                return $this->_initComponent( $name, $factory( $this->getComponentSetting($name) )  );
+            }
+
+            if( is_array($factory) )
+            {
+                return $this->_initComponent( $name, call_user_func($factory, $this->getComponentSetting($name)));
+            }
         }
+
+        $component = $factory;
 
         // ContainerOwnerだったら、
         // 所有コンテナの上位コンテナとして自分を登録する
         if( $component instanceof ContainerOwnerIF )
         {
+            $component->setContainer('Nora\Base\DI\Container');
             $component->getContainer( )->setContainer( $this );
         }
 
@@ -130,6 +171,12 @@ trait ContainerTrait
         {
             $component->setup( $this->getComponentSetting( $name ) );
             $component->initialize( );
+        }
+
+        // ブートストラッパだったらブートストラップ用のイニシャライズを行う
+        if( $component instanceof BootstrapperIF )
+        {
+            $component->bootstrapperInitialize();
         }
 
         // ファクトリだったらfactoryメソッドを呼ぶ

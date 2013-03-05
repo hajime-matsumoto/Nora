@@ -18,5 +18,39 @@ namespace Nora\Base\DI;
  */
 trait BootstrapperTrait
 {
-	use ContainerTrait;
+    use ContainerTrait;
+
+    public function bootstrapperInitialize( )
+    {
+        $_is_bootstrapper_initialized = true;
+        foreach( get_class_methods($this) as $method )
+        {
+            if( 0 === strpos( $method, '_init', 0 ) )
+            {
+                $this->addComponent( strtolower(substr($method,5)), array($this,$method) );
+            }
+        }
+
+        $this->initialize( );
+    }
+
+    /**
+     * コンポーネントの設定値を変えてファクトリを登録し直す
+     */
+    public function resourceInitialize( $resources_setting )
+    {
+        foreach( $resources_setting as $k=>$v )
+        {
+            if( $factory = $this->pullFactory($k) )
+            {
+                $this->removeComponent($k);
+                $this->addComponent($k, $factory, $v );
+            }
+        }
+    }
+
+    public function initialize( )
+    {
+
+    }
 }

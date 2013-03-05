@@ -38,6 +38,7 @@ require NORA_HOME.'/src/class/Base/Nora.php';
 require NORA_HOME.'/src/util/nora.php';
 
 // オートローダの起動
+nora()->setContainer('Nora\Base\DI\Container');
 nora()->getContainer( )->addComponent('autoLoader', 'Nora\Base\AutoLoader' );
 nora_component('autoLoader')
     ->addNamespace('Nora', NORA_HOME.'/src/class')

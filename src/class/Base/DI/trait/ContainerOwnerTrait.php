@@ -18,7 +18,7 @@ namespace Nora\Base\DI;
  */
 trait ContainerOwnerTrait
 {
-	private $_di_container = 'Nora\Base\DI\Container';
+	private $_di_container = false;
 
 	/**
 	 * コンテナをセットする
@@ -51,5 +51,13 @@ trait ContainerOwnerTrait
     public function pullComponent( $name )
     {
         return $this->getContainer( )->pullComponent($name);
+    }
+
+    /**
+     * コンポーネントファクトリを取得する
+     */
+    public function pullFactory( $name )
+    {
+        return $this->getContainer( )->pullFactory( $name );
     }
 }
