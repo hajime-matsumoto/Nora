@@ -14,9 +14,8 @@
 namespace Nora\Base\DI;
 
 /**
- * コンテナーオブジェクト
+ * ブートストラッパインターフェイス
  */
-class Container implements ContainerIF
+interface BootstrapperIF extends ContainerIF
 {
-    use ContainerTrait;
 }

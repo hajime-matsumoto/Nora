@@ -4,6 +4,8 @@
 /**
  * のらプロジェクト
  *
+ * @category   Base
+ * @package    DI
  * @author     ハジメ <mail@hazime.org>
  * @copyright  opyright (c) 2013, Nora Project All rights reserved.
  * @license    http://www.hazime.org/license/bsd.txt 修正BSDライセンス
@@ -17,5 +19,6 @@ namespace Nora\Base\DI;
 interface ContainerOwnerIF
 {
 	public function setContainer( $container );
-	public function getContainer(  );
+    public function getContainer(  );
+    public function pullComponent( $name );
 }

@@ -4,6 +4,8 @@
 /**
  * のらプロジェクト
  *
+ * @category   Base
+ * @package    DI
  * @author     ハジメ <mail@hazime.org>
  * @copyright  opyright (c) 2013, Nora Project All rights reserved.
  * @license    http://www.hazime.org/license/bsd.txt 修正BSDライセンス
@@ -16,6 +18,8 @@ namespace Nora\Base\DI;
  */
 trait ContainerTrait
 {
+    use ContainerOwnerTrait;
+
     private $_container_factory = array();
     private $_container_registry = array();
     private $_container_setting = array();
@@ -25,14 +29,20 @@ trait ContainerTrait
      */
     public function removeComponent( $name )
     {
-        if( !isset($this->_container_factory[$name]) ) return;
-        unset($this->_container_factory[$name]);
+        if( isset($this->_container_factory[$name]) )
+        {
+            unset($this->_container_factory[$name]);
+        }
 
-        if( !isset($this->_container_registry[$name]) ) return;
-        unset($this->_container_registry[$name]);
+        if( isset($this->_container_registry[$name]) )
+        {
+            unset($this->_container_registry[$name]);
+        }
 
-        if( !isset($this->_container_setting[$name]) ) return;
-        unset($this->_container_setting[$name]);
+        if( isset($this->_container_setting[$name]) ) 
+        {
+            unset($this->_container_setting[$name]);
+        }
     }
 
     /**
@@ -44,7 +54,7 @@ trait ContainerTrait
         if( isset($this->_container_factory[$name]) ) return;
         if( isset($this->_container_setting[$name]) ) return;
 
-        if( is_object($factory) ) return $this->_container_registry[$name];
+        //if( is_object($factory) ) return $this->_container_registry[$name] = $factory;
 
         $this->_container_factory[$name] = $factory;
         $this->_container_setting[$name] = $setting;
@@ -55,6 +65,7 @@ trait ContainerTrait
      */
     public function pullComponent( $name )
     {
+        if( !$this->hasComponent($name) ) return $this->getContainer()->pullComponent($name);
         if( !$this->_isRegistered( $name ) ) return $this->_initComponent($name);
         return $this->_container_registry[$name];
     }
@@ -92,31 +103,41 @@ trait ContainerTrait
     private function _initComponent( $name )
     {
         if( !isset($this->_container_factory[$name]) ) return;
-        if( !is_string($this->_container_factory[$name]) ) return;
+        //if( !is_string($this->_container_factory[$name]) ) return;
         //if( !class_exists($this->_container_factory[$name]) ) return;
 
-        nora_load_util('class');
-        $factory = nora_class_new_instance( $this->_container_factory[$name] );
+        $factory = $this->_container_factory[$name];
 
-        // ContainerOwnerだったら、自分をコンテナとして登録する
-        if( $factory instanceof ContainerOwnerIF )
+        if( is_string($factory) )
         {
-            $factory->setContainer( $this );
+            nora_load_util('class');
+            $component = nora_class_new_instance( $factory );
+        }elseif( $factory instanceof \Closure ){
+            $component = $factory();
+        }else{
+            $component = $factory;
+        }
+
+        // ContainerOwnerだったら、
+        // 所有コンテナの上位コンテナとして自分を登録する
+        if( $component instanceof ContainerOwnerIF )
+        {
+            $component->getContainer( )->setContainer( $this );
         }
 
         // コンポーネントだったら設定を行ってイニシャライズする
-        if( $factory instanceof ComponentIF )
+        if( $component instanceof ComponentIF )
         {
-            $factory->setup( $this->getComponentSetting( $name ) );
-            $factory->initialize( );
+            $component->setup( $this->getComponentSetting( $name ) );
+            $component->initialize( );
         }
 
         // ファクトリだったらfactoryメソッドを呼ぶ
-        if( $factory instanceof ComponentFactoryIF )
+        if( $component instanceof ComponentFactoryIF )
         {
-            return $this->_container_registry[$name] = $factory->factory();
+            return $this->_container_registry[$name] = $component->factory();
         }
 
-        return $this->_container_registry[$name] = $factory;
+        return $this->_container_registry[$name] = $component;
     }
 }

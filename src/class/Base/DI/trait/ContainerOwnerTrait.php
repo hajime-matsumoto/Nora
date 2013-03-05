@@ -4,6 +4,8 @@
 /**
  * のらプロジェクト
  *
+ * @category   Base
+ * @package    DI
  * @author     ハジメ <mail@hazime.org>
  * @copyright  opyright (c) 2013, Nora Project All rights reserved.
  * @license    http://www.hazime.org/license/bsd.txt 修正BSDライセンス
@@ -41,5 +43,13 @@ trait ContainerOwnerTrait
         }
 
         return $this->_di_container;
-	}
+    }
+
+    /**
+     * コンポーネントを検索する
+     */
+    public function pullComponent( $name )
+    {
+        return $this->getContainer( )->pullComponent($name);
+    }
 }

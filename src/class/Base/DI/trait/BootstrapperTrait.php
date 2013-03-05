@@ -14,9 +14,9 @@
 namespace Nora\Base\DI;
 
 /**
- * コンテナーオブジェクト
+ * ブートストラッパ基本機能
  */
-class Container implements ContainerIF
+trait BootstrapperTrait
 {
-    use ContainerTrait;
+	use ContainerTrait;
 }
