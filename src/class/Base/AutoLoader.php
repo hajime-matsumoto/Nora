@@ -4,6 +4,7 @@
 /**
  * のらプロジェクト:クラスファイル
  *
+ * @category   Base
  * @author     ハジメ <mail@hazime.org>
  * @copyright  opyright (c) 2013, Nora Project All rights reserved.
  * @license    http://www.hazime.org/license/bsd.txt 修正BSDライセンス
@@ -11,11 +12,17 @@
  */
 namespace Nora\Base;
 
+use Nora\Base\DI;
+use Nora\Logging;
+
 /**
  * オートロードクラス
  */
-class AutoLoader
+class AutoLoader implements DI\ComponentIF,Logging\LoggingIF
 {
+    use DI\ComponentTrait;
+    use Logging\LoggingTrait;
+
     /**
      * シングルトンインスタンスを保持
      */
@@ -44,6 +51,7 @@ class AutoLoader
     public function addNamespace( $namespace, $dirctory )
     {
         $this->_namespaces[$namespace][$dirctory] = $dirctory;
+        return $this;
     }
 
     /**
@@ -63,7 +71,12 @@ class AutoLoader
         if( !$this->_isMyTarget( $name ) ) return;
 
         // ファイルが存在するかチェックする
-        if( !$filename = $this->_checkFilePath( $name ) ) return;
+        if( !$filename = $this->_checkFilePath( $name ) ) {
+
+            // debug
+            $this->debug("not found in(%s)",implode("\n",$this->_file_not_found_logs));
+            return;
+        }
 
         require_once $filename;
     }
@@ -112,7 +125,7 @@ class AutoLoader
         {
             $file_path = $dirname.'/'.$sub_dirname.'/'.$basename;
             if(file_exists( $file_path )) return $file_path;
-
+            $this->_file_not_found_logs[] = $file_path;
         }
         return false;
     }

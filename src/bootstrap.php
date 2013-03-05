@@ -28,20 +28,25 @@ $base_path = realpath(dirname(__FILE__).'/../');
 // 定数を定義
 define('NORA_HOME', $base_path);
 
+// 必要なクラスを全てロードする
+require NORA_HOME.'/src/class/Base/DI/script/bootstrap.php';
+require NORA_HOME.'/src/class/Logging/script/bootstrap.php';
+require NORA_HOME.'/src/class/Base/AutoLoader.php';
+require NORA_HOME.'/src/class/Base/Nora.php';
+
 // ユーティリティをロードする
 require NORA_HOME.'/src/util/nora.php';
 
-// ロギングユーティリティを有効化
-nora_load_util('logging');
-
 // オートローダの起動
-require NORA_HOME.'/src/class/Base/AutoLoader.php';
+nora()->getContainer( )->addComponent('autoLoader', 'Nora\Base\AutoLoader' );
+nora_component('autoLoader')
+    ->addNamespace('Nora', NORA_HOME.'/src/class')
+    ->register( );
 
-$loader = Nora\Base\AutoLoader::getInstance();
-$loader->addNamespace('Nora', NORA_HOME.'/src/class');
-$loader->register( );
+mb_language('ja');
+mb_internal_encoding('utf8');
 
-new Nora\Base\Nora();
+
 
 
 

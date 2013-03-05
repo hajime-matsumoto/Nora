@@ -34,8 +34,8 @@ class NoraTestCase extends PHPUnit_Framework_TestCase
 			'file'=>'/tmp/a',
 			'mode'=>'w'
 		);
-		nora()->getContainer( )->addComponent('logger','Nora\Log\Factory', $setting);
-		$this->assertInstanceOf('Nora\Log\LoggerIF', nora()->getContainer( )->pullComponent('logger'));
+		nora()->getContainer( )->addComponent('logger','Nora\Logging\Factory', $setting);
+		$this->assertInstanceOf('Nora\Logging\LoggerIF', nora()->getContainer( )->pullComponent('logger'));
 		nora()->getContainer( )->pullComponent('logger')->debug('ファイルログテスト');
 
 		$this->assertFileExists('/tmp/a');
@@ -44,7 +44,7 @@ class NoraTestCase extends PHPUnit_Framework_TestCase
 		// ロガーコンポーネントを登録してみる
 		//
 		nora()->getContainer()->removeComponent('logger');
-		nora()->getContainer( )->addComponent('logger','Nora\Log\Logger', array('logFormat'=>'[:label] [:name] :message'));
+		nora()->getContainer( )->addComponent('logger','Nora\Logging\Logger', array('logFormat'=>'[:label] [:name] :message'));
 		ob_start();
 		nora()->getContainer( )->pullComponent('logger')->debug('出力ログテスト');
 		$this->assertEquals("[debug] [SYSTEM] 出力ログテスト", trim(ob_get_clean()));

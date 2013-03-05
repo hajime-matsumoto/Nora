@@ -7,7 +7,7 @@
 	<title>Class Nora\Base\AutoLoader | Nora Project</title>
 
 	<script type="text/javascript" src="resources/combined.js?394153670"></script>
-	<script type="text/javascript" src="elementlist.js?571058128"></script>
+	<script type="text/javascript" src="elementlist.js?2208561294"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -30,9 +30,26 @@
 				<li><a href="namespace-Nora.Base.DI.html">DI</a>
 						</li>
 							</ul></li>
-				<li><a href="namespace-Nora.Log.html">Log</a>
+				<li><a href="namespace-Nora.General.html">General<span></span></a>
+						<ul>
+				<li><a href="namespace-Nora.General.Bootstrap.html">Bootstrap</a>
+						</li>
+				<li><a href="namespace-Nora.General.Helper.html">Helper</a>
 						</li>
 							</ul></li>
+				<li><a href="namespace-Nora.Logging.html">Logging</a>
+						</li>
+				<li><a href="namespace-Nora.Mail.html">Mail</a>
+						</li>
+				<li><a href="namespace-Nora.Network.html">Network</a>
+						</li>
+				<li><a href="namespace-Nora.Template.html">Template</a>
+						</li>
+				<li><a href="namespace-Nora.Web.html">Web</a>
+						</li>
+							</ul></li>
+				<li><a href="namespace-PHP.html">PHP</a>
+						</li>
 			</ul>
 		</div>
 
@@ -95,6 +112,21 @@
 
 	</div>
 
+	<dl class="tree">
+		<dd style="padding-left:0px">
+<b><span>Nora\Base\AutoLoader</span></b>			
+			 implements 
+				<a href="class-Nora.Base.DI.ComponentIF.html"><span>Nora\Base\DI\ComponentIF</span></a>, 
+			
+				<a href="class-Nora.Logging.LoggingIF.html"><span>Nora\Logging\LoggingIF</span></a>
+			
+			 uses 
+				<a href="class-Nora.Base.DI.ComponentTrait.html"><span>Nora\Base\DI\ComponentTrait</span></a>, 
+			
+				<a href="class-Nora.Logging.LoggingTrait.html"><span>Nora\Logging\LoggingTrait</span></a>
+			
+		</dd>
+	</dl>
 
 
 
@@ -109,7 +141,7 @@
 		<b>Namespace:</b> <a href="namespace-Nora.html">Nora</a>\<a href="namespace-Nora.Base.html">Base</a><br />
 		
 
-		<b>Located at</b> <a href="source-class-Nora.Base.AutoLoader.html#14-119" title="Go to source code">class/Base/AutoLoader.php</a><br />
+		<b>Located at</b> <a href="source-class-Nora.Base.AutoLoader.html#18-132" title="Go to source code">class/Base/AutoLoader.php</a><br />
 	</div>
 
 
@@ -127,7 +159,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getInstance">#</a>
-		<code><a href="source-class-Nora.Base.AutoLoader.html#29-38" title="Go to source code">getInstance</a>( )</code>
+		<code><a href="source-class-Nora.Base.AutoLoader.html#36-45" title="Go to source code">getInstance</a>( )</code>
 
 		<div class="description short">
 			
@@ -160,7 +192,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_addNamespace">#</a>
-		<code><a href="source-class-Nora.Base.AutoLoader.html#40-47" title="Go to source code">addNamespace</a>( <span>mixed <var>$namespace</var></span>, <span>mixed <var>$dirctory</var></span> )</code>
+		<code><a href="source-class-Nora.Base.AutoLoader.html#47-55" title="Go to source code">addNamespace</a>( <span>mixed <var>$namespace</var></span>, <span>mixed <var>$dirctory</var></span> )</code>
 
 		<div class="description short">
 			
@@ -195,7 +227,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_register">#</a>
-		<code><a href="source-class-Nora.Base.AutoLoader.html#49-55" title="Go to source code">register</a>( )</code>
+		<code><a href="source-class-Nora.Base.AutoLoader.html#57-63" title="Go to source code">register</a>( )</code>
 
 		<div class="description short">
 			
@@ -228,7 +260,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___autoload">#</a>
-		<code><a href="source-class-Nora.Base.AutoLoader.html#57-69" title="Go to source code">__autoload</a>( <span>mixed <var>$name</var></span> )</code>
+		<code><a href="source-class-Nora.Base.AutoLoader.html#65-82" title="Go to source code">__autoload</a>( <span>mixed <var>$name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -252,7 +284,71 @@
 	</tr>
 	</table>
 
+	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-Nora.Base.DI.ComponentIF.html#methods">Nora\Base\DI\ComponentIF</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Nora.Base.DI.ComponentIF.html#_initialize">initialize()</a>, 
+			<a href="class-Nora.Base.DI.ComponentIF.html#_setup">setup()</a>
+		</code></td>
+	</tr>
+	</table>
+	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-Nora.Base.DI.ContainerOwnerIF.html#methods">Nora\Base\DI\ContainerOwnerIF</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Nora.Base.DI.ContainerOwnerIF.html#_getContainer">getContainer()</a>, 
+			<a href="class-Nora.Base.DI.ContainerOwnerIF.html#_pullComponent">pullComponent()</a>, 
+			<a href="class-Nora.Base.DI.ContainerOwnerIF.html#_setContainer">setContainer()</a>
+		</code></td>
+	</tr>
+	</table>
+	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-Nora.Logging.LoggingIF.html#methods">Nora\Logging\LoggingIF</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Nora.Logging.LoggingIF.html#_debug">debug()</a>, 
+			<a href="class-Nora.Logging.LoggingIF.html#_error">error()</a>, 
+			<a href="class-Nora.Logging.LoggingIF.html#_getLogger">getLogger()</a>, 
+			<a href="class-Nora.Logging.LoggingIF.html#_notice">notice()</a>, 
+			<a href="class-Nora.Logging.LoggingIF.html#_setLogger">setLogger()</a>, 
+			<a href="class-Nora.Logging.LoggingIF.html#_warn">warn()</a>
+		</code></td>
+	</tr>
+	</table>
 
+	<table class="summary used">
+	<caption>Methods used from <a href="class-Nora.Base.DI.ComponentTrait.html#methods">Nora\Base\DI\ComponentTrait</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Nora.Base.DI.ComponentTrait.html#_initialize">()</a>, 
+			<a href="class-Nora.Base.DI.ComponentTrait.html#_setup">()</a>
+		</code></td>
+	</tr>
+	</table>
+	<table class="summary used">
+	<caption>Methods used from <a href="class-Nora.Base.DI.ContainerOwnerTrait.html#methods">Nora\Base\DI\ContainerOwnerTrait</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Nora.Base.DI.ContainerOwnerTrait.html#_getContainer">()</a>, 
+			<a href="class-Nora.Base.DI.ContainerOwnerTrait.html#_pullComponent">()</a>, 
+			<a href="class-Nora.Base.DI.ContainerOwnerTrait.html#_setContainer">()</a>
+		</code></td>
+	</tr>
+	</table>
+	<table class="summary used">
+	<caption>Methods used from <a href="class-Nora.Logging.LoggingTrait.html#methods">Nora\Logging\LoggingTrait</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Nora.Logging.LoggingTrait.html#_debug">()</a>, 
+			<a href="class-Nora.Logging.LoggingTrait.html#_error">()</a>, 
+			<a href="class-Nora.Logging.LoggingTrait.html#_getLogger">()</a>, 
+			<a href="class-Nora.Logging.LoggingTrait.html#_notice">()</a>, 
+			<a href="class-Nora.Logging.LoggingTrait.html#_setLogger">()</a>, 
+			<a href="class-Nora.Logging.LoggingTrait.html#_warn">()</a>
+		</code></td>
+	</tr>
+	</table>
 
 
 

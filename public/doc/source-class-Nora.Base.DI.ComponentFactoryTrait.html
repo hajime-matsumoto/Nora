@@ -8,7 +8,7 @@
 	<title>File class/Base/DI/trait/ComponentFactoryTrait.php | Nora Project</title>
 
 	<script type="text/javascript" src="resources/combined.js?394153670"></script>
-	<script type="text/javascript" src="elementlist.js?571058128"></script>
+	<script type="text/javascript" src="elementlist.js?2208561294"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -31,9 +31,26 @@
 				<li class="active"><a href="namespace-Nora.Base.DI.html">DI</a>
 						</li>
 							</ul></li>
-				<li><a href="namespace-Nora.Log.html">Log</a>
+				<li><a href="namespace-Nora.General.html">General<span></span></a>
+						<ul>
+				<li><a href="namespace-Nora.General.Bootstrap.html">Bootstrap</a>
+						</li>
+				<li><a href="namespace-Nora.General.Helper.html">Helper</a>
 						</li>
 							</ul></li>
+				<li><a href="namespace-Nora.Logging.html">Logging</a>
+						</li>
+				<li><a href="namespace-Nora.Mail.html">Mail</a>
+						</li>
+				<li><a href="namespace-Nora.Network.html">Network</a>
+						</li>
+				<li><a href="namespace-Nora.Template.html">Template</a>
+						</li>
+				<li><a href="namespace-Nora.Web.html">Web</a>
+						</li>
+							</ul></li>
+				<li><a href="namespace-PHP.html">PHP</a>
+						</li>
 			</ul>
 		</div>
 
@@ -106,21 +123,23 @@
 </span><span id="4" class="l"><a class="l" href="#4"> 4: </a><span class="php-comment">/**
 </span></span><span id="5" class="l"><a class="l" href="#5"> 5: </a><span class="php-comment"> * のらプロジェクト
 </span></span><span id="6" class="l"><a class="l" href="#6"> 6: </a><span class="php-comment"> *
-</span></span><span id="7" class="l"><a class="l" href="#7"> 7: </a><span class="php-comment"> * @author     ハジメ &lt;mail@hazime.org&gt;
-</span></span><span id="8" class="l"><a class="l" href="#8"> 8: </a><span class="php-comment"> * @copyright  opyright (c) 2013, Nora Project All rights reserved.
-</span></span><span id="9" class="l"><a class="l" href="#9"> 9: </a><span class="php-comment"> * @license    http://www.hazime.org/license/bsd.txt 修正BSDライセンス
-</span></span><span id="10" class="l"><a class="l" href="#10">10: </a><span class="php-comment"> * @version    $Id$
-</span></span><span id="11" class="l"><a class="l" href="#11">11: </a><span class="php-comment"> */</span>
-</span><span id="12" class="l"><a class="l" href="#12">12: </a><span class="php-keyword1">namespace</span> Nora\Base\DI;
-</span><span id="13" class="l"><a class="l" href="#13">13: </a>
-</span><span id="14" class="l"><a class="l" href="#14">14: </a><span class="php-comment">/**
-</span></span><span id="15" class="l"><a class="l" href="#15">15: </a><span class="php-comment"> * コンポーネントファクトリ
-</span></span><span id="16" class="l"><a class="l" href="#16">16: </a><span class="php-comment"> */</span>
-</span><span id="17" class="l"><a class="l" href="#17">17: </a><span class="php-keyword1">trait</span> <a id="ComponentFactoryTrait" href="#ComponentFactoryTrait">ComponentFactoryTrait</a>
-</span><span id="18" class="l"><a class="l" href="#18">18: </a>{
-</span><span id="19" class="l"><a class="l" href="#19">19: </a>    <span class="php-keyword1">use</span> ComponentTrait;
-</span><span id="20" class="l"><a class="l" href="#20">20: </a>}
-</span><span id="21" class="l"><a class="l" href="#21">21: </a></span></code></pre>
+</span></span><span id="7" class="l"><a class="l" href="#7"> 7: </a><span class="php-comment"> * @category   Base
+</span></span><span id="8" class="l"><a class="l" href="#8"> 8: </a><span class="php-comment"> * @package    DI
+</span></span><span id="9" class="l"><a class="l" href="#9"> 9: </a><span class="php-comment"> * @author     ハジメ &lt;mail@hazime.org&gt;
+</span></span><span id="10" class="l"><a class="l" href="#10">10: </a><span class="php-comment"> * @copyright  opyright (c) 2013, Nora Project All rights reserved.
+</span></span><span id="11" class="l"><a class="l" href="#11">11: </a><span class="php-comment"> * @license    http://www.hazime.org/license/bsd.txt 修正BSDライセンス
+</span></span><span id="12" class="l"><a class="l" href="#12">12: </a><span class="php-comment"> * @version    $Id$
+</span></span><span id="13" class="l"><a class="l" href="#13">13: </a><span class="php-comment"> */</span>
+</span><span id="14" class="l"><a class="l" href="#14">14: </a><span class="php-keyword1">namespace</span> Nora\Base\DI;
+</span><span id="15" class="l"><a class="l" href="#15">15: </a>
+</span><span id="16" class="l"><a class="l" href="#16">16: </a><span class="php-comment">/**
+</span></span><span id="17" class="l"><a class="l" href="#17">17: </a><span class="php-comment"> * コンポーネントファクトリ
+</span></span><span id="18" class="l"><a class="l" href="#18">18: </a><span class="php-comment"> */</span>
+</span><span id="19" class="l"><a class="l" href="#19">19: </a><span class="php-keyword1">trait</span> <a id="ComponentFactoryTrait" href="#ComponentFactoryTrait">ComponentFactoryTrait</a>
+</span><span id="20" class="l"><a class="l" href="#20">20: </a>{
+</span><span id="21" class="l"><a class="l" href="#21">21: </a>    <span class="php-keyword1">use</span> ComponentTrait;
+</span><span id="22" class="l"><a class="l" href="#22">22: </a>}
+</span><span id="23" class="l"><a class="l" href="#23">23: </a></span></code></pre>
 
 	<div id="footer">
 		Nora Project API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>

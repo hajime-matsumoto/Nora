@@ -28,3 +28,12 @@ function nora( )
     return Nora\Base\Nora::getInstance();
 }
 
+/**
+ * コンポーネントを取得する
+ */
+function nora_component( $name )
+{
+    if( !$nora = nora( ) ) return;
+    return $nora->getContainer( )->pullComponent( $name );
+}
+

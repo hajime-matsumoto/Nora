@@ -7,7 +7,7 @@
 	<title>Interface Nora\Base\DI\ContainerOwnerIF | Nora Project</title>
 
 	<script type="text/javascript" src="resources/combined.js?394153670"></script>
-	<script type="text/javascript" src="elementlist.js?571058128"></script>
+	<script type="text/javascript" src="elementlist.js?2208561294"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -30,9 +30,26 @@
 				<li class="active"><a href="namespace-Nora.Base.DI.html">DI</a>
 						</li>
 							</ul></li>
-				<li><a href="namespace-Nora.Log.html">Log</a>
+				<li><a href="namespace-Nora.General.html">General<span></span></a>
+						<ul>
+				<li><a href="namespace-Nora.General.Bootstrap.html">Bootstrap</a>
+						</li>
+				<li><a href="namespace-Nora.General.Helper.html">Helper</a>
 						</li>
 							</ul></li>
+				<li><a href="namespace-Nora.Logging.html">Logging</a>
+						</li>
+				<li><a href="namespace-Nora.Mail.html">Mail</a>
+						</li>
+				<li><a href="namespace-Nora.Network.html">Network</a>
+						</li>
+				<li><a href="namespace-Nora.Template.html">Template</a>
+						</li>
+				<li><a href="namespace-Nora.Web.html">Web</a>
+						</li>
+							</ul></li>
+				<li><a href="namespace-PHP.html">PHP</a>
+						</li>
 			</ul>
 		</div>
 
@@ -120,10 +137,12 @@
 
 	<div>
 		<h4>Indirect known implementers</h4>
+			<a href="class-Nora.Base.AutoLoader.html">Nora\Base\AutoLoader</a>, 
 			<a href="class-Nora.Base.DI.ComponentFactoryIF.html">Nora\Base\DI\ComponentFactoryIF</a>, 
-			<a href="class-Nora.Log.Factory.html">Nora\Log\Factory</a>, 
-			<a href="class-Nora.Log.FileLogger.html">Nora\Log\FileLogger</a>, 
-			<a href="class-Nora.Log.Logger.html">Nora\Log\Logger</a>
+			<a href="class-Nora.Logging.Factory.html">Nora\Logging\Factory</a>, 
+			<a href="class-Nora.Logging.FileLogger.html">Nora\Logging\FileLogger</a>, 
+			<a href="class-Nora.Logging.Logger.html">Nora\Logging\Logger</a>, 
+			<a href="class-Nora.Mail.Mailer.html">Nora\Mail\Mailer</a>
 	</div>
 
 
@@ -134,7 +153,7 @@
 		<b>Namespace:</b> <a href="namespace-Nora.html">Nora</a>\<a href="namespace-Nora.Base.html">Base</a>\<a href="namespace-Nora.Base.DI.html">DI</a><br />
 		
 
-		<b>Located at</b> <a href="source-class-Nora.Base.DI.ContainerOwnerIF.html#14-21" title="Go to source code">class/Base/DI/interface/ContainerOwnerIF.php</a><br />
+		<b>Located at</b> <a href="source-class-Nora.Base.DI.ContainerOwnerIF.html#16-24" title="Go to source code">class/Base/DI/interface/ContainerOwnerIF.php</a><br />
 	</div>
 
 
@@ -152,7 +171,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setContainer">#</a>
-		<code><a href="source-class-Nora.Base.DI.ContainerOwnerIF.html#19" title="Go to source code">setContainer</a>( <span>mixed <var>$container</var></span> )</code>
+		<code><a href="source-class-Nora.Base.DI.ContainerOwnerIF.html#21" title="Go to source code">setContainer</a>( <span>mixed <var>$container</var></span> )</code>
 
 		<div class="description short">
 			
@@ -181,7 +200,36 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getContainer">#</a>
-		<code><a href="source-class-Nora.Base.DI.ContainerOwnerIF.html#20" title="Go to source code">getContainer</a>( )</code>
+		<code><a href="source-class-Nora.Base.DI.ContainerOwnerIF.html#22" title="Go to source code">getContainer</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="pullComponent" id="_pullComponent">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_pullComponent">#</a>
+		<code><a href="source-class-Nora.Base.DI.ContainerOwnerIF.html#23" title="Go to source code">pullComponent</a>( <span>mixed <var>$name</var></span> )</code>
 
 		<div class="description short">
 			

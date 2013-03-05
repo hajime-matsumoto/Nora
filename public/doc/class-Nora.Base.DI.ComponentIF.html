@@ -7,7 +7,7 @@
 	<title>Interface Nora\Base\DI\ComponentIF | Nora Project</title>
 
 	<script type="text/javascript" src="resources/combined.js?394153670"></script>
-	<script type="text/javascript" src="elementlist.js?571058128"></script>
+	<script type="text/javascript" src="elementlist.js?2208561294"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -30,9 +30,26 @@
 				<li class="active"><a href="namespace-Nora.Base.DI.html">DI</a>
 						</li>
 							</ul></li>
-				<li><a href="namespace-Nora.Log.html">Log</a>
+				<li><a href="namespace-Nora.General.html">General<span></span></a>
+						<ul>
+				<li><a href="namespace-Nora.General.Bootstrap.html">Bootstrap</a>
+						</li>
+				<li><a href="namespace-Nora.General.Helper.html">Helper</a>
 						</li>
 							</ul></li>
+				<li><a href="namespace-Nora.Logging.html">Logging</a>
+						</li>
+				<li><a href="namespace-Nora.Mail.html">Mail</a>
+						</li>
+				<li><a href="namespace-Nora.Network.html">Network</a>
+						</li>
+				<li><a href="namespace-Nora.Template.html">Template</a>
+						</li>
+				<li><a href="namespace-Nora.Web.html">Web</a>
+						</li>
+							</ul></li>
+				<li><a href="namespace-PHP.html">PHP</a>
+						</li>
 			</ul>
 		</div>
 
@@ -123,14 +140,16 @@
 
 	<div>
 		<h4>Direct known implementers</h4>
+			<a href="class-Nora.Base.AutoLoader.html">Nora\Base\AutoLoader</a>, 
 			<a href="class-Nora.Base.DI.ComponentFactoryIF.html">Nora\Base\DI\ComponentFactoryIF</a>, 
-			<a href="class-Nora.Log.Logger.html">Nora\Log\Logger</a>
+			<a href="class-Nora.Logging.Logger.html">Nora\Logging\Logger</a>, 
+			<a href="class-Nora.Mail.Mailer.html">Nora\Mail\Mailer</a>
 	</div>
 
 	<div>
 		<h4>Indirect known implementers</h4>
-			<a href="class-Nora.Log.Factory.html">Nora\Log\Factory</a>, 
-			<a href="class-Nora.Log.FileLogger.html">Nora\Log\FileLogger</a>
+			<a href="class-Nora.Logging.Factory.html">Nora\Logging\Factory</a>, 
+			<a href="class-Nora.Logging.FileLogger.html">Nora\Logging\FileLogger</a>
 	</div>
 
 
@@ -141,7 +160,7 @@
 		<b>Namespace:</b> <a href="namespace-Nora.html">Nora</a>\<a href="namespace-Nora.Base.html">Base</a>\<a href="namespace-Nora.Base.DI.html">DI</a><br />
 		
 
-		<b>Located at</b> <a href="source-class-Nora.Base.DI.ComponentIF.html#14-28" title="Go to source code">class/Base/DI/interface/ComponentIF.php</a><br />
+		<b>Located at</b> <a href="source-class-Nora.Base.DI.ComponentIF.html#16-30" title="Go to source code">class/Base/DI/interface/ComponentIF.php</a><br />
 	</div>
 
 
@@ -159,7 +178,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setup">#</a>
-		<code><a href="source-class-Nora.Base.DI.ComponentIF.html#19-22" title="Go to source code">setup</a>( <span>mixed <var>$setting</var></span> )</code>
+		<code><a href="source-class-Nora.Base.DI.ComponentIF.html#21-24" title="Go to source code">setup</a>( <span>mixed <var>$setting</var></span> )</code>
 
 		<div class="description short">
 			
@@ -192,7 +211,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_initialize">#</a>
-		<code><a href="source-class-Nora.Base.DI.ComponentIF.html#24-27" title="Go to source code">initialize</a>( )</code>
+		<code><a href="source-class-Nora.Base.DI.ComponentIF.html#26-29" title="Go to source code">initialize</a>( )</code>
 
 		<div class="description short">
 			
@@ -221,6 +240,7 @@
 	<tr>
 		<td><code>
 			<a href="class-Nora.Base.DI.ContainerOwnerIF.html#_getContainer">getContainer()</a>, 
+			<a href="class-Nora.Base.DI.ContainerOwnerIF.html#_pullComponent">pullComponent()</a>, 
 			<a href="class-Nora.Base.DI.ContainerOwnerIF.html#_setContainer">setContainer()</a>
 		</code></td>
 	</tr>

@@ -7,7 +7,7 @@
 	<title>Interface Nora\Base\DI\ContainerIF | Nora Project</title>
 
 	<script type="text/javascript" src="resources/combined.js?394153670"></script>
-	<script type="text/javascript" src="elementlist.js?571058128"></script>
+	<script type="text/javascript" src="elementlist.js?2208561294"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -30,9 +30,26 @@
 				<li class="active"><a href="namespace-Nora.Base.DI.html">DI</a>
 						</li>
 							</ul></li>
-				<li><a href="namespace-Nora.Log.html">Log</a>
+				<li><a href="namespace-Nora.General.html">General<span></span></a>
+						<ul>
+				<li><a href="namespace-Nora.General.Bootstrap.html">Bootstrap</a>
+						</li>
+				<li><a href="namespace-Nora.General.Helper.html">Helper</a>
 						</li>
 							</ul></li>
+				<li><a href="namespace-Nora.Logging.html">Logging</a>
+						</li>
+				<li><a href="namespace-Nora.Mail.html">Mail</a>
+						</li>
+				<li><a href="namespace-Nora.Network.html">Network</a>
+						</li>
+				<li><a href="namespace-Nora.Template.html">Template</a>
+						</li>
+				<li><a href="namespace-Nora.Web.html">Web</a>
+						</li>
+							</ul></li>
+				<li><a href="namespace-PHP.html">PHP</a>
+						</li>
 			</ul>
 		</div>
 
@@ -126,7 +143,7 @@
 		<b>Namespace:</b> <a href="namespace-Nora.html">Nora</a>\<a href="namespace-Nora.Base.html">Base</a>\<a href="namespace-Nora.Base.DI.html">DI</a><br />
 		
 
-		<b>Located at</b> <a href="source-class-Nora.Base.DI.ContainerIF.html#14-38" title="Go to source code">class/Base/DI/interface/ContainerIF.php</a><br />
+		<b>Located at</b> <a href="source-class-Nora.Base.DI.ContainerIF.html#16-45" title="Go to source code">class/Base/DI/interface/ContainerIF.php</a><br />
 	</div>
 
 
@@ -144,7 +161,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_removeComponent">#</a>
-		<code><a href="source-class-Nora.Base.DI.ContainerIF.html#19-22" title="Go to source code">removeComponent</a>( <span>mixed <var>$name</var></span> )</code>
+		<code><a href="source-class-Nora.Base.DI.ContainerIF.html#21-24" title="Go to source code">removeComponent</a>( <span>mixed <var>$name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -177,7 +194,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_addComponent">#</a>
-		<code><a href="source-class-Nora.Base.DI.ContainerIF.html#24-27" title="Go to source code">addComponent</a>( <span>mixed <var>$name</var></span>, <span>mixed <var>$factory</var></span>, <span>mixed <var>$setting</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-Nora.Base.DI.ContainerIF.html#26-29" title="Go to source code">addComponent</a>( <span>mixed <var>$name</var></span>, <span>mixed <var>$factory</var></span>, <span>mixed <var>$setting</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			
@@ -210,7 +227,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_pullComponent">#</a>
-		<code><a href="source-class-Nora.Base.DI.ContainerIF.html#29-32" title="Go to source code">pullComponent</a>( <span>mixed <var>$name</var></span> )</code>
+		<code><a href="source-class-Nora.Base.DI.ContainerIF.html#31-34" title="Go to source code">pullComponent</a>( <span>mixed <var>$name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -243,7 +260,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getComponentSetting">#</a>
-		<code><a href="source-class-Nora.Base.DI.ContainerIF.html#34-37" title="Go to source code">getComponentSetting</a>( <span>mixed <var>$name</var></span> )</code>
+		<code><a href="source-class-Nora.Base.DI.ContainerIF.html#36-39" title="Go to source code">getComponentSetting</a>( <span>mixed <var>$name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -254,6 +271,39 @@
 		<div class="description detailed hidden">
 			
 <p>コンポーネントの設定値を取得する</p>
+
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="hasComponent" id="_hasComponent">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_hasComponent">#</a>
+		<code><a href="source-class-Nora.Base.DI.ContainerIF.html#41-44" title="Go to source code">hasComponent</a>( <span>mixed <var>$name</var></span> )</code>
+
+		<div class="description short">
+			
+<p>コンポーネントが存在するか</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>コンポーネントが存在するか</p>
 
 
 
