@@ -37,3 +37,20 @@ function nora_component( $name )
     return $nora->getContainer( )->pullComponent( $name );
 }
 
+/**
+ * starts_with
+ */
+function nora_string_starts_with($haystack, $needle)
+{
+    return !strncmp($haystack, $needle, strlen($needle));
+}
+
+function nora_string_ends_with($haystack, $needle)
+{
+    $length = strlen($needle);
+    if ($length == 0) {
+        return true;
+    }
+
+    return (substr($haystack, -$length) === $needle);
+}

@@ -29,6 +29,7 @@ trait ContainerTrait
      */
     public function removeComponent( $name )
     {
+        $name = strtolower($name);
         if( isset($this->_container_factory[$name]) )
         {
             unset($this->_container_factory[$name]);
@@ -50,6 +51,7 @@ trait ContainerTrait
      */
     public function addComponent( $name, $factory, $setting = array() )
     {
+        $name = strtolower($name);
         $this->_container_factory[$name] = $factory;
 
         if(!empty($setting))
@@ -63,6 +65,7 @@ trait ContainerTrait
      */
     public function pullComponent( $name )
     {
+        $name = strtolower($name);
         if( !$this->hasComponent($name) ){
             if( !$this->getContainer( ) ) return false;
             return $this->getContainer()->pullComponent($name);
@@ -77,6 +80,7 @@ trait ContainerTrait
      */
     public function pullFactory( $name )
     {
+        $name = strtolower($name);
         if( !$this->hasComponent($name) ){
             if( !$this->getContainer( ) ) return false;
             return $this->getContainer()->pullFactory($name);
@@ -90,6 +94,7 @@ trait ContainerTrait
      */
     public function hasComponent( $name )
     {
+        $name = strtolower($name);
         if( isset($this->_container_registry[$name]) ) return true;
         if( isset($this->_container_factory[$name]) ) return true;
         return false;
@@ -100,6 +105,7 @@ trait ContainerTrait
      */
     public function getComponentSetting( $name )
     {
+        $name = strtolower($name);
         if( !isset($this->_container_setting[$name])) return array();
         return $this->_container_setting[$name];
     }
@@ -109,6 +115,7 @@ trait ContainerTrait
      */
     public function setComponentSetting( $name, $setting )
     {
+        $name = strtolower($name);
         // 生成済だったら
         if( $this->_isRegistered( $name ) )
         {
@@ -124,6 +131,7 @@ trait ContainerTrait
      */
     private function _isRegistered( $name )
     {
+        $name = strtolower($name);
         return isset($this->_container_registry[$name]) ? true: false;
     }
 
@@ -132,6 +140,7 @@ trait ContainerTrait
      */
     private function _initComponent( $name, $factory = false )
     {
+        $name = strtolower($name);
         //if( !isset($this->_container_factory[$name]) ) return;
         //if( !is_string($this->_container_factory[$name]) ) return;
         //if( !class_exists($this->_container_factory[$name]) ) return;
@@ -186,5 +195,14 @@ trait ContainerTrait
         }
 
         return $this->_container_registry[$name] = $component;
+    }
+
+    /**
+     * コンポーネントをコールする
+     */
+    public function invokeComponent( $name, $args = array())
+    {
+        $name = strtolower($name);
+        return call_user_func_array( $this->pullComponent($name), $args );
     }
 }
