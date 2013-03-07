@@ -75,6 +75,7 @@ class AutoLoader implements DI\ComponentIF,Logging\LoggingIF
 
             // debug
             $this->debug("not found in(%s)",implode("\n",$this->_file_not_found_logs));
+            var_dump($this->_file_not_found_logs);
             return;
         }
 

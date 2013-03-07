@@ -22,6 +22,7 @@ trait ContainerTrait
 
     private $_container_factory = array();
     private $_container_registry = array();
+    private $_container_initialized = array();
     private $_container_setting = array();
 
     /**
@@ -43,6 +44,10 @@ trait ContainerTrait
         if( isset($this->_container_setting[$name]) ) 
         {
             unset($this->_container_setting[$name]);
+        }
+        if( isset($this->_container_initialized[$name]) ) 
+        {
+            unset($this->_container_initialized[$name]);
         }
     }
 
@@ -71,7 +76,7 @@ trait ContainerTrait
             return $this->getContainer()->pullComponent($name);
         }
 
-        if( !$this->_isRegistered( $name ) ) return $this->_initComponent($name);
+        if( !$this->_isRegistered( $name ) ) return $this->_createComponent($name);
         return $this->_container_registry[$name];
     }
 
@@ -136,9 +141,9 @@ trait ContainerTrait
     }
 
     /**
-     * コンポーネントを初期化する
+     * コンポーネントを作成する
      */
-    private function _initComponent( $name, $factory = false )
+    private function _createComponent( $name, $factory = false )
     {
         $name = strtolower($name);
         //if( !isset($this->_container_factory[$name]) ) return;
@@ -152,20 +157,29 @@ trait ContainerTrait
             if( is_string($factory) )
             {
                 nora_load_util('class');
-                return $this->_initComponent( $name, nora_class_new_instance( $factory ) );
+                return $this->initComponent( $name, nora_class_new_instance( $factory ) );
             }
 
             if( $factory instanceof \Closure ){
-                return $this->_initComponent( $name, $factory( $this->getComponentSetting($name) )  );
+                return $this->initComponent( $name, $factory( $this->getComponentSetting($name) )  );
             }
 
             if( is_array($factory) )
             {
-                return $this->_initComponent( $name, call_user_func($factory, $this->getComponentSetting($name)));
+                return $this->initComponent( $name, call_user_func($factory, $this->getComponentSetting($name)));
             }
-        }
 
-        $component = $factory;
+            return $this->initComponent($name,$factory);
+        }
+    }
+
+    /**
+     * コンポーネントを初期化する
+     */
+    protected function initComponent( $name, $component )
+    {
+        $name = strtolower($name);
+        if( isset($this->_container_registry[$name])  ) return $this->_container_registry[$name];
 
         // ContainerOwnerだったら、
         // 所有コンテナの上位コンテナとして自分を登録する
