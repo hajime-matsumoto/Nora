@@ -7,7 +7,7 @@
 	<title>Tree | Nora Project</title>
 
 	<script type="text/javascript" src="resources/combined.js?394153670"></script>
-	<script type="text/javascript" src="elementlist.js?3454910313"></script>
+	<script type="text/javascript" src="elementlist.js?2293513279"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
 
 </head>
@@ -65,7 +65,9 @@
 				<li><a href="class-Nora.AutoLoader.AutoLoader.html">Nora\AutoLoader\AutoLoader</a></li>
 				<li><a href="class-Nora.Config.Config.html">Nora\Config\Config</a></li>
 				<li><a href="class-Nora.Config.Parser.INI.html">Nora\Config\Parser\INI</a></li>
+				<li><a href="class-Nora.Controller.ActionController.html">Nora\Controller\ActionController</a></li>
 				<li><a href="class-Nora.Controller.Controller.html">Nora\Controller\Controller</a></li>
+				<li><a href="class-Nora.Controller.FrontController.html">Nora\Controller\FrontController</a></li>
 				<li><a href="class-Nora.Event.Event.html">Nora\Event\Event</a></li>
 				<li><a href="class-Nora.Event.Observer.html">Nora\Event\Observer</a></li>
 				<li><a href="class-Nora.Event.Subject.html">Nora\Event\Subject</a></li>
@@ -87,7 +89,9 @@
 				<li><a href="class-Nora.App.RequestIF.html">Nora\App\RequestIF</a></li>
 				<li><a href="class-Nora.AutoLoader.AutoLoaderIF.html">Nora\AutoLoader\AutoLoaderIF</a></li>
 				<li><a href="class-Nora.Config.Parser.ParserIF.html">Nora\Config\Parser\ParserIF</a></li>
+				<li><a href="class-Nora.Controller.ActionControllerIF.html">Nora\Controller\ActionControllerIF</a></li>
 				<li><a href="class-Nora.Controller.ControllerIF.html">Nora\Controller\ControllerIF</a></li>
+				<li><a href="class-Nora.Controller.FrontControllerIF.html">Nora\Controller\FrontControllerIF</a></li>
 				<li><a href="class-Nora.Event.EventIF.html">Nora\Event\EventIF</a></li>
 				<li><a href="class-Nora.Event.ObserverIF.html">Nora\Event\ObserverIF</a></li>
 				<li><a href="class-Nora.Event.SubjectIF.html">Nora\Event\SubjectIF</a></li>
@@ -108,7 +112,9 @@
 				<li><a href="class-Nora.App.AppTrait.html">Nora\App\AppTrait</a></li>
 				<li><a href="class-Nora.App.BootstrapperTrait.html">Nora\App\BootstrapperTrait</a></li>
 				<li><a href="class-Nora.App.RequestTrait.html">Nora\App\RequestTrait</a></li>
+				<li><a href="class-Nora.Controller.ActionControllerTrait.html">Nora\Controller\ActionControllerTrait</a></li>
 				<li><a href="class-Nora.Controller.ControllerTrait.html">Nora\Controller\ControllerTrait</a></li>
+				<li><a href="class-Nora.Controller.FrontControllerTrait.html">Nora\Controller\FrontControllerTrait</a></li>
 				<li><a href="class-Nora.Event.EventTrait.html">Nora\Event\EventTrait</a></li>
 				<li><a href="class-Nora.Event.ObserverTrait.html">Nora\Event\ObserverTrait</a></li>
 				<li><a href="class-Nora.Event.SubjectTrait.html">Nora\Event\SubjectTrait</a></li>
@@ -126,6 +132,7 @@
 				<li><a href="class-Exception.html">Exception</a></li>
 				<li><a href="class-Nora.AutoLoader.FileNotFoundException.html">Nora\AutoLoader\FileNotFoundException</a></li>
 				<li><a href="class-Nora.Config.Parser.CantParseNullException.html">Nora\Config\Parser\CantParseNullException</a></li>
+				<li><a href="class-Nora.Controller.ControllerClassNotExists.html">Nora\Controller\ControllerClassNotExists</a></li>
 				<li><a href="class-Nora.Service.CreateServiceException.html">Nora\Service\CreateServiceException</a></li>
 				<li><a href="class-Nora.Service.ServiceAlradyExistsException.html">Nora\Service\ServiceAlradyExistsException</a></li>
 				<li><a href="class-Nora.Service.ServiceCantBeNullException.html">Nora\Service\ServiceCantBeNullException</a></li>
@@ -275,12 +282,34 @@
 
 				</li>
 
+			<li><div class="notlast"><a href="class-Nora.Controller.ActionController.html"><span>Nora\Controller\ActionController</span></a>
+			 implements 
+				<a href="class-Nora.Controller.ActionControllerIF.html"><span>Nora\Controller\ActionControllerIF</span></a>
+			
+			<br /><span class="padding"></span> uses 
+				<a href="class-Nora.Controller.ActionControllerTrait.html"><span>Nora\Controller\ActionControllerTrait</span></a>
+			
+			</div>
+
+				</li>
+
 			<li><div class="notlast"><a href="class-Nora.Controller.Controller.html"><span>Nora\Controller\Controller</span></a>
 			 implements 
 				<a href="class-Nora.Controller.ControllerIF.html"><span>Nora\Controller\ControllerIF</span></a>
 			
 			<br /><span class="padding"></span> uses 
 				<a href="class-Nora.Controller.ControllerTrait.html"><span>Nora\Controller\ControllerTrait</span></a>
+			
+			</div>
+
+				</li>
+
+			<li><div class="notlast"><a href="class-Nora.Controller.FrontController.html"><span>Nora\Controller\FrontController</span></a>
+			 implements 
+				<a href="class-Nora.Controller.FrontControllerIF.html"><span>Nora\Controller\FrontControllerIF</span></a>
+			
+			<br /><span class="padding"></span> uses 
+				<a href="class-Nora.Controller.FrontControllerTrait.html"><span>Nora\Controller\FrontControllerTrait</span></a>
 			
 			</div>
 
@@ -440,9 +469,27 @@
 
 				</li>
 
+			<li><div class="notlast"><a href="class-Nora.Controller.ActionControllerIF.html"><span>Nora\Controller\ActionControllerIF</span></a>
+			 implements 
+				<a href="class-Nora.Controller.ControllerIF.html"><span>Nora\Controller\ControllerIF</span></a>
+			
+			
+			</div>
+
+				</li>
+
 			<li><div class="notlast"><a href="class-Nora.Controller.ControllerIF.html"><span>Nora\Controller\ControllerIF</span></a>
 			 implements 
 				<a href="class-Nora.General.ParamHolderIF.html"><span>Nora\General\ParamHolderIF</span></a>
+			
+			
+			</div>
+
+				</li>
+
+			<li><div class="notlast"><a href="class-Nora.Controller.FrontControllerIF.html"><span>Nora\Controller\FrontControllerIF</span></a>
+			 implements 
+				<a href="class-Nora.Controller.ControllerIF.html"><span>Nora\Controller\ControllerIF</span></a>
 			
 			
 			</div>
@@ -492,6 +539,8 @@
 				</li>
 
 			<li><div class="notlast"><a href="class-Nora.Request.RequestIF.html"><span>Nora\Request\RequestIF</span></a>
+			 implements 
+				<a href="class-Nora.General.ParamHolderIF.html"><span>Nora\General\ParamHolderIF</span></a>
 			
 			
 			</div>
@@ -580,10 +629,28 @@
 
 				</li>
 
+			<li><div class="notlast"><a href="class-Nora.Controller.ActionControllerTrait.html"><span>Nora\Controller\ActionControllerTrait</span></a>
+			
+			 uses 
+				<a href="class-Nora.Controller.ControllerTrait.html"><span>Nora\Controller\ControllerTrait</span></a>
+			
+			</div>
+
+				</li>
+
 			<li><div class="notlast"><a href="class-Nora.Controller.ControllerTrait.html"><span>Nora\Controller\ControllerTrait</span></a>
 			
 			 uses 
 				<a href="class-Nora.General.ParamHolderTrait.html"><span>Nora\General\ParamHolderTrait</span></a>
+			
+			</div>
+
+				</li>
+
+			<li><div class="notlast"><a href="class-Nora.Controller.FrontControllerTrait.html"><span>Nora\Controller\FrontControllerTrait</span></a>
+			
+			 uses 
+				<a href="class-Nora.Controller.ControllerTrait.html"><span>Nora\Controller\ControllerTrait</span></a>
 			
 			</div>
 
@@ -633,6 +700,8 @@
 
 			<li><div class="notlast"><a href="class-Nora.Request.RequestTrait.html"><span>Nora\Request\RequestTrait</span></a>
 			
+			 uses 
+				<a href="class-Nora.General.ParamHolderTrait.html"><span>Nora\General\ParamHolderTrait</span></a>
 			
 			</div>
 
@@ -685,6 +754,13 @@
 				</li>
 
 			<li><div class="notlast"><a href="class-Nora.Config.Parser.CantParseNullException.html"><span>Nora\Config\Parser\CantParseNullException</span></a>
+			
+			
+			</div>
+
+				</li>
+
+			<li><div class="notlast"><a href="class-Nora.Controller.ControllerClassNotExists.html"><span>Nora\Controller\ControllerClassNotExists</span></a>
 			
 			
 			</div>

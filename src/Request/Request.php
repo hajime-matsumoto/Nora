@@ -14,7 +14,7 @@ namespace Nora\Request;
 /**
  * リクエスト
  */
-class Request implements RequestIF
+class Request extends \ArrayObject implements RequestIF
 {
     use RequestTrait;
 }

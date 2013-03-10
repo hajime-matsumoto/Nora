@@ -71,4 +71,13 @@ trait RequestTrait
         return $this;
     }
 
+    public function setVars( $datas )
+    {
+        foreach( $datas as $k=>$v )
+        {
+            $this[$k] = $v;
+        }
+    }
+
+
 }
