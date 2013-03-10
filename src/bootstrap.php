@@ -2,7 +2,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * のらプロジェクト:ブートストラップファイル
+ * のらプロジェクトファイル
+ *
+ * ブートストラップ
  *
  * =定数の定義
  * このスクリプトは以下の定数を定義する
@@ -10,45 +12,21 @@
  * NORA_HOME
  * :のらのルートディレクトリ
  *
- * =オートローダの起動
+ * nora_xxx ユーティリティ関数のロード
+ * util/nora.php
  *
  * @author     ハジメ <mail@hazime.org>
- * @copyright  opyright (c) 2013, Nora Project All rights reserved.
- * @license    http://www.hazime.org/license/bsd.txt 修正BSDライセンス
- * @version    $Id$
+ * @copyright  opyright (c) 2013, nora project all rights reserved.
+ * @license    http://www.hazime.org/license/bsd.txt 修正bsdライセンス
+ * @version    $id$
  */
+if( !defined('NORA_HOME') )
+{
+    define('NORA_HOME',realpath(dirname(__file__).'/../'));
+}
 
-// NORA_HOMEが定義されていれば処理を継続しない
-if( defined('NORA_HOME') ) exit();
+// インクルードパスを追加する
+ini_set('include_path', ini_get('include_path').':'.NORA_HOME.'/src');
 
-
-// 説明変数 base_path
-$base_path = realpath(dirname(__FILE__).'/../');
-
-// 定数を定義
-define('NORA_HOME', $base_path);
-
-// 必要なクラスを全てロードする
-require NORA_HOME.'/src/class/Base/DI/script/bootstrap.php';
-require NORA_HOME.'/src/class/Logging/script/bootstrap.php';
-require NORA_HOME.'/src/class/Base/AutoLoader.php';
-require NORA_HOME.'/src/class/Base/Nora.php';
-
-// ユーティリティをロードする
-require NORA_HOME.'/src/util/nora.php';
-
-// オートローダの起動
-nora()->setContainer('Nora\Base\DI\Container');
-nora()->getContainer( )->addComponent('autoLoader', 'Nora\Base\AutoLoader' );
-nora_component('autoLoader')
-    ->addNamespace('Nora', NORA_HOME.'/src/class')
-    ->register( );
-
-mb_language('ja');
-mb_internal_encoding('utf8');
-
-
-
-
-
-
+// ノラクラスを読み込む
+require dirname(__FILE__).'/Nora.php';
