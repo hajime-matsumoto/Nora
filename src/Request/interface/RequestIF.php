@@ -11,9 +11,40 @@
  */
 namespace Nora\Request;
 
+use Nora\General;
+
 /**
  * リクエストインターフェイス
  */
-interface RequestIF
+interface RequestIF extends General\ParamHolderIF
 {
+    /**
+     * モジュール名を取得
+     */
+    public function getModuleName( $default = null);
+
+    /**
+     * コントロール名を取得
+     */
+    public function getControllerName( $default = null);
+
+    /**
+     * アクション名を取得
+     */
+    public function getActionName( $default = null);
+
+    /**
+     * モジュール名を設定
+     */
+    public function setModuleName( $value );
+
+    /**
+     * コントロール名を設定
+     */
+    public function setControllerName( $value );
+
+    /**
+     * アクション名を設定
+     */
+    public function setActionName( $value );
 }

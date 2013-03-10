@@ -47,7 +47,7 @@ trait ControllerTrait
      */
     public function getResponse()
     {
-        return Util::helper('object')->newInstanceFromString($this->response);
+        return $this->response = Util::helper('object')->newInstanceFromString($this->response);
     }
 
     /**
@@ -55,7 +55,7 @@ trait ControllerTrait
      */
     public function getRequest()
     {
-        return Util::helper('object')->newInstanceFromString($this->request);
+        return $this->request = Util::helper('object')->newInstanceFromString($this->request);
     }
 
     /**
