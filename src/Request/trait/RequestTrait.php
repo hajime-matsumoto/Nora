@@ -79,5 +79,13 @@ trait RequestTrait
         }
     }
 
+    static public function factory( $type, $uri, $params = array())
+    {
+        $req = new static();
+        $req->setParam('uri', $uri );
+        $req->setVars($params);
+        return $req;
+    }
+
 
 }
