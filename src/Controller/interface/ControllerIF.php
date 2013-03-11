@@ -18,7 +18,7 @@ use Nora\Request;
 /**
  * コントローラインターフェイス
  */
-interface ControllerIF extends General\ParamHolderIF
+interface ControllerIF extends General\ParamHolderIF,General\Helper\BrokerOwnerIF
 {
     /**
      * レスポンスを設定する

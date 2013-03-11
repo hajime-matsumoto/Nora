@@ -15,6 +15,7 @@ use Nora\General;
 use Nora\Util\Util;
 use Nora\Request;
 use Nora\Response;
+use Nora\Router;
 
 /**
  * コントローラ機能
@@ -22,6 +23,7 @@ use Nora\Response;
 trait ControllerTrait
 {
     use General\ParamHolderTrait;
+    use General\Helper\BrokerOwnerTrait;
 
     private $response = 'Nora\Response\Response';
     private $request  = 'Nora\Request\Request';
