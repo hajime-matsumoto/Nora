@@ -64,3 +64,7 @@ trait ResponseTrait
         return $this->_is_cap_end;
     }
 }
+
+
+
+
