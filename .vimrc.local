@@ -1,0 +1,5 @@
+set nonumber
+
+" ノラ用のテンプレート
+"
+autocmd BufNewFile *.php silent! 0r doc/template/skelton.php
