@@ -34,19 +34,19 @@ class NoraPackageInvoiceTestCase extends PHPUnit_Framework_TestCase
             'env'=>APP_ENV
         ));
 
+        // pdfパッケージの取得
         $package = $pkgManager->pullPackage('pdf');
 
-        // パッケージのアクションを実行
-        $req = $package->makeRequest();
-        $res = $package->makeResponse();
-
-        $res->capStart();
-        $package->action('home','index',$req,$res);
-        $res->capEnd();
-
+        // パッケージマネージャからPDFパッケージが見つかるか
         $this->assertEquals('pdf', $package->getParam('name'));
 
         // ヘルパをつかってパッケージマネージャーの取得
         $this->assertInstanceOf('Nora\Package\Manager', $package->pkgManager());
+
+        // ヘルパをつかってパッケージの取得
+        $this->assertInstanceOf('Nora\Package\Package', $package->pkgManager('pdf'));
+
+        // ヘルパをつかってパッケージの取得からのPDFRendereの取得
+        $this->assertInstanceOf('NoraPKG\PDF\PDFRenderer', $package->pkgManager('pdf')->newInstance('PDFRenderer'));
     }
 }

@@ -138,6 +138,9 @@ trait PackageTrait
      */
     public function newInstance( $class_name )
     {
+        $class = $this->config('pkg.namespace').'\\'.$class_name;
+        $rc = new \ReflectionClass($class);
+        return $rc->newInstanceArgs(array_slice(func_get_args(),1));
     }
 
     /**
