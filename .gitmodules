@@ -1,0 +1,3 @@
+[submodule "public/assets/nora"]
+	path = public/assets/nora
+	url = git@github.com:hajime-matsumoto/NoraBootstrap.git
