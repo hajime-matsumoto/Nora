@@ -144,20 +144,49 @@ trait PackageTrait
     }
 
     /**
-     * コントロールアクションの実行
+     * コントローラがあるか
      */
-    public function action( $ctrl_name, $act_name, Request\RequestIF $request = null, Response\ResponseIF $response = null )
+    public function hasController( $ctrl_name )
     {
-        $ctrl_class = $this->config( )->sprintf(
+        try {
+            if(class_exists( $this->_getControllerClassName($ctrl_name) )){
+                return true;
+            }
+        }catch(Exception $e){
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * コントローラを取得
+     */
+    public function pullController( $ctrl_name )
+    {
+        $ctrl_class = $this->_getControllerClassName($ctrl_name);
+        $ctrl = new $ctrl_class();
+        $ctrl->setParam('name',$ctrl_name);
+        $ctrl->setHelperBroker( $this->getHelperBroker() );
+        return $ctrl;
+    }
+
+    private function _getControllerClassName( $ctrl_name )
+    {
+        return $ctrl_class = $this->config( )->sprintf(
             '%s\\%s'.ucfirst($ctrl_name).'%s',
             'controller.namespace',
             'controller.classPrefix',
             'controller.classPostfix'
         );
+    }
 
-        $ctrl = new $ctrl_class();
-        $ctrl->setParam('name',$ctrl_name);
-        $ctrl->setHelperBroker( $this->getHelperBroker() );
+
+    /**
+     * コントロールアクションの実行
+     */
+    public function action( $ctrl_name, $act_name, Request\RequestIF $request = null, Response\ResponseIF $response = null )
+    {
+        $ctrl = $this->pullController($ctrl_name);
         $ctrl->action( $act_name, $request, $response );
     }
 

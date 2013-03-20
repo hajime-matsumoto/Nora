@@ -27,26 +27,44 @@ trait ManagerTrait
     use Service\ManagerTrait;
 
     protected $pkgDirName;
-    protected $cfgFileName;
-    protected $env;
+    protected $cfgFileName = "config/pkg.ini";
+    protected $env = "production";
 
 
-    public function __construct( $setup_options = array() )
+    public function __construct( $setup_options = array(), $init = true )
     {
         $this->setup( $setup_options );
-        $this->init();
+        if( $init == true ) $this->init();
     }
 
     public function init( )
     {
-        $dir = dir( $this->pkgDirName );
+        $this->loadPackagesDirectory($this->pkgDirName, $this->cfgFileName, $this->env );
+    }
+
+    public function loadPackagesDirectory( $pkgDirName, $cfgFileName = null, $env = null )
+    {
+        if( $pkgDirName == null ) return;
+        if( $cfgFileName == null ) $cfgFileName = $this->cfgFileName;
+        if( $env == null ) $env = $this->env;
+
+
+        $dir = dir( $pkgDirName );
         while( $file = $dir->read() ){
             if( 0 === strpos( $file, '.', 0 ) ) continue;
-            $pkgDirName = $this->pkgDirName.'/'.$file;
-            $configFile = $pkgDirName.'/'.$this->cfgFileName;
-            define('PKG_'.strtoupper($file).'_HOME', $pkgDirName);
-            $this->putService('package', $file, function($manager)use($pkgDirName,$configFile){
-                $pkg = new Package(array('configFile'=>$configFile,'env'=>$this->env));
+
+            // パッケージディレクトリを定義する
+            $myPkgDirName = $pkgDirName.'/'.$file;
+
+            // パッケージ設定ファイルを定義する
+            $configFile = $myPkgDirName.'/'.$cfgFileName;
+
+            // パッケージ用の定数を定義する
+            define('PKG_'.strtoupper($file).'_HOME', $myPkgDirName);
+
+            // パッケージを登録する
+            $this->putService('package', $file, function($manager)use($myPkgDirName,$configFile,$env){
+                $pkg = new Package(array('configFile'=>$configFile,'env'=>$env));
                 $pkg->serviceInitialize($manager);
                 $pkg->getHelperBroker( )->putHelper('pkgManager', $this);
                 return $pkg;
@@ -72,8 +90,5 @@ trait ManagerTrait
         if( $pkgName == null ) return $this;
         return $this->pullPackage( $pkgName );
     }
-
-
-
 }
 

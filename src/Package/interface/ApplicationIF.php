@@ -14,8 +14,8 @@
 namespace Nora\Package;
 
 /**
- * アプリケーションモジュール
+ * アプリケーション
  */
-interface ApplicationIF implements ModuleIF
+interface ApplicationIF
 {
 }

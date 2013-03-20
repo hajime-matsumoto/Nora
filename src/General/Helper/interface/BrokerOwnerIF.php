@@ -30,6 +30,6 @@ interface BrokerOwnerIF
 	/**
 	 * ヘルパーを取得
 	 */
-	public function helper( $name );
+	public function helper( $name = null );
 }
 

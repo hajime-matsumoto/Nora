@@ -42,8 +42,9 @@ trait BrokerOwnerTrait
 	/**
 	 * ヘルパーを取得
 	 */
-	public function helper( $name )
-	{
+	public function helper( $name = null )
+    {
+        if( $name == null ) return $this->getHelperBroker();
 		return $this->getHelperBroker( )->pullHelper($name);
 	}
 }

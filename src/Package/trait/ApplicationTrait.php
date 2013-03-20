@@ -13,14 +13,32 @@
 
 namespace Nora\Package;
 
+use Nora\Service;
+use Nora\General;
+use Nora\General\Helper;
+
 /**
- * アプリケーションモジュール
+ * アプリケーション
  */
 trait ApplicationTrait
 {
-    use ModuleTrait
+    use Service\ManagerTrait;
+    use General\SetupableTrait;
+    use Helper\BrokerOwnerTrait;
 
-    protected $namespace_key       = 'app.namespace';
-    protected $dirname_key         = 'app.dirname';
-    protected $defaultBootstrapper = 'Nora\Package\ApplicationBootstrapper';
+    protected $appDirName;
+    protected $cfgFileName;
+    protected $env;
+
+    public function __construct( $setup_options = array() )
+    {
+        $this->setup($setup_options);
+        $this->getHelperBroker()->putHelper('pkgManager','Nora\Package\Manager');
+    }
+
+
+    public function __call( $name, $args )
+    {
+        return $this->helper($name)->invokeArgs($args);
+    }
 }

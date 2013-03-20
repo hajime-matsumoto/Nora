@@ -21,7 +21,7 @@ use Nora\Service;
  */
 interface ManagerIF extends General\SetupableIF, General\ParamHolderIF, General\Helper\HelperIF, Service\ManagerIF
 {
-    public function __construct( $setup_options = array() );
+    public function __construct( $setup_options = array(), $doInit = true );
     /**
      * ヘルパメソッド
      */

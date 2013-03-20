@@ -24,21 +24,23 @@ trait SetupableTrait
             foreach( $setting as $k=>$v ) {
                 $this->setup($k,$v);
             }
-            return;
+            return $this;
         }
+
+        if( !is_string($name) ) return $this;
 
         // setName系のメソッドがあればそちらへ
         if( method_exists( $this, $method = 'set'.$name ) )
         {
             call_user_func( array($this,$method), $setting );
-            return;
+            return $this;
         }
 
         // 同名プロパティが存在すれば代入
         if( property_exists( $this, $name ) )
         {
             $this->$name = $setting;
-            return;
+            return $this;
         }
 
         throw new SetupException(
